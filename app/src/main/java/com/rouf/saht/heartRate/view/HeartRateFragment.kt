@@ -57,7 +57,8 @@ class HeartRateFragment : Fragment() {
 
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var heartRateViewModel: HeartRateViewModel
-    private lateinit var heartRateMonitorSettings: HeartRateMonitorSettings
+    // Initialised with safe defaults so tapping Start before the async load completes never crashes
+    private var heartRateMonitorSettings: HeartRateMonitorSettings = HeartRateMonitorSettings()
 
     private var heartRateTimer: CountDownTimer? = null
     private var isTimerStarted = false
@@ -322,12 +323,11 @@ class HeartRateFragment : Fragment() {
 
 
     private fun onFingerChange(fingerDetected: Boolean) {
-        if (fingerDetected) {
-            binding.tvFingerDetect.text = "Finger Detected"
-        } else {
-            binding.tvFingerDetect.text = "No Finger"
-            stopHeartRateMonitoringTimer()
-        }
+        // Only update the label — do NOT touch the timer here.
+        // The library fires false "no finger" events intermittently even with a finger
+        // correctly placed; stopping the timer on every such event causes it to keep
+        // restarting from full duration whenever the next valid BPM arrives.
+        binding.tvFingerDetect.text = if (fingerDetected) "Finger Detected" else "No Finger"
     }
 
     override fun onResume() {
@@ -356,7 +356,7 @@ class HeartRateFragment : Fragment() {
         dialog.setContentView(dialogBinding.root)
         dialog.setCancelable(true)
 
-        val window: Window = dialog.window!!
+        val window = dialog.window ?: return
         val wlp = window.attributes
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT
         wlp.height = WindowManager.LayoutParams.WRAP_CONTENT
