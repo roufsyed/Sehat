@@ -7,18 +7,16 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!--For taking backup of user progress-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- For taking backup of user progress -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage"/>
+        tools:ignore="ScopedStorage" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-
-    <!--For Meditation sound playback-->
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+        android:maxSdkVersion="28"
+        tools:ignore="ScopedStorage" /> <!-- For Meditation sound playback and exporting backup feature -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -31,6 +29,7 @@
         android:name=".common.di.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -39,10 +38,16 @@
         android:theme="@style/Theme.Saht"
         tools:targetApi="31">
         <activity
+            android:name=".pedometer.view.PedometerDetailActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
+        <activity
             android:name=".pedometer.view.PedometerHistoryActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".heartRate.view.HeartRateDetailActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -69,6 +74,7 @@
             android:name=".common.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,6 +87,10 @@
             android:name=".pedometer.service.PedometerForegroundService"
             android:exported="true"
             android:foregroundServiceType="dataSync" />
+        <service
+            android:name=".meditation.MeditationService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
     </application>
 
 </manifest>

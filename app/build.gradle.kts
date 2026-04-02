@@ -110,5 +110,9 @@ dependencies {
 
     // Gson
     implementation("com.google.code.gson:gson:2.12.1")
+
+    // Exoplayer
+    implementation("androidx.media3:media3-exoplayer:1.5.1")
+    implementation("androidx.media3:media3-ui:1.5.1")
 }
 

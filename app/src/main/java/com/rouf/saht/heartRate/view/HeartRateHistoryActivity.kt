@@ -4,12 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rouf.saht.databinding.ActivityHeartRateHistoryBinding
 import com.rouf.saht.heartRate.viewModel.HeartRateViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HeartRateHistoryActivity : AppCompatActivity() {
@@ -25,8 +23,7 @@ class HeartRateHistoryActivity : AppCompatActivity() {
         binding = ActivityHeartRateHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        heartRateViewModel =
-            ViewModelProvider(this@HeartRateHistoryActivity)[HeartRateViewModel::class.java]
+        heartRateViewModel = ViewModelProvider(this@HeartRateHistoryActivity)[HeartRateViewModel::class.java]
 
 
         setupRecyclerView()
@@ -49,9 +46,10 @@ class HeartRateHistoryActivity : AppCompatActivity() {
     }
 
     private fun observer() {
-        heartRateViewModel.heartRateMonitorData.observe(this) { heartRateList ->
-            binding.llEmptyView.isVisible = heartRateList.isEmpty()
-            heartRateAdapter.submitList(heartRateList)
+        heartRateViewModel.heartRateMonitorData.observe(this) { data ->
+            val hearRateList = data ?: emptyList()
+            binding.llEmptyView.isVisible = hearRateList.isEmpty()
+            heartRateAdapter.submitList(hearRateList)
         }
     }
 }

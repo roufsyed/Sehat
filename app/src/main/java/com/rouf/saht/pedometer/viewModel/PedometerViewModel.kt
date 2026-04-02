@@ -1,10 +1,8 @@
 package com.rouf.saht.pedometer.viewModel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.rouf.saht.common.model.PedometerData
 import com.rouf.saht.pedometer.repository.PedometerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -62,6 +59,10 @@ class PedometerViewModel @Inject constructor(
     }
 
     suspend fun removePedometerDataFromList(position: Int): Boolean {
+        return pedometerRepository.deletePedometerDataByPosition(position)
+    }
+
+    suspend fun deletePedometerDataByPosition(position: Int): Boolean {
         return pedometerRepository.deletePedometerDataByPosition(position)
     }
 }

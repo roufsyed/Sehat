@@ -1,18 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".meditation.MeditationFragment">
+    tools:context=".meditation.MeditationFragment"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Meditation Feature Coming Soon!" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_meditation_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="16dp"
+            app:boxStrokeColor="@color/et_border_green_700"
+            app:boxBackgroundMode="outline">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_step_goal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/meditation_duration_min"
+                android:text="15"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/til_meditation_goal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            app:chipSpacing="24dp"
+            app:singleLine="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip4000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 min"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/green_500"
+                app:closeIconVisible="false"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip10000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 min"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/green_500"
+                app:closeIconVisible="false"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip12000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 min"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/green_500"
+                app:closeIconVisible="false"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip15000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20 min"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/green_500"
+                app:closeIconVisible="false"/>
+        </com.google.android.material.chip.ChipGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rl_meditation_playback"
+            android:layout_width="wrap_content"
+            android:layout_height="500dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chipGroup"
+            app:layout_constraintBottom_toTopOf="@id/tv_motivational_quote"
+            android:paddingHorizontal="4dp"
+            android:foregroundGravity="bottom"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideInset"
+            android:layout_marginBottom="16dp"
+            tools:listitem="@layout/item_sound"
+            tools:itemCount="8"
+            android:layout_marginTop="40dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_motivational_quote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rl_meditation_playback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="60dp"
+            android:text="@string/title_heart_rate"
+            android:gravity="bottom|center_horizontal"
+            android:foregroundGravity="bottom"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

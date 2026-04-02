@@ -9,7 +9,7 @@
     tools:context=".setting.view.PedometerSettingsActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_step_goal"
+        android:id="@+id/til_meditation_goal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/til_step_goal"
+        app:layout_constraintTop_toBottomOf="@+id/til_meditation_goal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"

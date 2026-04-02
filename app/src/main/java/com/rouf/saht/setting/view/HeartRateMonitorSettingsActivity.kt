@@ -171,7 +171,7 @@ class HeartRateMonitorSettingsActivity : AppCompatActivity() {
         ivSuccess.visibility = View.VISIBLE
 
         Glide.with(this)
-            .load(R.drawable.ic_success)
+            .load(R.drawable.gif_success)
             .into(ivSuccess)
 
         Handler(Looper.getMainLooper()).postDelayed({

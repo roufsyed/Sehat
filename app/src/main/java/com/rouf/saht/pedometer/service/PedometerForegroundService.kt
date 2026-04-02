@@ -55,6 +55,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
     private val pedometerData: PedometerData by lazy {
         PedometerData(
             steps = 0,
+            goal = 0,
             distanceMeters = 0.0,
             caloriesBurned = 0.0,
             startTime = System.currentTimeMillis(),
@@ -207,6 +208,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
     private suspend fun updatePedometerDataInDB(currentSteps: Int, caloriesBurned: Double) {
         // add distance, duration later
         pedometerData.steps = currentSteps
+        pedometerData.goal = settingRepository.getPedometerSettings()?.stepGoal ?: 0
         pedometerData.caloriesBurned = caloriesBurned
         pedometerData.endTime = System.currentTimeMillis()
         pedometerData.totalExerciseDuration = getTotalExerciseDuration()
@@ -220,13 +222,19 @@ class PedometerForegroundService : Service(), SensorEventListener {
 
     private suspend fun getDistanceInMeters(steps: Int): Double {
         val personalInformation = settingRepository.getPersonalInformation()
-        if (personalInformation?.height != null) {
-            Log.d(TAG, "getDistanceInMeters: personal data height: ${personalInformation.height}")
-            return steps * ((personalInformation.height.toDouble() * 0.41)/100)
+        val height = personalInformation?.height
+        if (!height.isNullOrBlank()) {
+            Log.d(TAG, "getDistanceInMeters: personal data height: $height")
+            val heightDouble = height.toDoubleOrNull()
+            if (heightDouble != null) {
+                return steps * ((heightDouble * 0.41) / 100)
+            } else {
+                Log.e(TAG, "getDistanceInMeters: invalid height format")
+            }
         } else {
             Log.d(TAG, "getDistanceInMeters: no height data")
-            return steps * defaultStepLength
         }
+        return steps * defaultStepLength
     }
 
     private fun loadData() {

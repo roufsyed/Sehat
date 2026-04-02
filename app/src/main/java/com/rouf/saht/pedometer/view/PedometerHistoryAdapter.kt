@@ -75,11 +75,11 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
         }
 
         private fun onItemClick(position: Int) {
-//            val context = itemView.context
-//            val intent = Intent(context, HeartRateDetailActivity::class.java)
-//            intent.putExtra("heartRateData", heartRateList[position])
-//            intent.putExtra("position", position.toString())
-//            context.startActivity(intent)
+            val context = itemView.context
+            val intent = Intent(context, PedometerDetailActivity::class.java)
+            intent.putExtra("pedometerData", pedometerList[position])
+            intent.putExtra("position", position.toString())
+            context.startActivity(intent)
         }
     }
 
