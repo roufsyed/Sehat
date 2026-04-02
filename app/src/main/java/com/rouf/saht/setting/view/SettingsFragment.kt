@@ -2,8 +2,8 @@ package com.rouf.saht.setting.view
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,13 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.rouf.saht.R
-import com.rouf.saht.common.helper.PaperDBHelper
+import com.rouf.saht.common.helper.BackupUtils
 import com.rouf.saht.databinding.FragmentSettingsBinding
 import com.rouf.saht.setting.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +32,36 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var settingsViewModel: SettingsViewModel
+
+    private val exportLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                val success = BackupUtils.exportData(requireContext(), uri)
+                Toast.makeText(
+                    requireContext(),
+                    if (success) "Data exported successfully" else "Export failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private val importLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                val success = BackupUtils.importData(requireContext(), uri)
+                Toast.makeText(
+                    requireContext(),
+                    if (success) "Data imported successfully" else "Import failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,23 +142,31 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        binding.llData.setOnClickListener{
-            Toast.makeText(requireContext(), "Backup", Toast.LENGTH_SHORT).show()
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                // Request permissions
-                requestStoragePermissions(requireActivity(), 1001)
-            } else {
-                // Permissions already granted, proceed with export
-                PaperDBHelper.exportData(requireContext())
-            }//            val intent = Intent(activity, HeartRateMonitorSettingsActivity::class.java)
-//            startActivity(intent)
+        binding.llData.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Data")
+                .setItems(arrayOf("Export data", "Import data")) { _, which ->
+                    if (which == 0) {
+                        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                            type = "application/json"
+                            putExtra(Intent.EXTRA_TITLE, "sehat_backup.json")
+                        }
+                        exportLauncher.launch(intent)
+                    } else {
+                        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                            type = "application/json"
+                        }
+                        importLauncher.launch(intent)
+                    }
+                }
+                .show()
         }
-
     }
 
     fun requestStoragePermissions(activity: Activity, requestCode: Int) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) { // Only needed for Android 9 (API 28) and below
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             ActivityCompat.requestPermissions(
                 activity,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),

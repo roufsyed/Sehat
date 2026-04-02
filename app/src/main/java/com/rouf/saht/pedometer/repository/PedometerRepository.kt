@@ -1,9 +1,6 @@
 package com.rouf.saht.pedometer.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.rouf.saht.common.model.HeartRateMonitorData
 import com.rouf.saht.common.model.PedometerData
 import io.paperdb.Paper
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +69,11 @@ class PedometerRepository @Inject constructor() {
 
     suspend fun savePedometerDataToList(): Unit = withContext(Dispatchers.IO) {
         val pedometerDataList: MutableList<PedometerData> = Paper.book().read("pedometer_data_list") ?: mutableListOf()
-        getPedometerDataFromDB()?.let { pedometerDataList.add(it) }
+        getPedometerDataFromDB()?.let { latestPedometerData ->
+            if (latestPedometerData.steps > 0) {
+                pedometerDataList.add(latestPedometerData)
+            }
+        }
         Paper.book().write("pedometer_data_list", pedometerDataList)
     }
 
@@ -81,7 +82,7 @@ class PedometerRepository @Inject constructor() {
     }
 
     suspend fun filterPedometerListByDateRange(fromDate: Long, toDate: Long): List<PedometerData>? {
-        val pedometerData: List<PedometerData>? = Paper.book().read<List<PedometerData>>("meditation_sessions", emptyList())
+        val pedometerData: List<PedometerData>? = Paper.book().read<List<PedometerData>>("pedometer_data_list", emptyList())
 
         pedometerData.let { pedometerData ->
             return pedometerData?.filter { data ->
@@ -92,9 +93,9 @@ class PedometerRepository @Inject constructor() {
 
     suspend fun deletePedometerDataByPosition(position: Int): Boolean = withContext(Dispatchers.IO) {
         try {
-            val PedometerDataList: MutableList<HeartRateMonitorData>? = Paper.book().read("pedometer_data_list")
-            Log.i(TAG, "deleteHeartRateMonitorDataByPosition: position -> $position")
-            Log.i(TAG, "deleteHeartRateMonitorDataByPosition: PedometerDataList -> $PedometerDataList")
+            val PedometerDataList: MutableList<PedometerData>? = Paper.book().read("pedometer_data_list")
+            Log.i(TAG, "deletePedometerDataDataByPosition: position -> $position")
+            Log.i(TAG, "deletePedometerDataDataByPosition: PedometerDataList -> $PedometerDataList")
 
             if (position < 0 || position >= (PedometerDataList?.size
                     ?: emptyList<PedometerData>().size)
@@ -106,10 +107,10 @@ class PedometerRepository @Inject constructor() {
 
             updatedList?.let { Paper.book().write("pedometer_data_list", it) }
 
-            Log.d(TAG, "deleteHeartRateMonitorDataByPosition: Successfully deleted entry at position $position")
+            Log.d(TAG, "deletePedometerDataDataByPosition: Successfully deleted entry at position $position")
             true
         } catch (e: Exception) {
-            Log.e(TAG, "deleteHeartRateMonitorDataByPosition: Error deleting heart rate monitor data", e)
+            Log.e(TAG, "deletePedometerDataDataByPosition: Error deleting heart rate monitor data", e)
             false
         }
     }

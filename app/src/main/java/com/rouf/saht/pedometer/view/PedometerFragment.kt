@@ -40,8 +40,8 @@ import kotlinx.coroutines.launch
 class PedometerFragment : Fragment() {
 
     private val TAG = PedometerFragment::class.java.simpleName
-    private lateinit var _binding: FragmentPedometerBinding
-    private val binding get() = _binding
+    private var _binding: FragmentPedometerBinding? = null
+    private val binding get() = _binding!!
 
     private val ACTIVITY_RECOGNITION_PERMISSION_CODE = 123
     private val REQUEST_NOTIFICATION_PERMISSION: Int = 1
@@ -140,6 +140,11 @@ class PedometerFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onDestroy() {
         stopForegroundService()
         super.onDestroy()
@@ -234,7 +239,7 @@ class PedometerFragment : Fragment() {
         val shapeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_circular) as GradientDrawable
         val strokeColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
         shapeDrawable.setStroke(8, strokeColor)
-        binding.tvStepsTaken.background = shapeDrawable
+        binding.containerPedometer.background = shapeDrawable
     }
 
     private fun initViewActiveState() {
@@ -248,7 +253,7 @@ class PedometerFragment : Fragment() {
         val shapeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_circular) as GradientDrawable
         val strokeColor = ContextCompat.getColor(requireContext(), R.color.green_500)
         shapeDrawable.setStroke(8, strokeColor)
-        binding.tvStepsTaken.background = shapeDrawable
+        binding.containerPedometer.background = shapeDrawable
     }
 
 
