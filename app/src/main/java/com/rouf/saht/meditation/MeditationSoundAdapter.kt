@@ -14,28 +14,40 @@ class MeditationSoundAdapter(
     private val onItemClick: (Sound) -> Unit
 ) : RecyclerView.Adapter<MeditationSoundAdapter.SoundViewHolder>() {
 
+    private var currentPlayingFile: String? = null
+
+    /**
+     * Updates the currently playing sound and refreshes only the affected items,
+     * avoiding a full notifyDataSetChanged.
+     */
+    fun updatePlayingSound(file: String?) {
+        val previousFile = currentPlayingFile
+        currentPlayingFile = file
+
+        previousFile?.let { old ->
+            soundList.indexOfFirst { it.file == old }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+        }
+        file?.let { new ->
+            soundList.indexOfFirst { it.file == new }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+        }
+    }
+
     inner class SoundViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemSoundBinding.bind(view)
-        private var isPlaying = false // Track play state
 
         fun bind(sound: Sound) {
             binding.tvSoundName.text = sound.name
             binding.rlSoundCard.setBackgroundColor(Color.parseColor(sound.backgroundColor))
 
-            // Set initial icon
+            val isPlaying = sound.file == currentPlayingFile
             binding.ivPlayPause.setImageResource(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play)
 
-            binding.root.setOnClickListener {
-                isPlaying = !isPlaying // Toggle state
-                binding.ivPlayPause.setImageResource(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play)
-                onItemClick(sound) // Pass the click event
-            }
+            binding.root.setOnClickListener { onItemClick(sound) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_sound, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent, false)
         return SoundViewHolder(view)
     }
 

@@ -1,6 +1,7 @@
 package com.rouf.saht.meditation
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
@@ -10,84 +11,131 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.rouf.saht.R
 
 class MeditationService : Service() {
-    private val TAG: String? = MeditationService::class.java.simpleName
+
+    private val TAG = MeditationService::class.java.simpleName
+
     private var exoPlayer: ExoPlayer? = null
-    private var isPlaying = false
-    private var defaultPlaybackDuration = 60000L // 1 min
     private var handler: Handler? = null
+    private var currentSoundName: String = ""
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(NOTIFICATION_ID, createNotification())
-        initializeExoPlayer()
-    }
-
-    private fun initializeExoPlayer() {
-        exoPlayer = ExoPlayer.Builder(this).build().apply {
-            val mediaItem = MediaItem.fromUri("asset:///rain.mp3")
-            setMediaItem(mediaItem)
-            prepare()
-        }
+        handler = Handler(Looper.getMainLooper())
+        startForeground(NOTIFICATION_ID, buildNotification(""))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_PLAY -> {
-                val duration = intent.getLongExtra("DURATION", defaultPlaybackDuration)
-                Log.d(TAG, "onStartCommand: Duration: $duration")
-                startPlayback(duration)
+                val soundFile = intent.getStringExtra(EXTRA_SOUND_FILE)
+                val soundName = intent.getStringExtra(EXTRA_SOUND_NAME)
+                val durationMs = intent.getLongExtra(EXTRA_DURATION_MS, DEFAULT_DURATION_MS)
+
+                if (soundFile.isNullOrBlank() || soundName.isNullOrBlank()) {
+                    Log.e(TAG, "Missing sound extras — aborting playback")
+                    stopSelf()
+                    return START_NOT_STICKY
+                }
+
+                startPlayback(soundFile, soundName, durationMs)
             }
-            ACTION_STOP -> stopSelf()
+            ACTION_STOP -> stopPlayback()
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
-    private fun startPlayback(duration: Long) {
-        if (!isPlaying) {
-            exoPlayer?.play()
-            isPlaying = true
-            startCountdown(duration)
+    private fun startPlayback(soundFile: String, soundName: String, durationMs: Long) {
+        handler?.removeCallbacksAndMessages(null)
+        releasePlayer()
+
+        currentSoundName = soundName
+
+        exoPlayer = ExoPlayer.Builder(this).build().apply {
+            setMediaItem(MediaItem.fromUri("asset:///$soundFile"))
+            repeatMode = Player.REPEAT_MODE_ONE
+            addListener(object : Player.Listener {
+                override fun onPlayerError(error: PlaybackException) {
+                    Log.e(TAG, "Playback error for '$soundFile': ${error.message}")
+                    stopPlayback()
+                }
+            })
+            prepare()
+            play()
         }
+
+        updateNotification(soundName)
+
+        handler?.postDelayed({ stopPlayback() }, durationMs)
+
+        Log.d(TAG, "Started playback: $soundName (${durationMs}ms)")
     }
 
-    private fun startCountdown(duration: Long) {
-        handler = Handler(Looper.getMainLooper())
-        handler?.postDelayed({
-            stopSelf()
-        }, duration)
+    private fun stopPlayback() {
+        releasePlayer()
+        handler?.removeCallbacksAndMessages(null)
+        broadcastPlaybackStopped()
+        stopSelf()
+    }
+
+    private fun releasePlayer() {
+        exoPlayer?.stop()
+        exoPlayer?.release()
+        exoPlayer = null
+    }
+
+    private fun broadcastPlaybackStopped() {
+        sendBroadcast(Intent(ACTION_PLAYBACK_STOPPED).also { it.setPackage(packageName) })
+    }
+
+    private fun updateNotification(soundName: String) {
+        val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(NOTIFICATION_ID, buildNotification(soundName))
+    }
+
+    private fun buildNotification(soundName: String): Notification {
+        val stopPendingIntent = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, MeditationService::class.java).setAction(ACTION_STOP),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val contentText = if (soundName.isNotEmpty()) "Playing: $soundName" else "Preparing…"
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Meditation in Progress")
+            .setContentText(contentText)
+            .setSmallIcon(R.drawable.ic_play)
+            .setOngoing(true)
+            .addAction(R.drawable.ic_pause, "Stop", stopPendingIntent)
+            .build()
     }
 
     override fun onDestroy() {
-        exoPlayer?.release()
-        exoPlayer = null
+        releasePlayer()
         handler?.removeCallbacksAndMessages(null)
+        handler = null
         super.onDestroy()
-    }
-
-    private fun createNotification(): Notification {
-        val stopIntent = PendingIntent.getService(
-            this, 0, Intent(this, MeditationService::class.java).setAction(ACTION_STOP),
-            PendingIntent.FLAG_IMMUTABLE
-        )
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Meditation in Progress")
-            .setContentText("Playing meditation audio")
-            .setSmallIcon(R.drawable.ic_play)
-            .setOngoing(true)
-            .addAction(R.drawable.ic_play, "Stop", stopIntent)
-            .build()
     }
 
     companion object {
         const val CHANNEL_ID = "meditation_channel"
-        const val NOTIFICATION_ID = 1
-        const val ACTION_PLAY = "PLAY"
-        const val ACTION_STOP = "STOP"
+        const val NOTIFICATION_ID = 2
+
+        const val ACTION_PLAY = "com.rouf.saht.meditation.ACTION_PLAY"
+        const val ACTION_STOP = "com.rouf.saht.meditation.ACTION_STOP"
+        const val ACTION_PLAYBACK_STOPPED = "com.rouf.saht.meditation.ACTION_PLAYBACK_STOPPED"
+
+        const val EXTRA_SOUND_FILE = "extra_sound_file"
+        const val EXTRA_SOUND_NAME = "extra_sound_name"
+        const val EXTRA_DURATION_MS = "extra_duration_ms"
+
+        private const val DEFAULT_DURATION_MS = 15 * 60 * 1000L
     }
 }
