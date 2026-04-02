@@ -69,3 +69,9 @@ Thumbs.db
 # OS Files
 *.swp
 *.swo
+
+# Eclipse / Buildship
+.project
+.classpath
+.settings/
+*.launch
