@@ -147,6 +147,10 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        binding.llPrivacyPolicy.setOnClickListener {
+            startActivity(Intent(activity, PrivacyPolicyActivity::class.java))
+        }
+
         binding.llData.setOnClickListener {
             val items = arrayOf(
                 "Export data",

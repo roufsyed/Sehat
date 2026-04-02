@@ -98,11 +98,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.databinding.common)
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.activity)
-    implementation(libs.androidx.material3.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -134,10 +130,6 @@ dependencies {
     // Heart rate
     implementation(files("libs/heartrateometer-release.aar"))
 
-    // Networking (keep for future use)
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
-
     // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
@@ -146,5 +138,4 @@ dependencies {
 
     // ExoPlayer / Media3
     implementation("androidx.media3:media3-exoplayer:1.5.1")
-    implementation("androidx.media3:media3-ui:1.5.1")
 }

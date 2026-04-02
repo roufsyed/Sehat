@@ -72,6 +72,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".setting.view.PrivacyPolicyActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".common.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"

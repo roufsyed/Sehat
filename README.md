@@ -1,5 +1,8 @@
 # Sehat — Personal Health Tracker
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-blue.svg)](PRIVACY.md)
+
 Sehat (سیہت, meaning *health* in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation — all without ever leaving your device.
 
 ## Why it exists
@@ -16,15 +19,18 @@ Most health apps send your data to the cloud, sell it to advertisers, or require
 
 ## Privacy first
 
-**Your data never leaves your device.**
+**Your health data stays on your device.**
 
-- No internet permission is requested — the app cannot make network calls
 - All data is stored locally using an embedded on-device database ([PaperDB](https://github.com/pilgr/Paper))
-- No analytics, no crash reporting, no ad SDKs
+- No accounts. No login. No cloud sync.
 - Camera is used only to measure heart rate — no frames are recorded or stored
 - Step and heart rate data is stored only in your device's internal storage
+- No ad SDKs, no analytics, no crash reporting
+- No `INTERNET` permission — the app is technically incapable of making network calls
 
-The only time data moves is when *you* explicitly export it via the in-app backup feature, which saves a JSON file to a location you choose on your own device.
+The only time health data moves is when *you* explicitly export it via the in-app backup feature, which saves a JSON file to a location you choose on your own device.
+
+See [PRIVACY.md](PRIVACY.md) for the full privacy policy.
 
 ## Features
 
@@ -116,3 +122,13 @@ Copy `local.properties.example` to `local.properties` and fill in your keystore 
 | General | Full dark mode support |
 | General | App lock / PIN to protect health data |
 | General | Localization (Urdu, Arabic, and other languages) |
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Privacy
+
+See [PRIVACY.md](PRIVACY.md).

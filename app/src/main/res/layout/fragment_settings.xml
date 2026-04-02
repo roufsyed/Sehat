@@ -255,6 +255,47 @@
             android:background="@color/dark_grey"/>
 
         <LinearLayout
+            android:id="@+id/ll_privacy_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_person_24"
+                android:contentDescription="Privacy policy"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Privacy Policy"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How your data is handled"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="16dp"
+            android:background="@color/dark_grey"/>
+
+        <LinearLayout
             android:id="@+id/ll_dark_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -268,7 +309,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_dark_mode"
-                tools:ignore="ContentDescription"/>
+                android:contentDescription="Dark mode toggle"/>
 
             <LinearLayout
                 android:layout_width="0dp"
