@@ -13,9 +13,10 @@
         <item name="colorSecondary">@color/red_500</item>
         <item name="colorSecondaryVariant">@color/red_700</item>
 
-        <!-- Status bar color (Green Variant). -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+        <!-- Hardcoded so DynamicColors cannot override the status/nav bar -->
+        <item name="android:statusBarColor">@color/green_700</item>
+        <item name="android:navigationBarColor">@color/green_700</item>
+        <item name="android:windowLightStatusBar">false</item>
 
         <!-- Customize any additional theme properties below. -->
     </style>
