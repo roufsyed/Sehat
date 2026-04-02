@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -58,8 +59,15 @@ class MeditationService : Service() {
 
         currentSoundName = soundName
 
+        // Asset files use asset:/// scheme; custom sounds from device use their content:// URI directly
+        val mediaUri = if (soundFile.startsWith("content://")) {
+            Uri.parse(soundFile)
+        } else {
+            Uri.parse("asset:///$soundFile")
+        }
+
         exoPlayer = ExoPlayer.Builder(this).build().apply {
-            setMediaItem(MediaItem.fromUri("asset:///$soundFile"))
+            setMediaItem(MediaItem.fromUri(mediaUri))
             repeatMode = Player.REPEAT_MODE_ONE
             addListener(object : Player.Listener {
                 override fun onPlayerError(error: PlaybackException) {

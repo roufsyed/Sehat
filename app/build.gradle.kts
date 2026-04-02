@@ -1,9 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+}
+
+// Read signing credentials from local.properties (never hardcode paths or passwords)
+val localProps = Properties().also { props ->
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use(props::load)
 }
 
 android {
@@ -20,15 +28,53 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val kFile     = localProps.getProperty("KEYSTORE_FILE")
+            val kPass     = localProps.getProperty("KEYSTORE_PASSWORD")
+            val kAlias    = localProps.getProperty("KEY_ALIAS")
+            val kKeyPass  = localProps.getProperty("KEY_PASSWORD")
+            if (!kFile.isNullOrBlank() && !kPass.isNullOrBlank()
+                && !kAlias.isNullOrBlank() && !kKeyPass.isNullOrBlank()
+            ) {
+                storeFile     = file(kFile)
+                storePassword = kPass
+                keyAlias      = kAlias
+                keyPassword   = kKeyPass
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled   = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            val releaseSigningConfig = signingConfigs.getByName("release")
+            if (releaseSigningConfig.storeFile != null) {
+                signingConfig = releaseSigningConfig
+            }
+        }
+        debug {
+            isMinifyEnabled   = false
+            isShrinkResources = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix   = "-debug"
         }
     }
+
+    // Output filename: Sehat_<versionName>_<buildType>.apk
+    applicationVariants.all {
+        val variant = this
+        outputs.all {
+            val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output?.outputFileName = "Sehat_${variant.versionName}_${variant.buildType.name}.apk"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,14 +85,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
     hilt {
         enableAggregatingTask = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -60,37 +104,27 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.material3.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Hilt Dependencies
-    implementation(libs.hilt.android)
-    implementation(libs.paperdb)
-
-
-    // Hilt dependencies
+    // Hilt — single source of truth for version
     implementation("com.google.dagger:hilt-android:2.53.1")
     kapt("com.google.dagger:hilt-compiler:2.53.1")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
-
-    // Kotlin Coroutines
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
-
+    // CameraX
     val cameraxVersion = "1.3.1"
-    dependencies {
-        implementation("androidx.camera:camera-core:$cameraxVersion")
-        implementation("androidx.camera:camera-camera2:$cameraxVersion")
-        implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
-        implementation("androidx.camera:camera-view:$cameraxVersion")
-    }
-
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
 
     // Database
     implementation("io.github.pilgr:paperdb:2.7.2")
@@ -101,18 +135,17 @@ dependencies {
     // Heart rate
     implementation(files("libs/heartrateometer-release.aar"))
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit version
+    // Networking (keep for future use)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
 
-
-    // Graphs
+    // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Gson
     implementation("com.google.code.gson:gson:2.12.1")
 
-    // Exoplayer
+    // ExoPlayer / Media3
     implementation("androidx.media3:media3-exoplayer:1.5.1")
     implementation("androidx.media3:media3-ui:1.5.1")
 }
-

@@ -2,20 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Sensor -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <!-- Camera (heart rate monitor) -->
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Notifications for foreground services -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Foreground services -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- For taking backup of user progress -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"
-        tools:ignore="ScopedStorage" /> <!-- For Meditation sound playback and exporting backup feature -->
+
+    <!-- Custom meditation sounds picked via Storage Access Framework (API 33+) -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <uses-feature
@@ -29,7 +30,6 @@
         android:name=".common.di.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -37,6 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Saht"
         tools:targetApi="31">
+
         <activity
             android:name=".pedometer.view.PedometerDetailActivity"
             android:windowSoftInputMode="adjustResize"
@@ -78,19 +79,20 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- exported=false: only this app should start the pedometer service -->
         <service
             android:name=".pedometer.service.PedometerForegroundService"
-            android:exported="true"
+            android:exported="false"
             android:foregroundServiceType="dataSync" />
         <service
             android:name=".meditation.MeditationService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
+
     </application>
 
 </manifest>
