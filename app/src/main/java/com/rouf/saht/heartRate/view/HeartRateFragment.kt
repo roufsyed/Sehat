@@ -233,28 +233,27 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun startHeartRateMonitoringTimer() {
-        if (isTimerStarted) {
-            return
-        }
+        if (isTimerStarted) return
 
         isTimerStarted = true
         binding.progressBpm.max = heartRateMonitorSettings.duration - 1
+        binding.progressBpm.progress = 0
+        binding.progressBpm.isVisible = true   // show immediately, not after first tick
         val durationInMilliseconds = heartRateMonitorSettings.duration * 1000L
         var i = 0
 
         heartRateTimer = object : CountDownTimer(durationInMilliseconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 Log.d(TAG, "Time remaining: ${millisUntilFinished / 1000} seconds")
-                binding.progressBpm.isVisible = isTimerStarted
-
                 if (i <= heartRateMonitorSettings.duration) {
                     binding.progressBpm.progress = i
                     i++
                 }
-
             }
 
             override fun onFinish() {
+                // Reset timer state FIRST so a second measurement can start cleanly
+                stopHeartRateMonitoringTimer()
                 stopHeartRateMonitoring()
                 initViewInActiveState()
                 stopCircularProgress()
