@@ -297,7 +297,6 @@ class PedometerFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.pedometerSettings.observe(viewLifecycleOwner) { settings ->
                     binding.tvGoalSteps.text = "/ ${Util.formatWithCommas(settings.stepGoal)} steps"
-                    binding.progressRing.max = settings.stepGoal
                 }
             }
         }
@@ -305,7 +304,6 @@ class PedometerFragment : Fragment() {
 
     private fun updateStepCount(stepCount: Int) {
         binding.tvStepsTaken.text = stepCount.toString()
-        binding.progressRing.progress = stepCount.coerceAtMost(binding.progressRing.max)
     }
 
     private fun updateCalorieCount(caloriesBurnt: Double) {
