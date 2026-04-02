@@ -114,12 +114,12 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
     // CameraX
-    val cameraxVersion = "1.3.1"
+    val cameraxVersion = "1.4.1"
     implementation("androidx.camera:camera-core:$cameraxVersion")
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
@@ -129,14 +129,14 @@ dependencies {
     implementation("io.github.pilgr:paperdb:2.7.2")
 
     // Images
-    implementation("com.github.bumptech.glide:glide:4.13.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Heart rate
     implementation(files("libs/heartrateometer-release.aar"))
 
     // Networking (keep for future use)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
 
     // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
