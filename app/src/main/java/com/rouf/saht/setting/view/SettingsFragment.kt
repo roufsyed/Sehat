@@ -1,7 +1,5 @@
 package com.rouf.saht.setting.view
 
-import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
@@ -13,15 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.BackupUtils
+import com.rouf.saht.common.helper.DebugDataSeeder
 import com.rouf.saht.databinding.FragmentSettingsBinding
 import com.rouf.saht.setting.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.paperdb.Paper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -76,6 +77,9 @@ class SettingsFragment : Fragment() {
         lifecycleScope.launch {
             settingsViewModel.getPersonalInformation()
         }
+
+        val isDarkMode = Paper.book().read(PREF_DARK_MODE, false) ?: false
+        binding.switchDarkMode.isChecked = isDarkMode
 
         observer()
         onClick()
@@ -143,36 +147,58 @@ class SettingsFragment : Fragment() {
         }
 
         binding.llData.setOnClickListener {
+            val items = arrayOf(
+                "Export data",
+                "Import data",
+                "Seed demo heart rate data",
+                "Seed demo pedometer data"
+            )
             AlertDialog.Builder(requireContext())
                 .setTitle("Data")
-                .setItems(arrayOf("Export data", "Import data")) { _, which ->
-                    if (which == 0) {
-                        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                            addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "application/json"
-                            putExtra(Intent.EXTRA_TITLE, "sehat_backup.json")
+                .setItems(items) { _, which ->
+                    when (which) {
+                        0 -> {
+                            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = "application/json"
+                                putExtra(Intent.EXTRA_TITLE, "sehat_backup.json")
+                            }
+                            exportLauncher.launch(intent)
                         }
-                        exportLauncher.launch(intent)
-                    } else {
-                        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                            addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "application/json"
+                        1 -> {
+                            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = "application/json"
+                            }
+                            importLauncher.launch(intent)
                         }
-                        importLauncher.launch(intent)
+                        2 -> {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                DebugDataSeeder.seedHeartRateData()
+                            }
+                            Toast.makeText(requireContext(), "Demo heart rate data added", Toast.LENGTH_SHORT).show()
+                        }
+                        3 -> {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                DebugDataSeeder.seedPedometerData()
+                            }
+                            Toast.makeText(requireContext(), "Demo pedometer data added", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 .show()
         }
+
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            Paper.book().write(PREF_DARK_MODE, isChecked)
+            val mode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                       else AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(mode)
+        }
     }
 
-    fun requestStoragePermissions(activity: Activity, requestCode: Int) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
-                requestCode
-            )
-        }
+    companion object {
+        const val PREF_DARK_MODE = "pref_dark_mode"
     }
 
     override fun onDestroyView() {

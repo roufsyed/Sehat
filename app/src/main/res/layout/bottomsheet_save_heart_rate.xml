@@ -106,7 +106,7 @@
         android:minWidth="120dp"
         android:minHeight="50dp"
         android:background="@drawable/bg_button_cornered_solid_red"
-        app:backgroundTint="@color/red_500"
+        app:backgroundTint="@color/green_500"
         android:text="@string/cancel"
         app:layout_constraintTop_toBottomOf="@id/chipGroupDuration"
         app:layout_constraintStart_toStartOf="parent"

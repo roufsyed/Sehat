@@ -10,6 +10,8 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -63,8 +65,22 @@ class HeartRateFragment : Fragment() {
     private var heartRateTimer: CountDownTimer? = null
     private var isTimerStarted = false
 
+    private val noFingerHandler = Handler(Looper.getMainLooper())
+    private val noFingerRunnable = Runnable {
+        if (isTimerStarted) {
+            Log.d(TAG, "No finger detected for 5 seconds — ending measurement")
+            stopHeartRateMonitoringTimer()
+            stopHeartRateMonitoring()
+            initViewInActiveState()
+            stopCircularProgress()
+            setPartialHeartRateData()
+            showSaveBPMRecordDialog(requireContext(), heartRateMonitorData)
+        }
+    }
+
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 123
+        private const val NO_FINGER_TIMEOUT_MS = 5_000L
     }
 
     override fun onCreateView(
@@ -184,7 +200,6 @@ class HeartRateFragment : Fragment() {
     private fun initViewInActiveState() {
         binding.btnMeasure.text = getString(R.string.start_monitoring)
         binding.preview.isVisible = false
-        binding.tvFingerDetect.isVisible = false
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
         binding.btnMeasure.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_500)
     }
@@ -192,7 +207,6 @@ class HeartRateFragment : Fragment() {
     private fun initViewActiveState() {
         binding.btnMeasure.text = getString(R.string.stop_monitoring)
         binding.preview.isVisible = true
-        binding.tvFingerDetect.isVisible = true
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
         binding.btnMeasure.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_500)
     }
@@ -226,9 +240,10 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun stopHeartRateMonitoringTimer() {
-        heartRateTimer?.cancel() // Cancel the timer if it is running
+        heartRateTimer?.cancel()
         heartRateTimer = null
         isTimerStarted = false
+        noFingerHandler.removeCallbacks(noFingerRunnable)
         Log.d(TAG, "Timer stopped.")
     }
 
@@ -322,11 +337,13 @@ class HeartRateFragment : Fragment() {
 
 
     private fun onFingerChange(fingerDetected: Boolean) {
-        // Only update the label — do NOT touch the timer here.
-        // The library fires false "no finger" events intermittently even with a finger
-        // correctly placed; stopping the timer on every such event causes it to keep
-        // restarting from full duration whenever the next valid BPM arrives.
-        binding.tvFingerDetect.text = if (fingerDetected) "Finger Detected" else "No Finger"
+        if (fingerDetected) {
+            noFingerHandler.removeCallbacks(noFingerRunnable)
+        } else if (isTimerStarted) {
+            // Schedule auto-end only if a measurement is in progress and a handler isn't already pending
+            noFingerHandler.removeCallbacks(noFingerRunnable)
+            noFingerHandler.postDelayed(noFingerRunnable, NO_FINGER_TIMEOUT_MS)
+        }
     }
 
     override fun onResume() {
