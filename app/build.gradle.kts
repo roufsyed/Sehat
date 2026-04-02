@@ -138,4 +138,7 @@ dependencies {
 
     // ExoPlayer / Media3
     implementation("androidx.media3:media3-exoplayer:1.5.1")
+
+    // ViewPager2 (onboarding)
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 }

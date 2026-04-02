@@ -39,6 +39,11 @@
 >
 
         <activity
+            android:name=".onboarding.OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".pedometer.view.PedometerDetailActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
