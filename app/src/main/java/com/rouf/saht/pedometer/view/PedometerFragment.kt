@@ -145,11 +145,6 @@ class PedometerFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDestroy() {
-        stopForegroundService()
-        super.onDestroy()
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClick() {
         binding.btnStartStop.setOnClickListener {

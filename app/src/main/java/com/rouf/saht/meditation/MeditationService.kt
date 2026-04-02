@@ -58,6 +58,7 @@ class MeditationService : Service() {
         releasePlayer()
 
         currentSoundName = soundName
+        currentSoundFile = soundFile
 
         // Asset files use asset:/// scheme; custom sounds from device use their content:// URI directly
         val mediaUri = if (soundFile.startsWith("content://")) {
@@ -87,6 +88,7 @@ class MeditationService : Service() {
     }
 
     private fun stopPlayback() {
+        currentSoundFile = null
         releasePlayer()
         handler?.removeCallbacksAndMessages(null)
         broadcastPlaybackStopped()
@@ -145,5 +147,9 @@ class MeditationService : Service() {
         const val EXTRA_DURATION_MS = "extra_duration_ms"
 
         private const val DEFAULT_DURATION_MS = 15 * 60 * 1000L
+
+        /** Non-null while a sound is playing; null when stopped. */
+        var currentSoundFile: String? = null
+            private set
     }
 }

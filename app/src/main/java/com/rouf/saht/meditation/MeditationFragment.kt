@@ -114,17 +114,18 @@ class MeditationFragment : Fragment() {
             IntentFilter(MeditationService.ACTION_PLAYBACK_STOPPED),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+        // Restore playing state if the service is still running (e.g. user navigated away and back)
+        val playing = MeditationService.currentSoundFile
+        if (playing != null && currentPlayingFile != playing) {
+            currentPlayingFile = playing
+            adapter.updatePlayingSound(playing)
+        }
     }
 
     override fun onStop() {
         super.onStop()
         requireContext().unregisterReceiver(playbackStoppedReceiver)
-        // Stop service when navigating away so sound doesn't continue silently
-        if (currentPlayingFile != null) {
-            sendStopIntent()
-            currentPlayingFile = null
-            adapter.updatePlayingSound(null)
-        }
+        // Service keeps running in the background — do NOT stop it here.
     }
 
     override fun onDestroyView() {
