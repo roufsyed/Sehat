@@ -242,7 +242,7 @@ class MeditationFragment : Fragment() {
     }
 
     private fun loadCustomSounds(): List<Sound> =
-        Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, emptyList<Sound>())
+        Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, emptyList<Sound>()) ?: emptyList()
 
     private fun allSounds(): List<Sound> = builtInSounds + loadCustomSounds()
 
