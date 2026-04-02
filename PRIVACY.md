@@ -61,12 +61,6 @@ To delete all health data stored by Sehat, uninstall the app. Android will remov
 
 ---
 
-## Children
-
-Sehat is not directed at children under 13. If you are under 13, please do not use this app.
-
----
-
 ## Changes to this policy
 
 If this policy changes materially, the updated version will be published in this repository with a new "Last updated" date.

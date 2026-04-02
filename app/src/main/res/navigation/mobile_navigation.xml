@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_pedometer">
+    app:startDestination="@+id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.rouf.saht.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_pedometer"
@@ -22,7 +28,6 @@
         android:name="com.rouf.saht.meditation.MeditationFragment"
         android:label="@string/title_meditation"
         tools:layout="@layout/fragment_meditation" />
-
 
     <fragment
         android:id="@+id/navigation_settings"

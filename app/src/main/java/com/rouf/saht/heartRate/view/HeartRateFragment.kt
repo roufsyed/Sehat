@@ -1,7 +1,9 @@
 package com.rouf.saht.heartRate.view
 
 import android.Manifest
-import android.app.AlertDialog
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -64,6 +66,7 @@ class HeartRateFragment : Fragment() {
 
     private var heartRateTimer: CountDownTimer? = null
     private var isTimerStarted = false
+    private var pulseAnimator: ObjectAnimator? = null
 
     private val noFingerHandler = Handler(Looper.getMainLooper())
     private val noFingerRunnable = Runnable {
@@ -158,7 +161,7 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun showPermissionsDeniedDialog() {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Permissions Required")
             .setMessage("Camera permissions are required to measure heart rate.")
             .setPositiveButton("Settings") { _, _ ->
@@ -211,9 +214,28 @@ class HeartRateFragment : Fragment() {
         binding.btnMeasure.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_500)
     }
 
+    private fun startPulseAnimation() {
+        pulseAnimator?.cancel()
+        val scaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.06f, 1f)
+        val scaleY = PropertyValuesHolder.ofFloat("scaleY", 1f, 1.06f, 1f)
+        pulseAnimator = ObjectAnimator.ofPropertyValuesHolder(binding.tvHeartRate, scaleX, scaleY).apply {
+            duration = 600
+            repeatCount = ObjectAnimator.INFINITE
+            start()
+        }
+    }
+
+    private fun stopPulseAnimation() {
+        pulseAnimator?.cancel()
+        pulseAnimator = null
+        binding.tvHeartRate.scaleX = 1f
+        binding.tvHeartRate.scaleY = 1f
+    }
+
     private fun startHeartRateMonitoring() {
         lineChart = binding.lineChart
         subscription = CompositeDisposable()
+        startPulseAnimation()
 
         Log.d(TAG, "startHeartRateMonitoring started with sensitivity: ${heartRateMonitorSettings.sensitivityLevel}")
 
@@ -289,6 +311,7 @@ class HeartRateFragment : Fragment() {
     private fun stopHeartRateMonitoring() {
         subscription?.dispose()
         subscription = null
+        stopPulseAnimation()
         binding.btnMeasure.text = getString(R.string.start_monitoring)
     }
 

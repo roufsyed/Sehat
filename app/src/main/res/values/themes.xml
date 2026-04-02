@@ -25,10 +25,9 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="DialogThemeSize" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="DialogThemeSize" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
-        <item name="android:windowBackground">@color/dialog_background_light</item>
     </style>
 
     <style name="DialogAnimation">

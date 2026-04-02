@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".dashboard.DashboardFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
+
+        <!-- Today's steps card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Steps"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/dashboardProgressRing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:progress="0"
+                        app:indicatorColor="@color/green_500"
+                        app:trackColor="@color/light_grey"
+                        app:trackThickness="10dp"
+                        app:indicatorSize="140dp" />
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvDashboardSteps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tvDashboardGoal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/ 10,000"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="@color/dark_grey" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Heart rate & BMI row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <!-- Last heart rate card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last Heart Rate"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvDashboardHeartRate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-- BPM"
+                        android:textSize="22sp"
+                        android:textColor="@color/red_500"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDashboardHrActivity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="11sp"
+                        android:textColor="@color/dark_grey" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- BMI card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BMI"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvDashboardBmi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDashboardBmiCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="11sp"
+                        android:textColor="@color/dark_grey" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Weekly steps bar chart card (Item 7) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weekly Steps"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartWeekly"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

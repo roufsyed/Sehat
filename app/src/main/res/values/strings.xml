@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Sehat</string>
+    <string name="title_dashboard">Home</string>
     <string name="title_pedometer">Pedometer</string>
     <string name="title_heart_rate">Heart Rate</string>
     <string name="title_women_health">Women Health</string>

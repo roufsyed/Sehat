@@ -2,6 +2,7 @@ package com.rouf.saht.common.di
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.color.DynamicColors
 import com.rouf.saht.setting.view.SettingsFragment
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
@@ -17,5 +18,7 @@ class MyApplication : Application() {
             if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
         )
+
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }

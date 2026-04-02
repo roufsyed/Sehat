@@ -1,7 +1,7 @@
 package com.rouf.saht.meditation
 
 import android.app.Activity
-import android.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -203,7 +203,7 @@ class MeditationFragment : Fragment() {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
             setPadding(48, 32, 48, 16)
         }
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Name this sound")
             .setView(input)
             .setPositiveButton("Add") { _, _ ->
@@ -223,7 +223,7 @@ class MeditationFragment : Fragment() {
     }
 
     private fun showDeleteConfirmation(sound: Sound) {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Delete '${sound.name}'?")
             .setMessage("This sound will be removed from your meditation sounds.")
             .setPositiveButton("Delete") { _, _ -> deleteCustomSound(sound) }

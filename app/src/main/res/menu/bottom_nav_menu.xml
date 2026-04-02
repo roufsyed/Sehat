@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_dashboard" />
+
+    <item
         android:id="@+id/navigation_pedometer"
         android:icon="@drawable/ic_walking"
         android:title="@string/title_pedometer" />

@@ -127,8 +127,9 @@ dependencies {
     // Images
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // Heart rate
+    // Heart rate — RxJava2 required by HeartRateOmeter AAR
     implementation(files("libs/heartrateometer-release.aar"))
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
     // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")

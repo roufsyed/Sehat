@@ -7,24 +7,28 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context=".setting.view.SettingsFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- Gradient header (Item 5) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:background="@color/green_500">
+            android:paddingVertical="24dp"
+            android:background="@drawable/bg_settings_header">
+
             <ImageView
                 android:id="@+id/iv_profileImage"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_person_man"/>
+                android:src="@drawable/ic_person_man"
+                android:contentDescription="Profile image" />
 
             <TextView
                 android:id="@+id/tv_user"
@@ -33,314 +37,352 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_profileImage"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="Rouf"
-                android:textSize="32sp"
-                />
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Settings rows in MaterialCardView (Item 3) -->
         <LinearLayout
-            android:id="@+id/ll_personal_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+            android:paddingTop="16dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_person_man"/>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_personal_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/personal_information_title"
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_personal_information"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/personal_information"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/personal_information_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/to_calculate_bmi_and_calories_burnt"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_person_man"
+                        android:contentDescription="Personal information" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/personal_information_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/personal_information"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
 
-        <LinearLayout
-            android:id="@+id/ll_pedometer_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/personal_information_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/to_calculate_bmi_and_calories_burnt"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_walking"/>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_pedometer_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/pedometer_settings_title"
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_pedometer_settings"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pedometer_settings"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/pedometer_settings_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/step_goals_sensitivity_step_length"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_walking"
+                        android:contentDescription="Pedometer settings" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/pedometer_settings_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pedometer_settings"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
 
-        <LinearLayout
-            android:id="@+id/ll_hrm_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/pedometer_settings_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/step_goals_sensitivity_step_length"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_heart"/>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_hrm_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/heart_rate_settings_title"
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_hrm_settings"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/heart_rate_monitor_settings"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/heart_rate_settings_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/measurement_duration"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_heart"
+                        android:contentDescription="Heart rate settings" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/heart_rate_settings_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/heart_rate_monitor_settings"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/heart_rate_settings_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/measurement_duration"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_bell"/>
-
-            <LinearLayout
-                android:id="@+id/ll_notification"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/stride_length_title"
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/notifications"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/stride_length_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/control_what_gets_notified_to_you"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bell"
+                        android:contentDescription="Notifications" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <LinearLayout
+                        android:id="@+id/ll_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/stride_length_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notifications"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
 
-        <LinearLayout
-            android:id="@+id/ll_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/stride_length_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/control_what_gets_notified_to_you"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_data"/>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/hr_measurement_title"
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_data"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/data"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/hr_measurement_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/import_export"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_data"
+                        android:contentDescription="Data management" />
 
-        <LinearLayout
-            android:id="@+id/ll_privacy_policy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/hr_measurement_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/data"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_person_24"
-                android:contentDescription="Privacy policy"/>
+                        <TextView
+                            android:id="@+id/hr_measurement_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/import_export"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_privacy_policy"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Privacy Policy"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="How your data is handled"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </LinearLayout>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_person_24"
+                        android:contentDescription="Privacy policy" />
 
-        <LinearLayout
-            android:id="@+id/ll_dark_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Privacy Policy"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="How your data is handled"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_dark_mode"
-                android:contentDescription="Dark mode toggle"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_dark_mode"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dark Mode"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Switch between light and dark theme"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
+                android:layout_marginBottom="16dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="12dp">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switch_dark_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:id="@+id/ll_dark_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_dark_mode"
+                        android:contentDescription="Dark mode toggle" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dark Mode"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Switch between light and dark theme"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_dark_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="16dp"
-            android:background="@color/dark_grey"/>
     </LinearLayout>
 </ScrollView>

@@ -1,7 +1,7 @@
 package com.rouf.saht.setting.view
 
 import android.app.Activity
-import android.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -158,7 +158,7 @@ class SettingsFragment : Fragment() {
                 "Seed demo heart rate data",
                 "Seed demo pedometer data"
             )
-            AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Data")
                 .setItems(items) { _, which ->
                     when (which) {
