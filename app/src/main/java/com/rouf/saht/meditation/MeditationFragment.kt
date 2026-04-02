@@ -26,6 +26,7 @@ import com.rouf.saht.common.model.MeditationQuotes
 import com.rouf.saht.common.model.Sound
 import com.rouf.saht.databinding.FragmentMeditationBinding
 import io.paperdb.Paper
+import kotlin.collections.emptyList
 
 class MeditationFragment : Fragment() {
 
@@ -241,7 +242,7 @@ class MeditationFragment : Fragment() {
     }
 
     private fun loadCustomSounds(): List<Sound> =
-        Paper.book().read(KEY_CUSTOM_SOUNDS, emptyList())
+        Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, emptyList<Sound>())
 
     private fun allSounds(): List<Sound> = builtInSounds + loadCustomSounds()
 
