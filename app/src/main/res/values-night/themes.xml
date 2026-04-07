@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme with green and red colors. -->
-    <style name="Theme.Saht" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Saht" parent="Theme.Material3.DayNight.NoActionBar">
         <!--Text Color-->
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/light_grey</item>
@@ -8,21 +8,35 @@
         <!-- Primary brand color (Green). -->
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorPrimaryContainer">@color/on_green_container</item>
+        <item name="colorOnPrimaryContainer">@color/green_container</item>
 
         <!-- Secondary brand color (Red). -->
         <item name="colorSecondary">@color/red_500</item>
         <item name="colorSecondaryVariant">@color/red_700</item>
+        <item name="colorSecondaryContainer">@color/on_red_container</item>
+        <item name="colorOnSecondaryContainer">@color/red_container</item>
+
+        <!-- Tertiary -->
+        <item name="colorTertiary">@color/green_500</item>
+        <item name="colorTertiaryContainer">@color/on_green_container</item>
+        <item name="colorOnTertiaryContainer">@color/green_container</item>
 
         <!-- Dark mode: deep background so cards (colorSurface) stand out -->
         <item name="android:colorBackground">@color/background_dark</item>
         <item name="colorSurface">@color/surface_dark</item>
         <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurfaceVariant">@color/surface_variant_dark</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant_dark</item>
+
+        <!-- Outlines -->
+        <item name="colorOutline">@color/outline_dark</item>
+        <item name="colorOutlineVariant">@color/outline_variant_dark</item>
 
         <!-- Hardcoded so DynamicColors cannot override the status/nav bar -->
         <item name="android:statusBarColor">@color/green_700</item>
         <item name="android:navigationBarColor">@color/green_700</item>
         <item name="android:windowLightStatusBar">false</item>
-
     </style>
 
     <!-- Custom: user-defined colors, overridden programmatically -->
@@ -33,10 +47,8 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
-
 </resources>

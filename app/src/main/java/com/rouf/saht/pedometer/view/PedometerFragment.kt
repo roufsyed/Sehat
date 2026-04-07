@@ -96,6 +96,14 @@ class PedometerFragment : Fragment() {
             initViewInActiveState()
         }
 
+        // Apply theme color to reset button border
+        val resetBg = binding.btnReset.background
+        if (resetBg is GradientDrawable) {
+            resetBg.setStroke(
+                (2 * resources.displayMetrics.density).toInt(),
+                BaseActivity.effectivePrimary(requireContext())
+            )
+        }
     }
 
     private fun setBMI(personalInformation: PersonalInformation) {

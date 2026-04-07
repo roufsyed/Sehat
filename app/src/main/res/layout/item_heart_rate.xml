@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:layout_marginVertical="4dp"
     android:layout_marginHorizontal="16dp"
-    android:background="@drawable/bg_button_hollow_green_border"
+    android:background="@drawable/bg_button_hollow_primary_border"
     android:padding="16dp"
     android:gravity="center_vertical">
 
@@ -30,7 +30,7 @@
         android:layout_marginStart="16dp"
         android:text="Timestamp"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 
     <TextView
         android:id="@+id/tvActivityPerformed"
@@ -43,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:text="Activity"
         android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 
 
     <com.github.mikephil.charting.charts.LineChart

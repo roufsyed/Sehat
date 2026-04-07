@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rouf.saht.R
+import com.rouf.saht.common.activity.BaseActivity
 
 sealed class FaqItem {
     data class Section(val title: String) : FaqItem()
@@ -42,7 +43,10 @@ class FaqAdapter(private val items: List<FaqItem>) : RecyclerView.Adapter<Recycl
 
     inner class SectionVH(view: View) : RecyclerView.ViewHolder(view) {
         private val tv = view.findViewById<TextView>(R.id.tv_section)
-        fun bind(item: FaqItem.Section) { tv.text = item.title }
+        fun bind(item: FaqItem.Section) {
+            tv.text = item.title
+            tv.setTextColor(BaseActivity.effectivePrimary(tv.context))
+        }
     }
 
     inner class EntryVH(view: View) : RecyclerView.ViewHolder(view) {

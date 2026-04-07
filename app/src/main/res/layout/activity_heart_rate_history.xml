@@ -30,7 +30,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_all"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="All"
@@ -38,21 +38,21 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_week"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="This Week" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_month"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="This Month" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_custom"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Custom" />

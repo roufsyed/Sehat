@@ -107,6 +107,7 @@ class HeartRateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         customizeChartAppearance(binding.lineChart)
+        initViewInActiveState()
 
         if (!hasPermissions()) {
             requestPermissions()

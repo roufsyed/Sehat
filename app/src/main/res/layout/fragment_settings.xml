@@ -151,7 +151,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/customization_desc"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -198,7 +198,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/to_calculate_bmi_and_calories_burnt"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -245,7 +245,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/step_goals_sensitivity_step_length"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -292,7 +292,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/measurement_duration"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -339,7 +339,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/control_what_gets_notified_to_you"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -386,7 +386,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/import_export"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -432,7 +432,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/seed_data_desc"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -477,7 +477,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/faq_desc"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -522,7 +522,7 @@
                             android:layout_height="wrap_content"
                             android:text="How your data is handled"
                             android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

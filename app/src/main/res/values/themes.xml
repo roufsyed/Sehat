@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme with green and red colors. -->
-    <style name="Theme.Saht" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Saht" parent="Theme.Material3.DayNight.NoActionBar">
         <!--Text Color-->
         <item name="colorOnPrimary">@color/black</item>
         <item name="colorOnSecondary">@color/dark_grey</item>
@@ -8,30 +8,50 @@
         <!-- Primary brand color (Green). -->
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorPrimaryContainer">@color/green_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_green_container</item>
 
         <!-- Secondary brand color (Red). -->
         <item name="colorSecondary">@color/red_500</item>
         <item name="colorSecondaryVariant">@color/red_700</item>
+        <item name="colorSecondaryContainer">@color/red_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_red_container</item>
+
+        <!-- Tertiary -->
+        <item name="colorTertiary">@color/green_700</item>
+        <item name="colorTertiaryContainer">@color/green_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_green_container</item>
 
         <!-- Off-white background so white cards have contrast -->
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/black</item>
+        <item name="colorSurfaceVariant">@color/surface_variant_light</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant_light</item>
+
+        <!-- Outlines -->
+        <item name="colorOutline">@color/outline_light</item>
+        <item name="colorOutlineVariant">@color/outline_variant_light</item>
 
         <!-- Hardcoded so DynamicColors cannot override the status/nav bar -->
         <item name="android:statusBarColor">@color/green_700</item>
         <item name="android:navigationBarColor">@color/green_700</item>
         <item name="android:windowLightStatusBar">false</item>
-
-        <!-- Customize any additional theme properties below. -->
     </style>
 
     <!-- Ocean: blue primary, orange accent -->
     <style name="Theme.Saht.Ocean" parent="Theme.Saht">
         <item name="colorPrimary">@color/blue_500</item>
         <item name="colorPrimaryVariant">@color/blue_700</item>
+        <item name="colorPrimaryContainer">@color/blue_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_blue_container</item>
         <item name="colorSecondary">@color/orange_500</item>
         <item name="colorSecondaryVariant">@color/orange_500</item>
+        <item name="colorSecondaryContainer">@color/orange_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_orange_container</item>
+        <item name="colorTertiary">@color/blue_700</item>
+        <item name="colorTertiaryContainer">@color/blue_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_blue_container</item>
         <item name="android:statusBarColor">@color/blue_700</item>
         <item name="android:navigationBarColor">@color/blue_700</item>
     </style>
@@ -40,8 +60,15 @@
     <style name="Theme.Saht.Sunset" parent="Theme.Saht">
         <item name="colorPrimary">@color/deep_orange_500</item>
         <item name="colorPrimaryVariant">@color/deep_orange_700</item>
+        <item name="colorPrimaryContainer">@color/deep_orange_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_deep_orange_container</item>
         <item name="colorSecondary">@color/violet_500</item>
         <item name="colorSecondaryVariant">@color/violet_700</item>
+        <item name="colorSecondaryContainer">@color/violet_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_violet_container</item>
+        <item name="colorTertiary">@color/deep_orange_700</item>
+        <item name="colorTertiaryContainer">@color/deep_orange_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_deep_orange_container</item>
         <item name="android:statusBarColor">@color/deep_orange_700</item>
         <item name="android:navigationBarColor">@color/deep_orange_700</item>
     </style>
@@ -50,10 +77,53 @@
     <style name="Theme.Saht.Berry" parent="Theme.Saht">
         <item name="colorPrimary">@color/violet_500</item>
         <item name="colorPrimaryVariant">@color/violet_700</item>
+        <item name="colorPrimaryContainer">@color/violet_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_violet_container</item>
         <item name="colorSecondary">@color/cyan_500</item>
         <item name="colorSecondaryVariant">@color/cyan_500</item>
+        <item name="colorSecondaryContainer">@color/cyan_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_cyan_container</item>
+        <item name="colorTertiary">@color/violet_700</item>
+        <item name="colorTertiaryContainer">@color/violet_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_violet_container</item>
         <item name="android:statusBarColor">@color/violet_700</item>
         <item name="android:navigationBarColor">@color/violet_700</item>
+    </style>
+
+    <!-- Mono Light: dark grey on light background -->
+    <style name="Theme.Saht.MonoLight" parent="Theme.Saht">
+        <item name="colorPrimary">@color/mono_light_primary</item>
+        <item name="colorPrimaryVariant">@color/mono_light_primary_dark</item>
+        <item name="colorPrimaryContainer">@color/mono_light_container</item>
+        <item name="colorOnPrimaryContainer">@color/mono_light_on_container</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/mono_light_secondary</item>
+        <item name="colorSecondaryVariant">@color/mono_light_primary_dark</item>
+        <item name="colorSecondaryContainer">@color/mono_light_container</item>
+        <item name="colorOnSecondaryContainer">@color/mono_light_on_container</item>
+        <item name="colorTertiary">@color/mono_light_primary</item>
+        <item name="colorTertiaryContainer">@color/mono_light_container</item>
+        <item name="colorOnTertiaryContainer">@color/mono_light_on_container</item>
+        <item name="android:statusBarColor">@color/mono_light_primary_dark</item>
+        <item name="android:navigationBarColor">@color/mono_light_primary_dark</item>
+    </style>
+
+    <!-- Mono Dark: light grey on dark background -->
+    <style name="Theme.Saht.MonoDark" parent="Theme.Saht">
+        <item name="colorPrimary">@color/mono_dark_primary</item>
+        <item name="colorPrimaryVariant">@color/mono_dark_primary_dark</item>
+        <item name="colorPrimaryContainer">@color/mono_dark_container</item>
+        <item name="colorOnPrimaryContainer">@color/mono_dark_on_container</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/mono_dark_secondary</item>
+        <item name="colorSecondaryVariant">@color/mono_dark_primary_dark</item>
+        <item name="colorSecondaryContainer">@color/mono_dark_container</item>
+        <item name="colorOnSecondaryContainer">@color/mono_dark_on_container</item>
+        <item name="colorTertiary">@color/mono_dark_primary</item>
+        <item name="colorTertiaryContainer">@color/mono_dark_container</item>
+        <item name="colorOnTertiaryContainer">@color/mono_dark_on_container</item>
+        <item name="android:statusBarColor">@color/mono_dark_primary_dark</item>
+        <item name="android:navigationBarColor">@color/mono_dark_primary_dark</item>
     </style>
 
     <!-- Custom: user-defined colors, overridden programmatically -->
@@ -64,7 +134,7 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="DialogThemeSize" parent="Theme.MaterialComponents.DayNight.Dialog">
+    <style name="DialogThemeSize" parent="Theme.Material3.DayNight.Dialog">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
     </style>

@@ -63,10 +63,12 @@ class CustomizationActivity : BaseActivity() {
 
     private fun setupThemeCards() {
         mapOf(
-            THEME_FOREST to binding.cardThemeForest,
-            THEME_OCEAN  to binding.cardThemeOcean,
-            THEME_SUNSET to binding.cardThemeSunset,
-            THEME_BERRY  to binding.cardThemeBerry,
+            THEME_FOREST     to binding.cardThemeForest,
+            THEME_OCEAN      to binding.cardThemeOcean,
+            THEME_SUNSET     to binding.cardThemeSunset,
+            THEME_BERRY      to binding.cardThemeBerry,
+            THEME_MONO_LIGHT to binding.cardThemeMonoLight,
+            THEME_MONO_DARK  to binding.cardThemeMonoDark,
         ).forEach { (key, card) ->
             card.setOnClickListener {
                 if (Paper.book().read(PREF_THEME, THEME_FOREST) != key) {
@@ -194,10 +196,12 @@ class CustomizationActivity : BaseActivity() {
         val strokePx = (2.5f * resources.displayMetrics.density).toInt()
         data class Entry(val key: String, val card: MaterialCardView, val hex: String)
         val presets = listOf(
-            Entry(THEME_FOREST, binding.cardThemeForest, "#4CAF50"),
-            Entry(THEME_OCEAN,  binding.cardThemeOcean,  "#2196F3"),
-            Entry(THEME_SUNSET, binding.cardThemeSunset, "#FF5722"),
-            Entry(THEME_BERRY,  binding.cardThemeBerry,  "#9C27B0"),
+            Entry(THEME_FOREST,     binding.cardThemeForest,    "#4CAF50"),
+            Entry(THEME_OCEAN,      binding.cardThemeOcean,     "#2196F3"),
+            Entry(THEME_SUNSET,     binding.cardThemeSunset,    "#FF5722"),
+            Entry(THEME_BERRY,      binding.cardThemeBerry,     "#9C27B0"),
+            Entry(THEME_MONO_LIGHT, binding.cardThemeMonoLight, "#424242"),
+            Entry(THEME_MONO_DARK,  binding.cardThemeMonoDark,  "#BDBDBD"),
         )
         presets.forEach { (key, card, hex) ->
             if (key == selectedKey) {
@@ -279,8 +283,10 @@ class CustomizationActivity : BaseActivity() {
         const val THEME_FOREST = "forest"
         const val THEME_OCEAN  = "ocean"
         const val THEME_SUNSET = "sunset"
-        const val THEME_BERRY  = "berry"
-        const val THEME_CUSTOM = "custom"
+        const val THEME_BERRY      = "berry"
+        const val THEME_MONO_LIGHT = "mono_light"
+        const val THEME_MONO_DARK  = "mono_dark"
+        const val THEME_CUSTOM     = "custom"
 
         const val PREF_CUSTOM_PRIMARY   = "pref_custom_primary"
         const val PREF_CUSTOM_SECONDARY = "pref_custom_secondary"
@@ -296,11 +302,13 @@ class CustomizationActivity : BaseActivity() {
         val SCREEN_LABELS = arrayOf("Home", "Pedometer", "Heart Rate", "Meditation", "Settings")
 
         fun themeResId(key: String): Int = when (key) {
-            THEME_OCEAN  -> R.style.Theme_Saht_Ocean
-            THEME_SUNSET -> R.style.Theme_Saht_Sunset
-            THEME_BERRY  -> R.style.Theme_Saht_Berry
-            THEME_CUSTOM -> R.style.Theme_Saht_Custom
-            else         -> R.style.Theme_Saht
+            THEME_OCEAN      -> R.style.Theme_Saht_Ocean
+            THEME_SUNSET     -> R.style.Theme_Saht_Sunset
+            THEME_BERRY      -> R.style.Theme_Saht_Berry
+            THEME_MONO_LIGHT -> R.style.Theme_Saht_MonoLight
+            THEME_MONO_DARK  -> R.style.Theme_Saht_MonoDark
+            THEME_CUSTOM     -> R.style.Theme_Saht_Custom
+            else             -> R.style.Theme_Saht
         }
 
         fun defaultScreenNavId(key: String): Int = when (key) {

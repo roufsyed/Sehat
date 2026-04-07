@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_button_hollow_green_border"
+                    android:background="@drawable/bg_button_hollow_primary_border"
                     android:backgroundTint="@color/transparent">
 
                     <LinearLayout
@@ -83,7 +83,7 @@
                     android:id="@+id/wrapper_female"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_button_hollow_green_border"
+                    android:background="@drawable/bg_button_hollow_primary_border"
                     android:backgroundTint="@color/transparent"
                     android:layout_weight="1">
 

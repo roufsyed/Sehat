@@ -23,7 +23,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import com.rouf.saht.R
 import com.rouf.saht.setting.view.CustomizationActivity
@@ -116,8 +116,11 @@ abstract class BaseActivity : AppCompatActivity() {
                 if (view.hintTextColor?.defaultColor == defaultPrimary) {
                     view.hintTextColor = ColorStateList.valueOf(customPrimary)
                 }
+                if (view.defaultHintTextColor?.defaultColor == defaultPrimary) {
+                    view.defaultHintTextColor = ColorStateList.valueOf(customPrimary)
+                }
             }
-            is SwitchMaterial -> {
+            is MaterialSwitch -> {
                 val uncheckedThumb = view.thumbTintList
                     ?.getColorForState(intArrayOf(-android.R.attr.state_checked), Color.GRAY) ?: Color.GRAY
                 val uncheckedTrack = view.trackTintList
@@ -225,10 +228,17 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun applyCustomGradientDrawable(
         drawable: GradientDrawable, defaultPrimary: Int, defaultPrimaryDark: Int, defaultSecondary: Int
     ) {
+        val state = try {
+            val field = GradientDrawable::class.java.getDeclaredField("mGradientState")
+            field.isAccessible = true
+            field.get(drawable) ?: return
+        } catch (_: Exception) { return }
+
+        // Handle gradient colors
         try {
-            val colorsField = GradientDrawable::class.java.getDeclaredField("mGradientColors")
+            val colorsField = state.javaClass.getDeclaredField("mGradientColors")
             colorsField.isAccessible = true
-            val colors = colorsField.get(drawable) as? IntArray
+            val colors = colorsField.get(state) as? IntArray
             if (colors != null && colors.size >= 2) {
                 var changed = false
                 val newColors = colors.copyOf()
@@ -240,47 +250,39 @@ abstract class BaseActivity : AppCompatActivity() {
                     }
                 }
                 if (changed) drawable.colors = newColors
-            } else {
-                // Solid color or stroke
-                val solidField = GradientDrawable::class.java.getDeclaredField("mFillColors")
-                solidField.isAccessible = true
-                val solidColors = solidField.get(drawable) as? ColorStateList
-                if (solidColors?.defaultColor == defaultPrimary) {
-                    drawable.setColor(customPrimary)
-                }
             }
-        } catch (_: Exception) {
-            // Fallback: check stroke via reflection
-        }
+        } catch (_: Exception) {}
+
+        // Handle solid fill color
+        try {
+            val solidField = state.javaClass.getDeclaredField("mSolidColors")
+            solidField.isAccessible = true
+            val solidColors = solidField.get(state) as? ColorStateList
+            if (solidColors?.defaultColor == defaultPrimary) {
+                drawable.setColor(customPrimary)
+            } else if (solidColors?.defaultColor == defaultSecondary) {
+                drawable.setColor(customSecondary)
+            }
+        } catch (_: Exception) {}
 
         // Handle stroke color
         try {
-            val strokeField = GradientDrawable::class.java.getDeclaredField("mStrokeColors")
-            strokeField.isAccessible = true
-            val strokeColors = strokeField.get(drawable) as? ColorStateList
+            val strokeColorsField = state.javaClass.getDeclaredField("mStrokeColors")
+            strokeColorsField.isAccessible = true
+            val strokeColors = strokeColorsField.get(state) as? ColorStateList
             if (strokeColors != null) {
+                val width = try {
+                    val widthField = state.javaClass.getDeclaredField("mStrokeWidth")
+                    widthField.isAccessible = true
+                    widthField.getInt(state)
+                } catch (_: Exception) { (2 * resources.displayMetrics.density).toInt() }
+
                 when (strokeColors.defaultColor) {
-                    defaultPrimary -> {
-                        val width = getStrokeWidth(drawable)
-                        drawable.setStroke(width, customPrimary)
-                    }
-                    defaultSecondary -> {
-                        val width = getStrokeWidth(drawable)
-                        drawable.setStroke(width, customSecondary)
-                    }
+                    defaultPrimary -> drawable.setStroke(width, customPrimary)
+                    defaultSecondary -> drawable.setStroke(width, customSecondary)
                 }
             }
         } catch (_: Exception) {}
-    }
-
-    private fun getStrokeWidth(drawable: GradientDrawable): Int {
-        return try {
-            val field = GradientDrawable::class.java.getDeclaredField("mStrokeWidth")
-            field.isAccessible = true
-            field.getInt(drawable)
-        } catch (_: Exception) {
-            2
-        }
     }
 
     companion object {

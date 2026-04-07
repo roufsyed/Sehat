@@ -67,4 +67,47 @@
     <color name="violet_500">#9C27B0</color>
     <color name="violet_700">#6A1B9A</color>
     <color name="cyan_500">#00BCD4</color>
+
+    <!-- M3 container / surface colors — light mode -->
+    <color name="green_container">#C8E6C9</color>
+    <color name="on_green_container">#1B5E20</color>
+    <color name="red_container">#FFCDD2</color>
+    <color name="on_red_container">#B71C1C</color>
+
+    <color name="blue_container">#BBDEFB</color>
+    <color name="on_blue_container">#0D47A1</color>
+    <color name="orange_container">#FFE0B2</color>
+    <color name="on_orange_container">#E65100</color>
+
+    <color name="deep_orange_container">#FFCCBC</color>
+    <color name="on_deep_orange_container">#BF360C</color>
+    <color name="violet_container">#E1BEE7</color>
+    <color name="on_violet_container">#4A148C</color>
+    <color name="cyan_container">#B2EBF2</color>
+    <color name="on_cyan_container">#006064</color>
+
+    <!-- Mono Light theme -->
+    <color name="mono_light_primary">#424242</color>
+    <color name="mono_light_primary_dark">#212121</color>
+    <color name="mono_light_secondary">#757575</color>
+    <color name="mono_light_container">#E0E0E0</color>
+    <color name="mono_light_on_container">#212121</color>
+
+    <!-- Mono Dark theme -->
+    <color name="mono_dark_primary">#BDBDBD</color>
+    <color name="mono_dark_primary_dark">#757575</color>
+    <color name="mono_dark_secondary">#9E9E9E</color>
+    <color name="mono_dark_container">#424242</color>
+    <color name="mono_dark_on_container">#E0E0E0</color>
+
+    <!-- M3 surface tones -->
+    <color name="surface_variant_light">#E7E0EC</color>
+    <color name="on_surface_variant_light">#49454F</color>
+    <color name="outline_light">#79747E</color>
+    <color name="outline_variant_light">#CAC4D0</color>
+
+    <color name="surface_variant_dark">#49454F</color>
+    <color name="on_surface_variant_dark">#CAC4D0</color>
+    <color name="outline_dark">#938F99</color>
+    <color name="outline_variant_dark">#49454F</color>
 </resources>

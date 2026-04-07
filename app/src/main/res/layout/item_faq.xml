@@ -40,6 +40,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/ic_back"
                 android:rotation="270"
+                app:tint="@color/dark_grey"
                 android:contentDescription="Expand" />
         </LinearLayout>
 
@@ -52,7 +53,7 @@
             android:paddingBottom="14dp"
             android:textSize="14sp"
             android:lineSpacingMultiplier="1.4"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="gone" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -75,7 +75,7 @@
                             android:text="/ 10,000"
                             android:textSize="12sp"
                             android:gravity="center"
-                            android:textColor="@color/dark_grey" />
+                            android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         android:textSize="11sp"
-                        android:textColor="@color/dark_grey" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -167,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         android:textSize="11sp"
-                        android:textColor="@color/dark_grey" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

@@ -31,7 +31,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:text="Sehat needs these to work properly. You can change them anytime in Settings."
-            android:textColor="@color/dark_grey"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Count your daily steps. Required for the pedometer."
-                    android:textColor="@color/dark_grey"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Show foreground service notifications while tracking steps or playing meditation sounds."
-                    android:textColor="@color/dark_grey"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -162,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Measure your heart rate. Only active while measuring — no images are saved."
-                    android:textColor="@color/dark_grey"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="13sp" />
 
             </LinearLayout>

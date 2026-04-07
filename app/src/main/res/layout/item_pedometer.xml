@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:layout_marginVertical="4dp"
     android:layout_marginHorizontal="16dp"
-    android:background="@drawable/bg_button_hollow_green_border"
+    android:background="@drawable/bg_button_hollow_primary_border"
     android:padding="16dp"
     android:gravity="center_vertical">
 
@@ -30,7 +30,7 @@
         android:layout_marginStart="16dp"
         android:text="Date"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 
     <TextView
         android:id="@+id/tvActivityDuration"
@@ -42,7 +42,7 @@
         android:layout_marginStart="16dp"
         android:text="Activity Duration"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 
     <TextView
         android:id="@+id/tv_calories"
@@ -54,7 +54,7 @@
         android:layout_marginStart="16dp"
         android:text="Calories"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 
     <TextView
         android:id="@+id/tv_distance"
@@ -66,5 +66,5 @@
         android:layout_marginStart="16dp"
         android:text="@string/distance"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"/>
+        android:textColor="?attr/colorOnSurfaceVariant"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
