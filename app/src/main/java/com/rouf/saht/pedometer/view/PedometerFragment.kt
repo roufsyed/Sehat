@@ -14,12 +14,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.color.MaterialColors
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.BMIUtils
 import com.rouf.saht.common.helper.Util
@@ -103,7 +105,7 @@ class PedometerFragment : Fragment() {
         // Validate height and weight
         if (heightStr.isEmpty() || weightStr.isEmpty()) {
             binding.tvBmi.text = "BMI: " + getString(R.string.invalid_data)
-            binding.tvBmi.setTextColor(requireContext().getColor(R.color.red_500))
+            binding.tvBmi.setTextColor(MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary))
 
             BMI_FLAG = false
 
@@ -225,10 +227,11 @@ class PedometerFragment : Fragment() {
 
     private fun initViewInActiveState() {
         val btnStartStop = binding.btnStartStop
+        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
 
         btnStartStop.text = getString(R.string.start)
         btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        btnStartStop.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_500)
+        btnStartStop.backgroundTintList = ColorStateList.valueOf(primaryColor)
 
         // setting bg_circular color
         val shapeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_circular) as GradientDrawable
@@ -239,15 +242,16 @@ class PedometerFragment : Fragment() {
 
     private fun initViewActiveState() {
         val btnStartStop = binding.btnStartStop
+        val secondaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary)
+        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
 
         btnStartStop.text = getString(R.string.stop)
         btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        btnStartStop.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_500)
+        btnStartStop.backgroundTintList = ColorStateList.valueOf(secondaryColor)
 
         // setting bg_circular color
         val shapeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_circular) as GradientDrawable
-        val strokeColor = ContextCompat.getColor(requireContext(), R.color.green_500)
-        shapeDrawable.setStroke(8, strokeColor)
+        shapeDrawable.setStroke(8, primaryColor)
         binding.containerPedometer.background = shapeDrawable
     }
 

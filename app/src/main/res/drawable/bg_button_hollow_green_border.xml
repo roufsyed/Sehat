@@ -5,7 +5,7 @@
     <corners android:radius="20dp" /> <!-- Corner radius -->
     <stroke
         android:width="2dp"
-        android:color="@color/green_500" /> <!-- Optional border -->
+        android:color="?attr/colorPrimary" />
     <padding
         android:left="8dp"
         android:top="8dp"

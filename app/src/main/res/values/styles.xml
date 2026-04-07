@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Custom theme for DatePickerDialog -->
-    <style name="CustomDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
-        <!-- Set background color -->
-        <item name="android:background">#4CAF50</item> <!-- Green color -->
-        <!-- Set text color for the header -->
-        <item name="android:textColorPrimary">#FFFFFF</item> <!-- White text -->
-        <!-- Set button color -->
-        <item name="android:textColorSecondary">#FFFFFF</item> <!-- White buttons -->
+    <style name="CustomDatePickerStyle" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorAccent">?attr/colorPrimary</item>
     </style>
 
 

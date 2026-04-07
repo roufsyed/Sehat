@@ -71,9 +71,9 @@
             android:layout_height="wrap_content"
             android:checkable="false"
             android:text="5,000"
-            app:chipBackgroundColor="@color/green_500"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:chipIconVisible="false"
-            android:textColor="@color/white" />
+            android:textColor="?attr/colorOnPrimary" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip8000"
@@ -81,9 +81,9 @@
             android:layout_height="wrap_content"
             android:checkable="false"
             android:text="8,000"
-            app:chipBackgroundColor="@color/green_500"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:chipIconVisible="false"
-            android:textColor="@color/white" />
+            android:textColor="?attr/colorOnPrimary" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip10000"
@@ -91,9 +91,9 @@
             android:layout_height="wrap_content"
             android:checkable="false"
             android:text="10,000"
-            app:chipBackgroundColor="@color/green_500"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:chipIconVisible="false"
-            android:textColor="@color/white" />
+            android:textColor="?attr/colorOnPrimary" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip12000"
@@ -101,9 +101,9 @@
             android:layout_height="wrap_content"
             android:checkable="false"
             android:text="12,000"
-            app:chipBackgroundColor="@color/green_500"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:chipIconVisible="false"
-            android:textColor="@color/white" />
+            android:textColor="?attr/colorOnPrimary" />
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -115,7 +115,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:text="10,000 steps/day reduces risk of heart disease by 21%."
-        android:textColor="@color/green_700"
+        android:textColor="?attr/colorPrimaryVariant"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

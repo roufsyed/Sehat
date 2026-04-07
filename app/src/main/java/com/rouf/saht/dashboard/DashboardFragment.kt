@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
+import com.google.android.material.color.MaterialColors
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.rouf.saht.common.helper.BMIUtils
@@ -149,7 +150,7 @@ class DashboardFragment : Fragment() {
         val textColor = if (isDark) Color.WHITE else Color.DKGRAY
 
         val dataSet = BarDataSet(entries, "Steps").apply {
-            color = requireContext().getColor(com.rouf.saht.R.color.green_500)
+            color = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
             setDrawValues(false)
         }
 

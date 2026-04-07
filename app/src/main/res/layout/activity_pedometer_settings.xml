@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp"
         android:layout_marginHorizontal="16dp"
-        app:boxStrokeColor="@color/et_border_green_700"
+        app:boxStrokeColor="?attr/colorPrimary"
         app:boxBackgroundMode="outline">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -46,8 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4000"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -55,8 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10000"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -64,8 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12000"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -73,8 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="15000"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
     </com.google.android.material.chip.ChipGroup>
 
@@ -181,7 +181,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginHorizontal="40dp"
         android:layout_marginBottom="16dp"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnPrimary"
         android:enabled="false"
         android:text="Save"/>
 

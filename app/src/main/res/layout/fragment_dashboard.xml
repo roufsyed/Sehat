@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:progress="0"
-                        app:indicatorColor="@color/green_500"
+                        app:indicatorColor="?attr/colorPrimary"
                         app:trackColor="@color/light_grey"
                         app:trackThickness="10dp"
                         app:indicatorSize="140dp" />
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:text="-- BPM"
                         android:textSize="22sp"
-                        android:textColor="@color/red_500"
+                        android:textColor="?attr/colorSecondary"
                         android:textStyle="bold" />
 
                     <TextView

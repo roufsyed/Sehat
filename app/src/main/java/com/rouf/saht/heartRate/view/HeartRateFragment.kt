@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -22,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -32,6 +34,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.color.MaterialColors
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.TimeUtil
 import com.rouf.saht.common.model.HeartRateMonitorData
@@ -201,17 +204,19 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun initViewInActiveState() {
+        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
         binding.btnMeasure.text = getString(R.string.start_monitoring)
         binding.preview.isVisible = false
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        binding.btnMeasure.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_500)
+        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(primaryColor)
     }
 
     private fun initViewActiveState() {
+        val secondaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary)
         binding.btnMeasure.text = getString(R.string.stop_monitoring)
         binding.preview.isVisible = true
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        binding.btnMeasure.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_500)
+        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(secondaryColor)
     }
 
     private fun startPulseAnimation() {
@@ -396,6 +401,7 @@ class HeartRateFragment : Fragment() {
         dialog.setCancelable(true)
 
         val window = dialog.window ?: return
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val wlp = window.attributes
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT
         wlp.height = WindowManager.LayoutParams.WRAP_CONTENT

@@ -177,7 +177,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/green_500"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="Grant Permissions"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

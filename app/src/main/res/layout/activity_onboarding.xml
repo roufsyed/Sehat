@@ -45,7 +45,7 @@
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green_500"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="Next"
             android:textColor="@color/white" />
 
