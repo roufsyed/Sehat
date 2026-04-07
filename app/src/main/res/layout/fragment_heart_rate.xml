@@ -102,17 +102,33 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
+            <TextView
+                android:id="@+id/tv_heart_rate_zone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
+                android:background="@drawable/bg_zone_badge"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/bpmCircle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_measure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_cornered_solid_red"
-                android:backgroundTint="?attr/colorPrimary"
+                app:backgroundTint="?attr/colorPrimary"
+                app:cornerRadius="20dp"
                 android:text="@string/start_monitoring"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="16sp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@id/bpmCircle"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_heart_rate_zone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/lineChart"

@@ -109,8 +109,8 @@
         android:layout_height="wrap_content"
         android:minWidth="120dp"
         android:minHeight="50dp"
-        android:background="@drawable/bg_button_cornered_solid_red"
         app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="20dp"
         android:text="@string/cancel"
         app:layout_constraintTop_toBottomOf="@id/chipGroupDuration"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,15 +120,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minWidth="120dp"
         android:minHeight="50dp"
-        android:background="@drawable/bg_button_cornered_solid_red"
-        android:backgroundTint="?attr/colorSecondary"
+        app:backgroundTint="?attr/colorSecondary"
+        app:cornerRadius="20dp"
         android:text="@string/save"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/chipGroupDuration"
         app:layout_constraintStart_toEndOf="@id/btn_cancel"
         app:layout_constraintEnd_toEndOf="parent"

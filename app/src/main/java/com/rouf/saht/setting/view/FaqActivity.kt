@@ -90,6 +90,15 @@ class FaqActivity : BaseActivity() {
             "The camera-based method provides an approximate reading suitable for general wellness tracking. Factors like movement, ambient light, and finger pressure can affect the reading. For medical-grade accuracy, please use a certified medical device."
         ),
         FaqItem.Entry(
+            "What do the heart rate intensity zones mean?",
+            "When your date of birth is set, Sehat shows colour-coded intensity labels based on your estimated maximum heart rate (220 minus your age):\n\n" +
+            "\u2022 Resting (grey) \u2014 below 50% of max HR. Normal resting state or very gentle activity.\n" +
+            "\u2022 Moderate (green) \u2014 50\u201369% of max HR. Brisk walking, easy cycling. Your body uses a higher proportion of fat as fuel at this intensity.\n" +
+            "\u2022 Vigorous (orange) \u2014 70\u201384% of max HR. Running, fast cycling. Builds cardiovascular endurance.\n" +
+            "\u2022 Intense (red) \u2014 85%+ of max HR. Sprinting, high-intensity intervals. Near your anaerobic threshold.\n\n" +
+            "These zones describe exercise intensity, not medical diagnoses. The 220-minus-age formula is a widely used estimate but varies between individuals. Always consult a healthcare professional for personalised guidance."
+        ),
+        FaqItem.Entry(
             "How accurate is the pedometer?",
             "The pedometer uses your phone's hardware step counter sensor. Accuracy depends on your device and where you carry it. For best results, keep the phone in your pocket or a secure holder. You can adjust the sensitivity in Settings > Pedometer Settings."
         ),

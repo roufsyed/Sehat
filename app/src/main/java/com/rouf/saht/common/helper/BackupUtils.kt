@@ -11,6 +11,7 @@ import com.rouf.saht.common.model.PersonalInformation
 import com.rouf.saht.common.model.Sound
 import com.rouf.saht.heartRate.data.HeartRateData
 import com.rouf.saht.setting.view.CustomizationActivity
+import com.rouf.saht.setting.view.DashboardSettingsActivity
 import com.rouf.saht.setting.view.SettingsFragment
 import io.paperdb.Paper
 import java.io.InputStreamReader
@@ -45,6 +46,13 @@ object BackupUtils {
 
             // Custom meditation sounds
             exportMap[KEY_CUSTOM_SOUNDS] = Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, null)
+
+            // Dashboard visibility
+            exportMap[DashboardSettingsActivity.PREF_SHOW_STEPS] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_STEPS, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_HEART_RATE] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_HEART_RATE, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_BMI] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_BMI, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_HR_ZONES] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_HR_ZONES, null)
 
             val json = gson.toJson(exportMap)
             context.contentResolver.openOutputStream(uri)?.use { stream ->
@@ -116,6 +124,17 @@ object BackupUtils {
             dataMap[KEY_CUSTOM_SOUNDS]?.let {
                 val listType = object : TypeToken<List<Sound>>() {}.type
                 Paper.book().write(KEY_CUSTOM_SOUNDS, gson.fromJson<List<Sound>>(gson.toJson(it), listType))
+            }
+
+            // Dashboard visibility
+            for (key in listOf(
+                DashboardSettingsActivity.PREF_SHOW_STEPS,
+                DashboardSettingsActivity.PREF_SHOW_HEART_RATE,
+                DashboardSettingsActivity.PREF_SHOW_BMI,
+                DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART,
+                DashboardSettingsActivity.PREF_SHOW_HR_ZONES
+            )) {
+                dataMap[key]?.let { Paper.book().write(key, it as Boolean) }
             }
 
             true

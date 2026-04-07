@@ -12,7 +12,9 @@ data class HeartRateMonitorData(
     var bpmGraphEntries: MutableList<Entry> = mutableListOf<Entry>(),
     var timeStamp: Long = System.currentTimeMillis(),
     var activityPerformed: String = "",
-    var isResting: Boolean = false
+    var isResting: Boolean = false,
+    var zone: String = "",
+    var zoneDistribution: Map<String, Float> = emptyMap()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -22,7 +24,12 @@ data class HeartRateMonitorData(
         parcel.createTypedArrayList(Entry.CREATOR) ?: mutableListOf<Entry>(),
         parcel.readLong(),
         parcel.readString() ?: "",
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readString() ?: "",
+        mutableMapOf<String, Float>().also { map ->
+            val size = parcel.readInt()
+            repeat(size) { map[parcel.readString() ?: ""] = parcel.readFloat() }
+        }
     ) {
     }
 
@@ -35,6 +42,9 @@ data class HeartRateMonitorData(
         parcel.writeLong(timeStamp)
         parcel.writeString(activityPerformed)
         parcel.writeByte(if (isResting) 1 else 0)
+        parcel.writeString(zone)
+        parcel.writeInt(zoneDistribution.size)
+        zoneDistribution.forEach { (k, v) -> parcel.writeString(k); parcel.writeFloat(v) }
     }
 
     override fun describeContents(): Int {

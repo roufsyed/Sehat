@@ -55,9 +55,13 @@ class CustomizationActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         val isServiceEnabled = LockScreenAccessibilityService.isEnabled(this)
-        binding.switchDoubleTapLock.isChecked = isServiceEnabled
-        if (!isServiceEnabled) {
+        if (isServiceEnabled) {
+            // User just granted permission — enable the feature
+            Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, true)
+            binding.switchDoubleTapLock.isChecked = true
+        } else {
             Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, false)
+            binding.switchDoubleTapLock.isChecked = false
         }
     }
 
@@ -69,10 +73,15 @@ class CustomizationActivity : BaseActivity() {
             THEME_BERRY      to binding.cardThemeBerry,
             THEME_MONO_LIGHT to binding.cardThemeMonoLight,
             THEME_MONO_DARK  to binding.cardThemeMonoDark,
+            THEME_AMOLED     to binding.cardThemeAmoled,
         ).forEach { (key, card) ->
             card.setOnClickListener {
                 if (Paper.book().read(PREF_THEME, THEME_FOREST) != key) {
                     Paper.book().write(PREF_THEME, key)
+                    if (key == THEME_AMOLED) {
+                        Paper.book().write(SettingsFragment.PREF_DARK_MODE, true)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
                     themeChanged = true
                     recreate()
                 }
@@ -202,6 +211,7 @@ class CustomizationActivity : BaseActivity() {
             Entry(THEME_BERRY,      binding.cardThemeBerry,     "#9C27B0"),
             Entry(THEME_MONO_LIGHT, binding.cardThemeMonoLight, "#424242"),
             Entry(THEME_MONO_DARK,  binding.cardThemeMonoDark,  "#BDBDBD"),
+            Entry(THEME_AMOLED,     binding.cardThemeAmoled,    "#4CAF50"),
         )
         presets.forEach { (key, card, hex) ->
             if (key == selectedKey) {
@@ -244,6 +254,13 @@ class CustomizationActivity : BaseActivity() {
 
     private fun setupDarkModeSwitch() {
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            val currentTheme = Paper.book().read(PREF_THEME, THEME_FOREST) ?: THEME_FOREST
+            if (!isChecked && currentTheme == THEME_AMOLED) {
+                // AMOLED requires dark mode — prevent disabling
+                binding.switchDarkMode.isChecked = true
+                Toast.makeText(this, "AMOLED theme requires dark mode", Toast.LENGTH_SHORT).show()
+                return@setOnCheckedChangeListener
+            }
             Paper.book().write(SettingsFragment.PREF_DARK_MODE, isChecked)
             val mode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
                        else AppCompatDelegate.MODE_NIGHT_NO
@@ -252,23 +269,44 @@ class CustomizationActivity : BaseActivity() {
     }
 
     private fun setupDoubleTapSwitch() {
+        // Set initial state based on permission
+        val isServiceEnabled = LockScreenAccessibilityService.isEnabled(this)
+        val savedPref = Paper.book().read(SettingsFragment.PREF_DOUBLE_TAP_LOCK, false) ?: false
+        binding.switchDoubleTapLock.isChecked = isServiceEnabled && savedPref
+
         binding.switchDoubleTapLock.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                if (!LockScreenAccessibilityService.isEnabled(this)) {
-                    binding.switchDoubleTapLock.isChecked = false
-                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                    Toast.makeText(
-                        this,
-                        "Find 'Sehat' and enable it to allow double-tap locking",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
+                if (LockScreenAccessibilityService.isEnabled(this)) {
                     Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, true)
+                } else {
+                    // Revert toggle — permission not granted yet
+                    binding.switchDoubleTapLock.isChecked = false
+                    showAccessibilityPermissionDialog()
                 }
             } else {
                 Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, false)
             }
         }
+    }
+
+    private fun showAccessibilityPermissionDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Accessibility Permission Required")
+            .setMessage(
+                "Double-tap to lock uses Android's Accessibility Service to perform " +
+                "the lock action when you double-tap the screen.\n\n" +
+                "To enable this feature:\n" +
+                "1. Tap \"Go to Settings\" below\n" +
+                "2. Find \"Sehat\" in the list\n" +
+                "3. Toggle it ON\n\n" +
+                "This service does not read, collect, or transmit any screen content or personal data. " +
+                "It is used solely to lock the screen."
+            )
+            .setPositiveButton("Go to Settings") { _, _ ->
+                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            }
+            .setNegativeButton("Later", null)
+            .show()
     }
 
     override fun finish() {
@@ -286,6 +324,7 @@ class CustomizationActivity : BaseActivity() {
         const val THEME_BERRY      = "berry"
         const val THEME_MONO_LIGHT = "mono_light"
         const val THEME_MONO_DARK  = "mono_dark"
+        const val THEME_AMOLED     = "amoled"
         const val THEME_CUSTOM     = "custom"
 
         const val PREF_CUSTOM_PRIMARY   = "pref_custom_primary"
@@ -307,6 +346,7 @@ class CustomizationActivity : BaseActivity() {
             THEME_BERRY      -> R.style.Theme_Saht_Berry
             THEME_MONO_LIGHT -> R.style.Theme_Saht_MonoLight
             THEME_MONO_DARK  -> R.style.Theme_Saht_MonoDark
+            THEME_AMOLED     -> R.style.Theme_Saht_Amoled
             THEME_CUSTOM     -> R.style.Theme_Saht_Custom
             else             -> R.style.Theme_Saht
         }

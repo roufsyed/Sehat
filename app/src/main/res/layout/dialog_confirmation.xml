@@ -26,7 +26,7 @@
         android:paddingBottom="16dp"
         android:weightSum="2">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCancel"
             android:layout_height="46dp"
             android:layout_width="0dp"
@@ -35,13 +35,14 @@
             android:layout_weight="1"
             android:text="@string/no" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirm"
             android:layout_height="46dp"
             android:layout_width="0dp"
-            android:background="@drawable/bg_button_cornered_solid_red"
             app:backgroundTint="?attr/colorSecondary"
+            app:cornerRadius="20dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="@string/yes" />
     </LinearLayout>
 

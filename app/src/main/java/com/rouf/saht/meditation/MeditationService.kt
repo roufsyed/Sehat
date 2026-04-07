@@ -59,6 +59,7 @@ class MeditationService : Service() {
 
         currentSoundName = soundName
         currentSoundFile = soundFile
+        endTimeMs = System.currentTimeMillis() + durationMs
 
         // Asset files use asset:/// scheme; custom sounds from device use their content:// URI directly
         val mediaUri = if (soundFile.startsWith("content://")) {
@@ -89,6 +90,7 @@ class MeditationService : Service() {
 
     private fun stopPlayback() {
         currentSoundFile = null
+        endTimeMs = 0L
         releasePlayer()
         handler?.removeCallbacksAndMessages(null)
         broadcastPlaybackStopped()
@@ -150,6 +152,10 @@ class MeditationService : Service() {
 
         /** Non-null while a sound is playing; null when stopped. */
         var currentSoundFile: String? = null
+            private set
+
+        /** Epoch ms when current playback will end; 0 when idle. */
+        var endTimeMs: Long = 0L
             private set
     }
 }

@@ -236,7 +236,6 @@ class PedometerFragment : Fragment() {
     private fun initViewInActiveState() {
         val btnStartStop = binding.btnStartStop
         btnStartStop.text = getString(R.string.start)
-        btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
         btnStartStop.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectivePrimary(requireContext()))
 
         // setting bg_circular color
@@ -252,7 +251,6 @@ class PedometerFragment : Fragment() {
         val primaryColor = BaseActivity.effectivePrimary(requireContext())
 
         btnStartStop.text = getString(R.string.stop)
-        btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
         btnStartStop.backgroundTintList = ColorStateList.valueOf(secondaryColor)
 
         // setting bg_circular color

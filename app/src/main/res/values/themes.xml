@@ -126,6 +126,21 @@
         <item name="android:navigationBarColor">@color/mono_dark_primary_dark</item>
     </style>
 
+    <!-- AMOLED: pure black with green accent -->
+    <style name="Theme.Saht.Amoled" parent="Theme.Saht">
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:colorBackground">@color/amoled_background</item>
+        <item name="colorSurface">@color/amoled_surface</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurfaceVariant">@color/amoled_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/amoled_on_surface_variant</item>
+        <item name="colorOutline">@color/amoled_outline</item>
+        <item name="colorOutlineVariant">@color/amoled_outline_variant</item>
+        <item name="android:statusBarColor">@color/amoled_background</item>
+        <item name="android:navigationBarColor">@color/amoled_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <!-- Custom: user-defined colors, overridden programmatically -->
     <style name="Theme.Saht.Custom" parent="Theme.Saht" />
 

@@ -215,7 +215,7 @@
         android:id="@+id/btn_Save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_button_cornered_solid_red"
+        app:cornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

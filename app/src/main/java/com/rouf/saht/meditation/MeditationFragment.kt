@@ -11,6 +11,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -37,6 +38,7 @@ class MeditationFragment : Fragment() {
 
     private lateinit var adapter: MeditationSoundAdapter
     private var currentPlayingFile: String? = null
+    private var countdownTimer: CountDownTimer? = null
 
     // ---- Built-in sounds bundled as app assets ----
     private val builtInSounds: List<Sound> = listOf(
@@ -71,6 +73,7 @@ class MeditationFragment : Fragment() {
             Log.d(TAG, "Playback stopped broadcast received")
             currentPlayingFile = null
             adapter.updatePlayingSound(null)
+            stopTimer()
         }
     }
 
@@ -119,6 +122,8 @@ class MeditationFragment : Fragment() {
         if (playing != null && currentPlayingFile != playing) {
             currentPlayingFile = playing
             adapter.updatePlayingSound(playing)
+            val remaining = MeditationService.endTimeMs - System.currentTimeMillis()
+            if (remaining > 0) startTimer(remaining)
         }
     }
 
@@ -129,8 +134,52 @@ class MeditationFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        countdownTimer?.cancel()
+        countdownTimer = null
         super.onDestroyView()
         _binding = null
+    }
+
+    // ---- Timer ----
+
+    private fun startTimer(durationMs: Long) {
+        countdownTimer?.cancel()
+        _binding?.cardTimer?.let { card ->
+            card.alpha = 0f
+            card.translationY = -40f
+            card.visibility = View.VISIBLE
+            card.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(400)
+                .setInterpolator(android.view.animation.DecelerateInterpolator())
+                .start()
+        }
+        countdownTimer = object : CountDownTimer(durationMs, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val totalSeconds = (millisUntilFinished / 1000).toInt()
+                val minutes = totalSeconds / 60
+                val seconds = totalSeconds % 60
+                _binding?.tvTimer?.text = String.format("%02d:%02d", minutes, seconds)
+            }
+            override fun onFinish() {
+                stopTimer()
+            }
+        }.start()
+    }
+
+    private fun stopTimer() {
+        countdownTimer?.cancel()
+        countdownTimer = null
+        _binding?.cardTimer?.let { card ->
+            card.animate()
+                .alpha(0f)
+                .translationY(-40f)
+                .setDuration(300)
+                .setInterpolator(android.view.animation.AccelerateInterpolator())
+                .withEndAction { card.visibility = View.GONE }
+                .start()
+        }
     }
 
     // ---- Duration ----
@@ -155,10 +204,12 @@ class MeditationFragment : Fragment() {
             sendStopIntent()
             currentPlayingFile = null
             adapter.updatePlayingSound(null)
+            stopTimer()
         } else {
             sendPlayIntent(sound)
             currentPlayingFile = sound.file
             adapter.updatePlayingSound(sound.file)
+            startTimer(getDurationMs())
         }
     }
 

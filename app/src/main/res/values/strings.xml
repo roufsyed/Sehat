@@ -80,6 +80,7 @@
     <string name="theme_berry">Berry</string>
     <string name="theme_mono_light">Mono Light</string>
     <string name="theme_mono_dark">Mono Dark</string>
+    <string name="theme_amoled">AMOLED</string>
     <string name="theme_color">Theme Color</string>
     <string name="theme_custom">Custom</string>
     <string name="appearance">Appearance</string>

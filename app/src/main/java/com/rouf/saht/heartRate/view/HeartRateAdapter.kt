@@ -1,6 +1,7 @@
 package com.rouf.saht.heartRate.view
 
 import android.content.Context
+import com.rouf.saht.common.helper.HeartRateZoneUtils
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -46,6 +47,17 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
             binding.tvActivityPerformed.text = heartRateData.activityPerformed
             customizeChartAppearance(binding.lineChart)
             updateGraph(binding.lineChart, heartRateData)
+
+            val zone = HeartRateZoneUtils.getZone(itemView.context, heartRateData.bpm)
+            if (zone != null) {
+                binding.tvZone.text = "${zone.name} · ${zone.description}"
+                binding.tvZone.setTextColor(
+                    androidx.core.content.ContextCompat.getColor(itemView.context, zone.colorResId)
+                )
+                binding.tvZone.visibility = android.view.View.VISIBLE
+            } else {
+                binding.tvZone.visibility = android.view.View.GONE
+            }
         }
 
         init {

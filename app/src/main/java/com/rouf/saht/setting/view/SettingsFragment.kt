@@ -158,6 +158,10 @@ class SettingsFragment : Fragment() {
     }
 
     private fun onClick() {
+        binding.llDashboardSettings.setOnClickListener {
+            startActivity(Intent(activity, DashboardSettingsActivity::class.java))
+        }
+
         binding.llCustomization.setOnClickListener {
             customizationLauncher.launch(Intent(activity, CustomizationActivity::class.java))
         }

@@ -22,7 +22,7 @@
         <item name="colorTertiaryContainer">@color/on_green_container</item>
         <item name="colorOnTertiaryContainer">@color/green_container</item>
 
-        <!-- Dark mode: deep background so cards (colorSurface) stand out -->
+        <!-- AMOLED dark: pure black background, subtle card elevation -->
         <item name="android:colorBackground">@color/background_dark</item>
         <item name="colorSurface">@color/surface_dark</item>
         <item name="colorOnSurface">@color/white</item>

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:scrollbars="none"
     tools:context=".dashboard.DashboardFragment">
 
     <LinearLayout
@@ -13,10 +14,11 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
-        android:paddingBottom="24dp">
+        android:paddingBottom="80dp">
 
         <!-- Today's steps card -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSteps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -90,6 +92,7 @@
 
             <!-- Last heart rate card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHeartRate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,6 +124,14 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvDashboardHrZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
                         android:id="@+id/tvDashboardHrActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -132,6 +143,7 @@
 
             <!-- BMI card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBmi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -172,8 +184,9 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Weekly steps bar chart card (Item 7) -->
+        <!-- Weekly steps bar chart card -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardWeeklyChart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -186,18 +199,229 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Weekly Steps"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Steps"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilStepsFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeColor="?attr/colorPrimary"
+                        android:minWidth="110dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvStepsFilter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:text="Weekly"
+                            android:textSize="13sp"
+                            android:paddingVertical="8dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChartWeekly"
                     android:layout_width="match_parent"
                     android:layout_height="180dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Heart Rate Zones card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHrZones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Heart Rate Zones"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:layout_marginBottom="8dp">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:selectionRequired="true"
+                        app:singleLine="true"
+                        app:chipSpacing="4dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZoneToday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Today"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Chip.Filter" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZoneMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1M"
+                            android:checked="true"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Chip.Filter" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZone3M"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3M"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Chip.Filter" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZone6M"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6M"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Chip.Filter" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZone1Y"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1Y"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Chip.Filter" />
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChartZones"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+
+                <!-- Zone legend -->
+                <LinearLayout
+                    android:id="@+id/llZoneLegend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp" />
+
+                <!-- Summary stats row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvAvgBpm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Avg BPM"
+                            android:textSize="11sp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvSessionCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sessions"
+                            android:textSize="11sp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvTopZone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Top Zone"
+                            android:textSize="11sp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

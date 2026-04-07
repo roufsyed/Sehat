@@ -34,7 +34,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import android.graphics.drawable.GradientDrawable
 import com.rouf.saht.common.activity.BaseActivity
+import com.rouf.saht.common.helper.HeartRateZoneUtils
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.TimeUtil
 import com.rouf.saht.common.model.HeartRateMonitorData
@@ -207,14 +209,29 @@ class HeartRateFragment : Fragment() {
     private fun initViewInActiveState() {
         binding.btnMeasure.text = getString(R.string.start_monitoring)
         binding.preview.isVisible = false
-        binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
+        binding.tvHeartRateZone.visibility = View.GONE
         binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectivePrimary(requireContext()))
+    }
+
+    private fun updateZoneBadge(bpm: Int) {
+        val zone = HeartRateZoneUtils.getZone(requireContext(), bpm)
+        if (zone == null) {
+            binding.tvHeartRateZone.visibility = View.GONE
+            return
+        }
+        val color = androidx.core.content.ContextCompat.getColor(requireContext(), zone.colorResId)
+        binding.tvHeartRateZone.text = "${zone.name} · ${zone.description}"
+        (binding.tvHeartRateZone.background as? GradientDrawable)?.setColor(color)
+        if (binding.tvHeartRateZone.visibility != View.VISIBLE) {
+            binding.tvHeartRateZone.alpha = 0f
+            binding.tvHeartRateZone.visibility = View.VISIBLE
+            binding.tvHeartRateZone.animate().alpha(1f).setDuration(300).start()
+        }
     }
 
     private fun initViewActiveState() {
         binding.btnMeasure.text = getString(R.string.stop_monitoring)
         binding.preview.isVisible = true
-        binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
         binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectiveSecondary(requireContext()))
     }
 
@@ -310,6 +327,11 @@ class HeartRateFragment : Fragment() {
         heartRateMonitorData.sensitivityLevel = heartRateMonitorSettings.sensitivityLevel
         heartRateMonitorData.duration = heartRateMonitorSettings.duration
         heartRateMonitorData.timeStamp = TimeUtil.getCurrentTimestamp()
+
+        // Save zone data
+        val zone = HeartRateZoneUtils.getZone(requireContext(), heartRateMonitorData.bpm)
+        heartRateMonitorData.zone = zone?.name ?: ""
+        heartRateMonitorData.zoneDistribution = HeartRateZoneUtils.calculateZoneDistribution(requireContext(), bpmEntries)
     }
 
     private fun stopHeartRateMonitoring() {
@@ -322,6 +344,8 @@ class HeartRateFragment : Fragment() {
     private fun onBpm(bpm: Int) {
         val bpmUnit = getString(R.string.bpm)
         binding.tvHeartRate.text = "$bpm ${bpmUnit}"
+
+        updateZoneBadge(bpm)
 
         val entry = Entry(bpmEntries.size.toFloat(), bpm.toFloat())
         bpmEntries.add(entry)

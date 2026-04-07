@@ -41,11 +41,11 @@
             android:gravity="center"
             android:orientation="horizontal" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorPrimary"
+            app:backgroundTint="?attr/colorPrimary"
             android:text="Next"
             android:textColor="@color/white" />
 
