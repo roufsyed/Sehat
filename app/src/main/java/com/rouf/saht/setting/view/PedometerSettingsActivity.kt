@@ -10,7 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
+import com.rouf.saht.common.activity.BaseActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class PedometerSettingsActivity : AppCompatActivity() {
+class PedometerSettingsActivity : BaseActivity() {
     private val TAG: String = PedometerSettingsActivity::class.java.simpleName
     private lateinit var binding: ActivityPedometerSettingsBinding
     private lateinit var settingsViewModel: SettingsViewModel

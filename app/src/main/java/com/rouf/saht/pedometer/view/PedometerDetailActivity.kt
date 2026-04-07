@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
+import com.rouf.saht.common.activity.BaseActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.rouf.saht.R
@@ -27,11 +27,11 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class PedometerDetailActivity : AppCompatActivity() {
+class PedometerDetailActivity : BaseActivity() {
     private val TAG: String = HeartRateDetailActivity::class.java.simpleName
     private lateinit var binding: ActivityPedometerDetailBinding
     private lateinit var pedometerViewModel: PedometerViewModel
-    private var position: Int? = null
+    private var pedometerData: PedometerData? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +42,8 @@ class PedometerDetailActivity : AppCompatActivity() {
 
         pedometerViewModel = ViewModelProvider(this@PedometerDetailActivity)[PedometerViewModel::class.java]
 
-        position = intent.getStringExtra("position")?.toInt()
-        val pedometerData = intent.getSerializableExtra("pedometerData") as? PedometerData
-        pedometerData?.let { pedometerData ->
-            initView(pedometerData)
-        }
+        pedometerData = intent.getSerializableExtra("pedometerData") as? PedometerData
+        pedometerData?.let { initView(it) }
 
         onClick()
 
@@ -81,8 +78,8 @@ class PedometerDetailActivity : AppCompatActivity() {
         dialogBinding.btnConfirm.setOnClickListener {
             Log.d(TAG, "showConfirmationDialog: Confirmed")
             lifecycleScope.launch {
-                position?.let { position ->
-                    val isDeleted: Boolean = pedometerViewModel.deletePedometerDataByPosition(position)
+                pedometerData?.let { data ->
+                    val isDeleted: Boolean = pedometerViewModel.deletePedometerDataByTimestamp(data.timestamp)
                     if (isDeleted) finish()
                     else
                         Log.e(TAG, "showConfirmationDialog: Failed to delete")

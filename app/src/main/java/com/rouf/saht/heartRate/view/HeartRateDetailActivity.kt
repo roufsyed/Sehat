@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
+import com.rouf.saht.common.activity.BaseActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.LineChart
@@ -29,11 +29,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HeartRateDetailActivity : AppCompatActivity() {
+class HeartRateDetailActivity : BaseActivity() {
     private val TAG: String = HeartRateDetailActivity::class.java.simpleName
     private lateinit var binding: ActivityHeartRateDetailBinding
     private lateinit var heartRateViewModel: HeartRateViewModel
-    private var position: Int? = null
+    private var heartRateData: HeartRateMonitorData? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +44,8 @@ class HeartRateDetailActivity : AppCompatActivity() {
 
         heartRateViewModel = ViewModelProvider(this@HeartRateDetailActivity)[HeartRateViewModel::class.java]
 
-        position = intent.getStringExtra("position")?.toInt()
-        val heartRateData = intent.getParcelableExtra<HeartRateMonitorData>("heartRateData")
-        heartRateData?.let { heartRateData ->
-            initView(heartRateData)
-        }
+        heartRateData = intent.getParcelableExtra<HeartRateMonitorData>("heartRateData")
+        heartRateData?.let { initView(it) }
 
         onClick()
     }
@@ -82,8 +79,8 @@ class HeartRateDetailActivity : AppCompatActivity() {
         dialogBinding.btnConfirm.setOnClickListener {
             Log.d(TAG, "showConfirmationDialog: Confirmed")
             lifecycleScope.launch {
-                position?.let { position ->
-                    val isDeleted: Boolean = heartRateViewModel.deleteHeartRateMonitorDataByPosition(position)
+                heartRateData?.let { data ->
+                    val isDeleted: Boolean = heartRateViewModel.deleteByTimestamp(data.timeStamp)
                     if (isDeleted) finish()
                     else
                         Log.e(TAG, "showConfirmationDialog: Failed to delete")
