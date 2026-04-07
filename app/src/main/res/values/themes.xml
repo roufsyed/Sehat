@@ -16,6 +16,7 @@
         <!-- Off-white background so white cards have contrast -->
         <item name="android:colorBackground">@color/background_light</item>
         <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
 
         <!-- Hardcoded so DynamicColors cannot override the status/nav bar -->
         <item name="android:statusBarColor">@color/green_700</item>
@@ -23,6 +24,36 @@
         <item name="android:windowLightStatusBar">false</item>
 
         <!-- Customize any additional theme properties below. -->
+    </style>
+
+    <!-- Ocean: blue primary, orange accent -->
+    <style name="Theme.Saht.Ocean" parent="Theme.Saht">
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryVariant">@color/blue_700</item>
+        <item name="colorSecondary">@color/orange_500</item>
+        <item name="colorSecondaryVariant">@color/orange_500</item>
+        <item name="android:statusBarColor">@color/blue_700</item>
+        <item name="android:navigationBarColor">@color/blue_700</item>
+    </style>
+
+    <!-- Sunset: deep orange primary, violet accent -->
+    <style name="Theme.Saht.Sunset" parent="Theme.Saht">
+        <item name="colorPrimary">@color/deep_orange_500</item>
+        <item name="colorPrimaryVariant">@color/deep_orange_700</item>
+        <item name="colorSecondary">@color/violet_500</item>
+        <item name="colorSecondaryVariant">@color/violet_700</item>
+        <item name="android:statusBarColor">@color/deep_orange_700</item>
+        <item name="android:navigationBarColor">@color/deep_orange_700</item>
+    </style>
+
+    <!-- Berry: violet primary, cyan accent -->
+    <style name="Theme.Saht.Berry" parent="Theme.Saht">
+        <item name="colorPrimary">@color/violet_500</item>
+        <item name="colorPrimaryVariant">@color/violet_700</item>
+        <item name="colorSecondary">@color/cyan_500</item>
+        <item name="colorSecondaryVariant">@color/cyan_500</item>
+        <item name="android:statusBarColor">@color/violet_700</item>
+        <item name="android:navigationBarColor">@color/violet_700</item>
     </style>
 
     <style name="bottomSheetAnimation">

@@ -14,6 +14,7 @@
         android:paddingTop="16dp"
         android:paddingHorizontal="16dp"
         android:text="@string/delete_warning"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"/>
 
     <LinearLayout
@@ -39,7 +40,7 @@
             android:layout_height="46dp"
             android:layout_width="0dp"
             android:background="@drawable/bg_button_cornered_solid_red"
-            app:backgroundTint="@color/red_500"
+            app:backgroundTint="?attr/colorSecondary"
             android:layout_weight="1"
             android:text="@string/yes" />
     </LinearLayout>

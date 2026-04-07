@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp"
         android:text="BPM"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="30sp" />
 
     <com.github.mikephil.charting.charts.LineChart
@@ -36,7 +37,9 @@
         app:layout_constraintTop_toBottomOf="@id/lineChart"
         android:layout_marginTop="24dp"
         android:layout_marginHorizontal="16dp"
-        app:boxStrokeColor="@color/et_border_green_700"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:hintTextColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorOnSurface"
         app:boxBackgroundMode="outline">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -44,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/activity_performed"
+            android:textColor="?attr/colorOnSurface"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,8 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/walking"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -76,8 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/running"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -85,8 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cycling"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
 
         <com.google.android.material.chip.Chip
@@ -94,8 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/resting"
-            android:textColor="@color/white"
-            app:chipBackgroundColor="@color/green_500"
+            android:textColor="?attr/colorOnPrimary"
+            app:chipBackgroundColor="?attr/colorPrimary"
             app:closeIconVisible="false"/>
     </com.google.android.material.chip.ChipGroup>
 
@@ -106,7 +110,7 @@
         android:minWidth="120dp"
         android:minHeight="50dp"
         android:background="@drawable/bg_button_cornered_solid_red"
-        app:backgroundTint="@color/green_500"
+        app:backgroundTint="?attr/colorPrimary"
         android:text="@string/cancel"
         app:layout_constraintTop_toBottomOf="@id/chipGroupDuration"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +127,7 @@
         android:minWidth="120dp"
         android:minHeight="50dp"
         android:background="@drawable/bg_button_cornered_solid_red"
-        android:backgroundTint="@color/red_500"
+        android:backgroundTint="?attr/colorSecondary"
         android:text="@string/save"
         app:layout_constraintTop_toBottomOf="@id/chipGroupDuration"
         app:layout_constraintStart_toEndOf="@id/btn_cancel"
