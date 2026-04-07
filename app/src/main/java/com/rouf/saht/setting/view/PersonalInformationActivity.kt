@@ -12,11 +12,12 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import com.rouf.saht.common.activity.BaseActivity
+import android.content.res.ColorStateList
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.textfield.TextInputEditText
 import com.rouf.saht.R
 import com.rouf.saht.common.model.Gender
@@ -33,7 +34,7 @@ import java.util.Locale
 
 
 @AndroidEntryPoint
-class PersonalInformationActivity : AppCompatActivity() {
+class PersonalInformationActivity : BaseActivity() {
 
     private val TAG: String = PersonalInformationActivity::class.java.simpleName
     private lateinit var binding: ActivityPersonalInformationBinding
@@ -83,104 +84,29 @@ class PersonalInformationActivity : AppCompatActivity() {
     }
 
     private fun onClick() {
-        val oldName = personalInformation.name
-        val oldHeight = if (personalInformation.height.isNullOrEmpty()) 0.0 else personalInformation.height.toDouble()
-        val oldWeight = if (personalInformation.weight.isNullOrEmpty()) 0.0 else personalInformation.weight.toDouble()
-
-        binding.etName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                val nameText = charSequence.toString().trim()
-
-                if (nameText.isNotEmpty()) {
-                    if (nameText.isNotEmpty()) {
-                        if (nameText != oldName) {
-                            binding.btnSave.isEnabled = true
-                        } else {
-                            binding.btnSave.isEnabled = false
-                        }
-                    } else {
-                        binding.etName.error = "Please enter a valid name"
-                        binding.btnSave.isEnabled = false
-                    }
-                } else {
-                    binding.etName.error = "Name cannot be empty"
-                    binding.btnSave.isEnabled = false
-                }
+        val simpleWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateSaveButtonState()
             }
+            override fun afterTextChanged(s: Editable?) {}
+        }
 
-            override fun afterTextChanged(editable: Editable?) {}
-        })
-
-        binding.etHeight.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                val heightText = charSequence.toString().trim()
-
-                if (heightText.isNotEmpty()) {
-                    val height = heightText.toDoubleOrNull()
-                    if (height != null && height > 0) {
-                        if (height != oldHeight) {
-                            binding.btnSave.isEnabled = true
-                        } else {
-                            binding.btnSave.isEnabled = false
-                        }
-                    } else {
-                        binding.etHeight.error = "Please enter a valid height"
-                        binding.btnSave.isEnabled = false
-                    }
-                } else {
-                    binding.etHeight.error = "Height cannot be empty"
-                    binding.btnSave.isEnabled = false
-                }
-            }
-
-            override fun afterTextChanged(editable: Editable?) {}
-        })
-
-        binding.etWeight.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                val weightText = charSequence.toString().trim()
-
-                if (weightText.isNotEmpty()) {
-                    val weight = weightText.toDoubleOrNull()
-                    if (weight != null && weight > 0) {
-                        if (weight != oldWeight) {
-                            binding.btnSave.isEnabled = true
-                        } else {
-                            binding.btnSave.isEnabled = false
-                        }
-                    } else {
-                        binding.etWeight.error = "Please enter a valid weight"
-                        binding.btnSave.isEnabled = false
-                    }
-                } else {
-                    binding.etWeight.error = "Weight cannot be empty"
-                    binding.btnSave.isEnabled = false
-                }
-            }
-
-            override fun afterTextChanged(editable: Editable?) {}
-        })
+        binding.etName.addTextChangedListener(simpleWatcher)
+        binding.etHeight.addTextChangedListener(simpleWatcher)
+        binding.etWeight.addTextChangedListener(simpleWatcher)
 
         binding.btnSave.setOnClickListener {
-            val name = binding.etName.text.toString()
-            val height = binding.etHeight.text.toString()
-            val weight = binding.etWeight.text.toString()
-
-            Log.d(TAG, "personalInformation: $personalInformation")
-
-            personalInformation.name = name
-            personalInformation.height = height
-            personalInformation.weight = weight
+            personalInformation.name = binding.etName.text.toString().trim()
+            personalInformation.height = binding.etHeight.text.toString().trim()
+            personalInformation.weight = binding.etWeight.text.toString().trim()
 
             lifecycleScope.launch {
                 settingsViewModel.savePersonalInformation(personalInformation)
             }
+
+            oldGender = personalInformation.gender
+            oldFormatedDate = personalInformation.formatedDate
             binding.btnSave.isEnabled = false
 
             hideKeyboard()
@@ -197,39 +123,45 @@ class PersonalInformationActivity : AppCompatActivity() {
         binding.containerMale.setOnClickListener {
             setGenderView(Gender.MALE)
             personalInformation.gender = Gender.MALE
-
-            if (oldGender.value != personalInformation.gender.value) {
-                binding.btnSave.isEnabled = true
-            } else {
-                binding.btnSave.isEnabled = false
-            }
+            updateSaveButtonState()
         }
 
         binding.containerFemale.setOnClickListener {
             setGenderView(Gender.FEMALE)
             personalInformation.gender = Gender.FEMALE
-
-            if (oldGender.value != personalInformation.gender.value) {
-                binding.btnSave.isEnabled = true
-            } else {
-                binding.btnSave.isEnabled = false
-            }
+            updateSaveButtonState()
         }
     }
 
+    private fun updateSaveButtonState() {
+        val nameChanged = binding.etName.text.toString().trim() != personalInformation.name
+        val heightChanged = binding.etHeight.text.toString().trim() != personalInformation.height
+        val weightChanged = binding.etWeight.text.toString().trim() != personalInformation.weight
+        val genderChanged = personalInformation.gender != oldGender
+        val dateChanged = personalInformation.formatedDate != oldFormatedDate
+
+        val nameValid = binding.etName.text.toString().trim().isNotEmpty()
+        val heightValid = binding.etHeight.text.toString().trim().toDoubleOrNull()?.let { it > 0 } ?: false
+        val weightValid = binding.etWeight.text.toString().trim().toDoubleOrNull()?.let { it > 0 } ?: false
+
+        val hasChange = nameChanged || heightChanged || weightChanged || genderChanged || dateChanged
+        binding.btnSave.isEnabled = hasChange && nameValid && heightValid && weightValid
+    }
+
     private fun setGenderView(type: Gender) {
-        val genderType = type.value
+        val primaryColor = ColorStateList.valueOf(
+            MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
+        )
+        val transparentColor = ColorStateList.valueOf(getColor(R.color.transparent))
 
-        when (genderType) {
+        when (type.value) {
             0 -> {
-                binding.wrapperMale.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green_500)
-                binding.wrapperFemale.backgroundTintList = ContextCompat.getColorStateList(this, R.color.transparent)
-
+                binding.wrapperMale.backgroundTintList = primaryColor
+                binding.wrapperFemale.backgroundTintList = transparentColor
             }
-
             1 -> {
-                binding.wrapperFemale.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green_500)
-                binding.wrapperMale.backgroundTintList = ContextCompat.getColorStateList(this, R.color.transparent)
+                binding.wrapperFemale.backgroundTintList = primaryColor
+                binding.wrapperMale.backgroundTintList = transparentColor
             }
         }
     }
@@ -251,17 +183,12 @@ class PersonalInformationActivity : AppCompatActivity() {
                 val age = calculateAge(selectedYear, selectedMonth, selectedDay)
                 tvAgeResult.text = "Your age is $age"
 
-                if (formattedDate != oldFormatedDate) {
-                    Log.d(TAG, "showDatePickerDialog: formattedDate: $formattedDate, oldFormatedDate:$oldFormatedDate")
-                    personalInformation.formatedDate = formattedDate
-                    personalInformation.selectedDay = selectedDay
-                    personalInformation.selectedMonth = selectedMonth
-                    personalInformation.selectedYear = selectedYear
-                    personalInformation.age = age.toString()
-                    binding.btnSave.isEnabled = true
-                } else {
-                    binding.btnSave.isEnabled = false
-                }
+                personalInformation.formatedDate = formattedDate
+                personalInformation.selectedDay = selectedDay
+                personalInformation.selectedMonth = selectedMonth
+                personalInformation.selectedYear = selectedYear
+                personalInformation.age = age.toString()
+                updateSaveButtonState()
             },
             year,
             month,
