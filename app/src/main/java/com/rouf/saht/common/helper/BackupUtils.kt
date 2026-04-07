@@ -8,7 +8,10 @@ import com.rouf.saht.common.model.HeartRateMonitorSettings
 import com.rouf.saht.common.model.PedometerData
 import com.rouf.saht.common.model.PedometerSettings
 import com.rouf.saht.common.model.PersonalInformation
+import com.rouf.saht.common.model.Sound
 import com.rouf.saht.heartRate.data.HeartRateData
+import com.rouf.saht.setting.view.CustomizationActivity
+import com.rouf.saht.setting.view.SettingsFragment
 import io.paperdb.Paper
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -16,6 +19,8 @@ import java.io.OutputStreamWriter
 object BackupUtils {
 
     private val gson = Gson()
+    private const val KEY_ONBOARDING = "onboarding_complete"
+    private const val KEY_CUSTOM_SOUNDS = "custom_meditation_sounds"
 
     fun exportData(context: Context, uri: Uri): Boolean {
         return try {
@@ -26,6 +31,20 @@ object BackupUtils {
             exportMap["pedometer_data"] = Paper.book().read<PedometerData>("pedometer_data", null)
             exportMap["pedometer_settings"] = Paper.book().read<PedometerSettings>("pedometer_settings", null)
             exportMap["heart_rate_monitor_settings"] = Paper.book().read<HeartRateMonitorSettings>("heart_rate_monitor_settings", null)
+
+            // Customization & preferences
+            exportMap[CustomizationActivity.PREF_THEME] = Paper.book().read<String>(CustomizationActivity.PREF_THEME, null)
+            exportMap[CustomizationActivity.PREF_CUSTOM_PRIMARY] = Paper.book().read<String>(CustomizationActivity.PREF_CUSTOM_PRIMARY, null)
+            exportMap[CustomizationActivity.PREF_CUSTOM_SECONDARY] = Paper.book().read<String>(CustomizationActivity.PREF_CUSTOM_SECONDARY, null)
+            exportMap[CustomizationActivity.PREF_DEFAULT_SCREEN] = Paper.book().read<String>(CustomizationActivity.PREF_DEFAULT_SCREEN, null)
+            exportMap[SettingsFragment.PREF_DARK_MODE] = Paper.book().read<Boolean>(SettingsFragment.PREF_DARK_MODE, null)
+            exportMap[SettingsFragment.PREF_DOUBLE_TAP_LOCK] = Paper.book().read<Boolean>(SettingsFragment.PREF_DOUBLE_TAP_LOCK, null)
+
+            // Onboarding
+            exportMap[KEY_ONBOARDING] = Paper.book().read<Boolean>(KEY_ONBOARDING, null)
+
+            // Custom meditation sounds
+            exportMap[KEY_CUSTOM_SOUNDS] = Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, null)
 
             val json = gson.toJson(exportMap)
             context.contentResolver.openOutputStream(uri)?.use { stream ->
@@ -67,6 +86,38 @@ object BackupUtils {
             dataMap["heart_rate_monitor_settings"]?.let {
                 Paper.book().write("heart_rate_monitor_settings", gson.fromJson(gson.toJson(it), HeartRateMonitorSettings::class.java))
             }
+
+            // Customization & preferences
+            dataMap[CustomizationActivity.PREF_THEME]?.let {
+                Paper.book().write(CustomizationActivity.PREF_THEME, it as String)
+            }
+            dataMap[CustomizationActivity.PREF_CUSTOM_PRIMARY]?.let {
+                Paper.book().write(CustomizationActivity.PREF_CUSTOM_PRIMARY, it as String)
+            }
+            dataMap[CustomizationActivity.PREF_CUSTOM_SECONDARY]?.let {
+                Paper.book().write(CustomizationActivity.PREF_CUSTOM_SECONDARY, it as String)
+            }
+            dataMap[CustomizationActivity.PREF_DEFAULT_SCREEN]?.let {
+                Paper.book().write(CustomizationActivity.PREF_DEFAULT_SCREEN, it as String)
+            }
+            dataMap[SettingsFragment.PREF_DARK_MODE]?.let {
+                Paper.book().write(SettingsFragment.PREF_DARK_MODE, it as Boolean)
+            }
+            dataMap[SettingsFragment.PREF_DOUBLE_TAP_LOCK]?.let {
+                Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, it as Boolean)
+            }
+
+            // Onboarding
+            dataMap[KEY_ONBOARDING]?.let {
+                Paper.book().write(KEY_ONBOARDING, it as Boolean)
+            }
+
+            // Custom meditation sounds
+            dataMap[KEY_CUSTOM_SOUNDS]?.let {
+                val listType = object : TypeToken<List<Sound>>() {}.type
+                Paper.book().write(KEY_CUSTOM_SOUNDS, gson.fromJson<List<Sound>>(gson.toJson(it), listType))
+            }
+
             true
         } catch (e: Exception) {
             e.printStackTrace()

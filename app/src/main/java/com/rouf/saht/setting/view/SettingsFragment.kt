@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rouf.saht.BuildConfig
 import com.rouf.saht.R
@@ -89,6 +90,7 @@ class SettingsFragment : Fragment() {
 
         observer()
         onClick()
+        setupCollapsingToolbar()
 
         return root
     }
@@ -100,13 +102,26 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun setupCollapsingToolbar() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalRange = appBarLayout.totalScrollRange
+            if (totalRange == 0) return@OnOffsetChangedListener
+            val fraction = (-verticalOffset).toFloat() / totalRange
+            binding.llCollapsedHeader.alpha = fraction
+            binding.clUserView.alpha = 1f - fraction
+        })
+    }
+
     private fun observer() {
         settingsViewModel.personalInformation.observe(viewLifecycleOwner) { personalInformation ->
             binding.tvUser.text = personalInformation.name
-            when (personalInformation.gender.value) {
-                0 -> binding.ivProfileImage.setImageResource(R.drawable.ic_person_man)
-                1 -> binding.ivProfileImage.setImageResource(R.drawable.ic_person_woman)
+            binding.tvCollapsedName.text = personalInformation.name
+            val avatarRes = when (personalInformation.gender.value) {
+                1 -> R.drawable.ic_person_woman
+                else -> R.drawable.ic_person_man
             }
+            binding.ivProfileImage.setImageResource(avatarRes)
+            binding.ivCollapsedAvatar.setImageResource(avatarRes)
         }
     }
 

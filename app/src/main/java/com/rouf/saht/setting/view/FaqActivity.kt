@@ -17,9 +17,21 @@ class FaqActivity : BaseActivity() {
         binding = ActivityFaqBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        applySurfaceStatusBar()
-
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { finish() }
+
+        val surfaceColor = MaterialColors.getColor(
+            this, com.google.android.material.R.attr.colorSurface, 0
+        )
+        binding.appBar.setBackgroundColor(surfaceColor)
+        binding.toolbar.setBackgroundColor(surfaceColor)
+        window.statusBarColor = surfaceColor
+
+        val isNight = resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        WindowInsetsControllerCompat(window, window.decorView)
+            .isAppearanceLightStatusBars = !isNight
 
         binding.rvFaq.layoutManager = LinearLayoutManager(this)
         binding.rvFaq.adapter = FaqAdapter(buildFaqItems())
@@ -119,13 +131,4 @@ class FaqActivity : BaseActivity() {
         ),
     )
 
-    private fun applySurfaceStatusBar() {
-        window.statusBarColor = MaterialColors.getColor(
-            this, com.google.android.material.R.attr.colorSurface, 0
-        )
-        val isNight = resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        WindowInsetsControllerCompat(window, window.decorView)
-            .isAppearanceLightStatusBars = !isNight
-    }
 }

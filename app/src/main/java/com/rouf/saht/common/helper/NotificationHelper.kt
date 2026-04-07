@@ -22,6 +22,8 @@ class NotificationHelper(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // Delete the old channel so the stale "Foreground Service" name is removed
+        manager.deleteNotificationChannel("ForegroundServiceChannel")
         val channel = NotificationChannel(
             CHANNEL_ID,
             CHANNEL_NAME,
@@ -52,7 +54,7 @@ class NotificationHelper(private val context: Context) {
     }
 
     companion object {
-        private const val CHANNEL_ID = "ForegroundServiceChannel"
+        private const val CHANNEL_ID = "pedometer_channel"
         private const val CHANNEL_NAME = "Pedometer"
     }
 }
