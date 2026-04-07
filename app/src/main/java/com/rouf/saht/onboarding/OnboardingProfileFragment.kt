@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.color.MaterialColors
+import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.R
 import com.rouf.saht.common.model.Gender
 import com.rouf.saht.common.model.PersonalInformation
@@ -69,7 +69,7 @@ class OnboardingProfileFragment : Fragment(), OnboardingPageFragment {
     }
 
     private fun setGenderSelected(gender: Gender) {
-        val selectedColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
+        val selectedColor = BaseActivity.effectivePrimary(requireContext())
         val defaultColor = requireContext().getColor(R.color.light_grey)
 
         if (gender == Gender.MALE) {

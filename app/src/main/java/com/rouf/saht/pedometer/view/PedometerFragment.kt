@@ -21,7 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.color.MaterialColors
+import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.BMIUtils
 import com.rouf.saht.common.helper.Util
@@ -105,7 +105,7 @@ class PedometerFragment : Fragment() {
         // Validate height and weight
         if (heightStr.isEmpty() || weightStr.isEmpty()) {
             binding.tvBmi.text = "BMI: " + getString(R.string.invalid_data)
-            binding.tvBmi.setTextColor(MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary))
+            binding.tvBmi.setTextColor(BaseActivity.effectiveSecondary(requireContext()))
 
             BMI_FLAG = false
 
@@ -227,11 +227,9 @@ class PedometerFragment : Fragment() {
 
     private fun initViewInActiveState() {
         val btnStartStop = binding.btnStartStop
-        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
-
         btnStartStop.text = getString(R.string.start)
         btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        btnStartStop.backgroundTintList = ColorStateList.valueOf(primaryColor)
+        btnStartStop.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectivePrimary(requireContext()))
 
         // setting bg_circular color
         val shapeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.bg_circular) as GradientDrawable
@@ -242,8 +240,8 @@ class PedometerFragment : Fragment() {
 
     private fun initViewActiveState() {
         val btnStartStop = binding.btnStartStop
-        val secondaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary)
-        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
+        val secondaryColor = BaseActivity.effectiveSecondary(requireContext())
+        val primaryColor = BaseActivity.effectivePrimary(requireContext())
 
         btnStartStop.text = getString(R.string.stop)
         btnStartStop.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)

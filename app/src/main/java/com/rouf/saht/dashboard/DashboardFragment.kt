@@ -13,9 +13,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.google.android.material.color.MaterialColors
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.common.helper.BMIUtils
 import com.rouf.saht.common.helper.Util
 import com.rouf.saht.common.model.PedometerData
@@ -67,8 +67,8 @@ class DashboardFragment : Fragment() {
     private fun loadSteps() {
         viewLifecycleOwner.lifecycleScope.launch {
             val settings = settingsViewModel.getPedometerSettings()
-            binding.dashboardProgressRing.max = settings.stepGoal
-            binding.tvDashboardGoal.text = "/ ${Util.formatWithCommas(settings.stepGoal)}"
+            _binding?.dashboardProgressRing?.max = settings.stepGoal
+            _binding?.tvDashboardGoal?.text = "/ ${Util.formatWithCommas(settings.stepGoal)}"
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -95,6 +95,7 @@ class DashboardFragment : Fragment() {
     private fun loadBmi() {
         viewLifecycleOwner.lifecycleScope.launch {
             val info = settingsViewModel.getPersonalInformation()
+            val b = _binding ?: return@launch
             val heightStr = info.height
             val weightStr = info.weight
             if (heightStr.isNotEmpty() && weightStr.isNotEmpty()) {
@@ -102,9 +103,9 @@ class DashboardFragment : Fragment() {
                 val weight = weightStr.toDoubleOrNull()
                 if (height != null && weight != null && height > 0 && weight > 0) {
                     val bmi = BMIUtils.calculateBMI(weight, height)
-                    binding.tvDashboardBmi.text = String.format("%.1f", bmi)
-                    binding.tvDashboardBmiCategory.text = BMIUtils.getBMICategory(bmi)
-                    binding.tvDashboardBmi.setTextColor(BMIUtils.getCategoryColor(requireContext(), bmi))
+                    b.tvDashboardBmi.text = String.format("%.1f", bmi)
+                    b.tvDashboardBmiCategory.text = BMIUtils.getBMICategory(bmi)
+                    b.tvDashboardBmi.setTextColor(BMIUtils.getCategoryColor(requireContext(), bmi))
                 }
             }
         }
@@ -116,12 +117,12 @@ class DashboardFragment : Fragment() {
                 pedometerViewModel.getPedometerListFromDB()
             } ?: emptyList()
 
-            setupWeeklyBarChart(list)
+            if (_binding != null) setupWeeklyBarChart(list)
         }
     }
 
     private fun setupWeeklyBarChart(allData: List<PedometerData>) {
-        val chart = binding.barChartWeekly
+        val chart = _binding?.barChartWeekly ?: return
         val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -150,7 +151,7 @@ class DashboardFragment : Fragment() {
         val textColor = if (isDark) Color.WHITE else Color.DKGRAY
 
         val dataSet = BarDataSet(entries, "Steps").apply {
-            color = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
+            color = BaseActivity.effectivePrimary(requireContext())
             setDrawValues(false)
         }
 

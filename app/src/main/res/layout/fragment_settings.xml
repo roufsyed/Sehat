@@ -17,6 +17,7 @@
 
         <!-- Gradient header -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_user_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="24dp"

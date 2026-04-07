@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
-import com.rouf.saht.common.activity.BaseActivity
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.color.MaterialColors
+import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.R
 import com.rouf.saht.common.activity.MainActivity
 import com.rouf.saht.databinding.ActivityOnboardingBinding
@@ -75,7 +74,7 @@ class OnboardingActivity : BaseActivity() {
     }
 
     private fun updateDots(position: Int) {
-        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
+        val primaryColor = BaseActivity.effectivePrimary(this)
         val inactiveColor = getColor(R.color.dark_grey)
         dots.forEachIndexed { i, dot ->
             dot.backgroundTintList = ColorStateList.valueOf(

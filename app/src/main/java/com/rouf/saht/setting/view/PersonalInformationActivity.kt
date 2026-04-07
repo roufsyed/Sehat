@@ -12,12 +12,11 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import com.rouf.saht.common.activity.BaseActivity
 import android.content.res.ColorStateList
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.google.android.material.color.MaterialColors
+import com.rouf.saht.common.activity.BaseActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.rouf.saht.R
 import com.rouf.saht.common.model.Gender
@@ -149,9 +148,7 @@ class PersonalInformationActivity : BaseActivity() {
     }
 
     private fun setGenderView(type: Gender) {
-        val primaryColor = ColorStateList.valueOf(
-            MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
-        )
+        val primaryColor = ColorStateList.valueOf(BaseActivity.effectivePrimary(this))
         val transparentColor = ColorStateList.valueOf(getColor(R.color.transparent))
 
         when (type.value) {

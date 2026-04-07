@@ -27,7 +27,7 @@ class NotificationHelper(private val context: Context) {
             CHANNEL_NAME,
             NotificationManager.IMPORTANCE_LOW
         )
-        channel.description = "Channel for foreground service notifications"
+        channel.description = "Shows your live step count and calories while the pedometer is running"
         manager.createNotificationChannel(channel)
     }
 
@@ -53,6 +53,6 @@ class NotificationHelper(private val context: Context) {
 
     companion object {
         private const val CHANNEL_ID = "ForegroundServiceChannel"
-        private const val CHANNEL_NAME = "Foreground Service"
+        private const val CHANNEL_NAME = "Pedometer"
     }
 }

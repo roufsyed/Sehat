@@ -34,7 +34,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.google.android.material.color.MaterialColors
+import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.TimeUtil
 import com.rouf.saht.common.model.HeartRateMonitorData
@@ -204,19 +204,17 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun initViewInActiveState() {
-        val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
         binding.btnMeasure.text = getString(R.string.start_monitoring)
         binding.preview.isVisible = false
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(primaryColor)
+        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectivePrimary(requireContext()))
     }
 
     private fun initViewActiveState() {
-        val secondaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorSecondary)
         binding.btnMeasure.text = getString(R.string.stop_monitoring)
         binding.preview.isVisible = true
         binding.btnMeasure.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_button_cornered_solid_red)
-        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(secondaryColor)
+        binding.btnMeasure.backgroundTintList = ColorStateList.valueOf(BaseActivity.effectiveSecondary(requireContext()))
     }
 
     private fun startPulseAnimation() {
