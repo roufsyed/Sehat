@@ -25,4 +25,8 @@ class MonitorHeartRateUseCase @Inject constructor(
     suspend fun deleteHeartRateMonitorDataByPosition(position: Int): Boolean {
         return repository.deleteHeartRateMonitorDataByPosition(position)
     }
+
+    suspend fun deleteByTimestamp(timestamp: Long): Boolean {
+        return repository.deleteHeartRateMonitorDataByTimestamp(timestamp)
+    }
 }

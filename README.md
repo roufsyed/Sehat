@@ -101,28 +101,6 @@ Output APKs are named `Sehat_<version>_<buildType>.apk`.
 
 Requires Android Studio Hedgehog or later.
 
-## Release signing
-
-Copy `local.properties.example` to `local.properties` and fill in your keystore details. `local.properties` is gitignored and should never be committed.
-
-## Potential improvements
-
-| Area | Idea |
-|---|---|
-| Pedometer | Home screen widget showing live step count |
-| Pedometer | Streak counter — consecutive days hitting the step goal |
-| Pedometer | Weekly / monthly bar charts (MPAndroidChart already included) |
-| Pedometer | Scheduled reminder notification when step goal isn't reached by evening |
-| Heart Rate | Heart rate zones (Fat Burn / Cardio / Peak) with colour-coded labels |
-| Heart Rate | Resting heart rate trend graph over days |
-| Meditation | Breathing exercise timer (4-7-8, box breathing) |
-| Meditation | Timer displayed on screen during playback |
-| Data | Export as CSV for spreadsheet / Apple Health import |
-| Data | Scheduled auto-backup (e.g. daily export to a chosen folder) |
-| General | Full dark mode support |
-| General | App lock / PIN to protect health data |
-| General | Localization (Urdu, Arabic, and other languages) |
-
 ---
 
 ## License

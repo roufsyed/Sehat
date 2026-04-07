@@ -67,4 +67,8 @@ class HeartRateViewModel @Inject constructor(
         return monitorHeartRateUseCase.deleteHeartRateMonitorDataByPosition(position)
     }
 
+    suspend fun deleteByTimestamp(timestamp: Long): Boolean {
+        return monitorHeartRateUseCase.deleteByTimestamp(timestamp)
+    }
+
 }

@@ -14,6 +14,7 @@ interface HeartRateRepository {
     suspend fun saveHeartRateMonitorData(heartRateMonitorData: HeartRateMonitorData)
     suspend fun getHeartRateMonitorData(): List<HeartRateMonitorData>?
     suspend fun deleteHeartRateMonitorDataByPosition(position: Int): Boolean
+    suspend fun deleteHeartRateMonitorDataByTimestamp(timestamp: Long): Boolean
 
     companion object {
         const val MIN_CONFIDENCE_THRESHOLD = 0.7f

@@ -65,4 +65,8 @@ class PedometerViewModel @Inject constructor(
     suspend fun deletePedometerDataByPosition(position: Int): Boolean {
         return pedometerRepository.deletePedometerDataByPosition(position)
     }
+
+    suspend fun deletePedometerDataByTimestamp(timestamp: Long): Boolean {
+        return pedometerRepository.deletePedometerDataByTimestamp(timestamp)
+    }
 }

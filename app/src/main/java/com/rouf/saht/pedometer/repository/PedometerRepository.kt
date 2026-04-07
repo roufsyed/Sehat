@@ -116,6 +116,18 @@ class PedometerRepository @Inject constructor() {
     }
 
 
+    suspend fun deletePedometerDataByTimestamp(timestamp: Long): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val list: MutableList<PedometerData>? = Paper.book().read("pedometer_data_list")
+            val updated = list?.filterNot { it.timestamp == timestamp }
+            updated?.let { Paper.book().write("pedometer_data_list", it) }
+            updated?.size != list?.size
+        } catch (e: Exception) {
+            Log.e(TAG, "deletePedometerDataByTimestamp: Error", e)
+            false
+        }
+    }
+
     private suspend fun resetPedometerDataInDB(): Unit = withContext(Dispatchers.IO) {
         Paper.book().delete("pedometer_data")
     }

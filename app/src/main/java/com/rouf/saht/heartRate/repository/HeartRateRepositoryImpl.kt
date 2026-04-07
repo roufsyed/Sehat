@@ -94,6 +94,18 @@ class HeartRateRepositoryImpl @Inject constructor(
         return@withContext Paper.book().read("heart_rate_monitor_data")
     }
 
+    override suspend fun deleteHeartRateMonitorDataByTimestamp(timestamp: Long): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val list: MutableList<HeartRateMonitorData>? = Paper.book().read("heart_rate_monitor_data")
+            val updated = list?.filterNot { it.timeStamp == timestamp }
+            updated?.let { Paper.book().write("heart_rate_monitor_data", it) }
+            updated?.size != list?.size
+        } catch (e: Exception) {
+            Log.e(TAG, "deleteHeartRateMonitorDataByTimestamp: Error", e)
+            false
+        }
+    }
+
     override suspend fun deleteHeartRateMonitorDataByPosition(position: Int): Boolean = withContext(Dispatchers.IO) {
         try {
             val heartRateDataList: MutableList<HeartRateMonitorData>? = Paper.book().read("heart_rate_monitor_data")
