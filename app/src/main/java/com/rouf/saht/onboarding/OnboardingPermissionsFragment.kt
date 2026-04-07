@@ -35,6 +35,7 @@ class OnboardingPermissionsFragment : Fragment(), OnboardingPageFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        animateEntrance()
         updateButtonVisibility()
 
         binding.btnGrantPermissions.setOnClickListener {
@@ -73,6 +74,20 @@ class OnboardingPermissionsFragment : Fragment(), OnboardingPageFragment {
 
     override fun onNextTapped(proceed: () -> Unit) {
         proceed()
+    }
+
+    private fun animateEntrance() {
+        val header = listOf(binding.tvHeading, binding.tvSubtitle)
+        header.forEach { it.alpha = 0f; it.translationY = 30f }
+        header.forEachIndexed { i, v ->
+            v.animate().alpha(1f).translationY(0f).setDuration(400).setStartDelay(i * 150L).start()
+        }
+
+        val rows = listOf(binding.rowStepCounter, binding.rowNotifications, binding.rowCamera)
+        rows.forEach { it.alpha = 0f; it.translationX = -80f }
+        rows.forEachIndexed { i, v ->
+            v.animate().alpha(1f).translationX(0f).setDuration(450).setStartDelay(200L + i * 120L).start()
+        }
     }
 
     override fun onDestroyView() {

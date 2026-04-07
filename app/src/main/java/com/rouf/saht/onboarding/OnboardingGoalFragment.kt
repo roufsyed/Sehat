@@ -34,6 +34,7 @@ class OnboardingGoalFragment : Fragment(), OnboardingPageFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        animateEntrance()
         binding.etStepGoal.setText("10000")
 
         binding.chip5000.setOnClickListener {
@@ -61,6 +62,20 @@ class OnboardingGoalFragment : Fragment(), OnboardingPageFragment {
             withContext(Dispatchers.Main) {
                 proceed()
             }
+        }
+    }
+
+    private fun animateEntrance() {
+        val header = listOf(binding.tvHeading, binding.tvSubtitle)
+        header.forEach { it.alpha = 0f; it.translationY = 30f }
+        header.forEachIndexed { i, v ->
+            v.animate().alpha(1f).translationY(0f).setDuration(400).setStartDelay(i * 150L).start()
+        }
+
+        val chips = listOf(binding.chip5000, binding.chip8000, binding.chip10000, binding.chip12000)
+        chips.forEach { it.alpha = 0f; it.translationY = 20f }
+        chips.forEachIndexed { i, v ->
+            v.animate().alpha(1f).translationY(0f).setDuration(350).setStartDelay(300L + i * 100L).start()
         }
     }
 

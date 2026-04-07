@@ -40,6 +40,7 @@ class OnboardingProfileFragment : Fragment(), OnboardingPageFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        animateEntrance()
         setGenderSelected(Gender.MALE)
 
         binding.cardMale.setOnClickListener {
@@ -50,6 +51,20 @@ class OnboardingProfileFragment : Fragment(), OnboardingPageFragment {
         binding.cardFemale.setOnClickListener {
             selectedGender = Gender.FEMALE
             setGenderSelected(Gender.FEMALE)
+        }
+    }
+
+    private fun animateEntrance() {
+        val header = listOf(binding.tvHeading, binding.tvSubtitle)
+        header.forEach { it.alpha = 0f; it.translationY = 30f }
+        header.forEachIndexed { i, v ->
+            v.animate().alpha(1f).translationY(0f).setDuration(400).setStartDelay(i * 150L).start()
+        }
+
+        val cards = listOf(binding.cardMale, binding.cardFemale)
+        cards.forEach { it.alpha = 0f; it.scaleX = 0.8f; it.scaleY = 0.8f }
+        cards.forEachIndexed { i, v ->
+            v.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(400).setStartDelay(300L + i * 150L).start()
         }
     }
 
