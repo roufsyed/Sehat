@@ -2,6 +2,7 @@ package com.rouf.saht.setting.view
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
+import com.rouf.saht.common.activity.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rouf.saht.BuildConfig
 import com.rouf.saht.R
@@ -102,7 +104,37 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private var originalStatusBarColor = 0
+
     private fun setupCollapsingToolbar() {
+        val window = requireActivity().window
+        originalStatusBarColor = window.statusBarColor
+
+        val primaryDark = BaseActivity.effectivePrimaryDark(requireContext())
+        val primary = BaseActivity.effectivePrimary(requireContext())
+
+        // Status bar matches the gradient start color
+        window.statusBarColor = primaryDark
+
+        // Update the AppBarLayout gradient background
+        val appBarBg = binding.appBar.background
+        if (appBarBg is GradientDrawable) {
+            appBarBg.colors = intArrayOf(primaryDark, primary)
+        }
+
+        // Update the expanded header gradient
+        val headerBg = binding.clUserView.background
+        if (headerBg is GradientDrawable) {
+            headerBg.colors = intArrayOf(primaryDark, primary)
+        }
+
+        // Update the content scrim for collapsed state
+        val scrim = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(primaryDark, primary)
+        )
+        binding.collapsingToolbar.contentScrim = scrim
+
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val totalRange = appBarLayout.totalScrollRange
             if (totalRange == 0) return@OnOffsetChangedListener
@@ -208,6 +240,7 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        requireActivity().window.statusBarColor = originalStatusBarColor
         super.onDestroyView()
         _binding = null
     }

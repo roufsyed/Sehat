@@ -168,8 +168,11 @@ class CustomizationActivity : BaseActivity() {
         MaterialAlertDialogBuilder(this)
             .setView(dialogView)
             .setPositiveButton(R.string.save) { _, _ ->
-                val primaryHex = etPrimary.text?.toString()?.trim() ?: "#4CAF50"
-                val secondaryHex = etSecondary.text?.toString()?.trim() ?: "#F44336"
+                val hexRegex = Regex("#[0-9A-Fa-f]{6}")
+                val rawPrimary = etPrimary.text?.toString()?.trim() ?: ""
+                val rawSecondary = etSecondary.text?.toString()?.trim() ?: ""
+                val primaryHex = if (rawPrimary.matches(hexRegex)) rawPrimary else "#4CAF50"
+                val secondaryHex = if (rawSecondary.matches(hexRegex)) rawSecondary else "#F44336"
                 Paper.book().write(PREF_CUSTOM_PRIMARY, primaryHex)
                 Paper.book().write(PREF_CUSTOM_SECONDARY, secondaryHex)
                 Paper.book().write(PREF_THEME, THEME_CUSTOM)
