@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 16px;
+            line-height: 1.6;
+            color: #212121;
+            background: transparent;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { color: #e0e0e0; }
+        }
+        h2 {
+            font-size: 16px;
+            margin-top: 24px;
+            margin-bottom: 4px;
+        }
+        p {
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 16px 0;
+        }
+        @media (prefers-color-scheme: dark) {
+            hr { border-top-color: #424242; }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Why does the app need camera permission?</h2>
+<p>
+    The heart rate monitor uses your device's rear camera and flash to detect
+    blood flow through your fingertip. By placing your finger over the camera
+    lens, the app captures subtle colour changes caused by each heartbeat and
+    calculates your pulse. No photos or videos are ever taken or stored.
+</p>
+
+<hr/>
+
+<h2>Why does the app need activity recognition permission?</h2>
+<p>
+    The pedometer relies on your device's built-in step counter sensor.
+    Android requires the Activity Recognition permission so the app can
+    read step data from that sensor. This permission is used solely for
+    counting steps and is never used to track your location.
+</p>
+
+<hr/>
+
+<h2>How is my data stored?</h2>
+<p>
+    All data&mdash;personal information, step counts, heart rate readings, and
+    settings&mdash;is stored locally on your device. Nothing is sent to any
+    server or third party. You can export or import your data at any time
+    from <strong>Settings &gt; Data</strong>.
+</p>
+
+<hr/>
+
+<h2>Is my data encrypted?</h2>
+<p>
+    Your data is stored in the app's private internal storage, which is
+    sandboxed by Android and inaccessible to other apps. On devices with
+    file-based encryption (Android 7+), data at rest is automatically
+    encrypted by the operating system.
+</p>
+
+<hr/>
+
+<h2>Does the app use the internet?</h2>
+<p>
+    No. Sehat does not require internet access. It works entirely offline.
+    There are no analytics, ads, or telemetry of any kind.
+</p>
+
+<hr/>
+
+<h2>How accurate is the heart rate measurement?</h2>
+<p>
+    The camera-based method provides an approximate reading suitable for
+    general wellness tracking. For medical-grade accuracy, please use a
+    certified medical device. Factors like movement, ambient light, and
+    finger pressure can affect the reading.
+</p>
+
+<hr/>
+
+<h2>How accurate is the pedometer?</h2>
+<p>
+    The pedometer uses your phone's hardware step counter sensor. Accuracy
+    depends on your device and where you carry it. For best results, keep
+    the phone in your pocket or a secure holder. You can adjust the
+    sensitivity in <strong>Settings &gt; Pedometer Settings</strong>.
+</p>
+
+<hr/>
+
+<h2>What is the pedometer foreground notification?</h2>
+<p>
+    When the pedometer is running, Android requires a persistent notification
+    to keep the step-counting service alive. Tapping the notification opens
+    the app directly to the Pedometer screen. You can customise notification
+    behaviour in your system notification settings.
+</p>
+
+<hr/>
+
+<h2>Can I change the default screen shown on launch?</h2>
+<p>
+    Yes. Go to <strong>Settings &gt; Customization &gt; Default Screen</strong>
+    and pick the tab you would like to see when you open the app.
+</p>
+
+<hr/>
+
+<h2>How do I export or back up my data?</h2>
+<p>
+    Go to <strong>Settings &gt; Data &gt; Export data</strong>. You will be
+    prompted to choose a location to save a JSON backup file. To restore,
+    use <strong>Import data</strong> from the same menu.
+</p>
+
+<hr/>
+
+<h2>Can I delete individual records?</h2>
+<p>
+    Yes. Open any pedometer or heart rate history entry and tap the
+    <strong>Delete</strong> button. Deleted records cannot be recovered.
+</p>
+
+<hr/>
+
+<h2>What does the double-tap to lock feature do?</h2>
+<p>
+    When enabled in <strong>Settings &gt; Customization</strong>, double-tapping
+    anywhere on the screen locks your device. This uses Android's
+    Accessibility Service and works without requiring your PIN or pattern on
+    the lock screen (fingerprint unlock remains available).
+</p>
+
+</body>
+</html>

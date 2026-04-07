@@ -77,7 +77,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".setting.view.CustomizationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".setting.view.PrivacyPolicyActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setting.view.FaqActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -92,18 +101,19 @@
             </intent-filter>
         </activity>
 
-        <!-- exported=false: only this app should start the pedometer service -->
-        <receiver
-            android:name=".common.receiver.LockScreenAdmin"
+        <!-- Accessibility service for soft-lock (allows fingerprint unlock) -->
+        <service
+            android:name=".common.service.LockScreenAccessibilityService"
             android:exported="true"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
-        </receiver>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
 
         <service
             android:name=".pedometer.service.PedometerForegroundService"
