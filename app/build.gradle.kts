@@ -48,6 +48,7 @@ android {
         release {
             isMinifyEnabled   = true
             isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -60,6 +61,7 @@ android {
         debug {
             isMinifyEnabled   = false
             isShrinkResources = false
+            isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix   = "-debug"
         }
@@ -83,6 +85,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     hilt {
         enableAggregatingTask = true

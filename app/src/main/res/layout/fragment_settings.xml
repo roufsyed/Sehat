@@ -6,14 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:clipToPadding="false"
     tools:context=".setting.view.SettingsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="80dp">
 
-        <!-- Gradient header (Item 5) -->
+        <!-- Gradient header -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +47,7 @@
                 android:textStyle="bold" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Settings rows in MaterialCardView (Item 3) -->
+        <!-- Settings rows -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,6 +55,52 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="16dp">
 
+            <!-- Customization card (new, at top) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_customization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_customization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_dark_mode"
+                        android:contentDescription="Customization" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/customization"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/customization_desc"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- About me (was Personal Information) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_personal_information"
                 android:layout_width="match_parent"
@@ -75,7 +123,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_person_man"
-                        android:contentDescription="Personal information" />
+                        android:contentDescription="About me" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -85,10 +133,9 @@
                             android:id="@+id/personal_information_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/personal_information"
+                            android:text="@string/about_me"
                             android:textStyle="bold"
                             android:textSize="16sp" />
-
                         <TextView
                             android:id="@+id/personal_information_desc"
                             android:layout_width="wrap_content"
@@ -100,6 +147,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Pedometer Settings -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_pedometer_settings"
                 android:layout_width="match_parent"
@@ -135,7 +183,6 @@
                             android:text="@string/pedometer_settings"
                             android:textStyle="bold"
                             android:textSize="16sp" />
-
                         <TextView
                             android:id="@+id/pedometer_settings_desc"
                             android:layout_width="wrap_content"
@@ -147,6 +194,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Heart Rate Settings -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_hrm_settings"
                 android:layout_width="match_parent"
@@ -182,7 +230,6 @@
                             android:text="@string/heart_rate_monitor_settings"
                             android:textStyle="bold"
                             android:textSize="16sp" />
-
                         <TextView
                             android:id="@+id/heart_rate_settings_desc"
                             android:layout_width="wrap_content"
@@ -194,6 +241,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Notifications -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_notification"
                 android:layout_width="match_parent"
@@ -229,7 +277,6 @@
                             android:text="@string/notifications"
                             android:textStyle="bold"
                             android:textSize="16sp" />
-
                         <TextView
                             android:id="@+id/stride_length_desc"
                             android:layout_width="wrap_content"
@@ -241,6 +288,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Data -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_data"
                 android:layout_width="match_parent"
@@ -276,7 +324,6 @@
                             android:text="@string/data"
                             android:textStyle="bold"
                             android:textSize="16sp" />
-
                         <TextView
                             android:id="@+id/hr_measurement_desc"
                             android:layout_width="wrap_content"
@@ -288,6 +335,98 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Seed Data (debug only) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_seed_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_seed_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_data"
+                        android:contentDescription="Seed data" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seed_data"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seed_data_desc"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- FAQ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_faq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_faq"
+                        android:contentDescription="FAQ" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/faq"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/faq_desc"
+                            android:textSize="13sp"
+                            android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Privacy Policy (new icon) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_privacy_policy"
                 android:layout_width="match_parent"
@@ -309,7 +448,7 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_person_24"
+                        android:src="@drawable/ic_privacy"
                         android:contentDescription="Privacy policy" />
 
                     <LinearLayout
@@ -329,108 +468,6 @@
                             android:textSize="13sp"
                             android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_double_tap_lock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="12dp">
-
-                <LinearLayout
-                    android:id="@+id/ll_double_tap_lock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="14dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_lock_24"
-                        android:contentDescription="Double-tap to lock" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Double-tap to Lock"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Double-tap the screen to lock the device"
-                            android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
-                    </LinearLayout>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_double_tap_lock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_dark_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="12dp">
-
-                <LinearLayout
-                    android:id="@+id/ll_dark_mode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="14dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_dark_mode"
-                        android:contentDescription="Dark mode toggle" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dark Mode"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Switch between light and dark theme"
-                            android:textSize="13sp"
-                            android:textColor="@android:color/darker_gray" />
-                    </LinearLayout>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_dark_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

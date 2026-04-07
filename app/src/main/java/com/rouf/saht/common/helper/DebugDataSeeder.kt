@@ -1,18 +1,46 @@
 package com.rouf.saht.common.helper
 
 import com.github.mikephil.charting.data.Entry
+import com.rouf.saht.common.model.Gender
 import com.rouf.saht.common.model.HeartRateMonitorData
 import com.rouf.saht.common.model.HeartRateMonitorSensitivity
 import com.rouf.saht.common.model.PedometerData
+import com.rouf.saht.common.model.PersonalInformation
 import io.paperdb.Paper
 import java.util.Calendar
 
 object DebugDataSeeder {
 
-    private const val KEY_HEART_RATE = "heart_rate_monitor_data"
-    private const val KEY_PEDOMETER  = "pedometer_data_list"
+    private const val KEY_HEART_RATE       = "heart_rate_monitor_data"
+    private const val KEY_PEDOMETER        = "pedometer_data_list"
+    private const val KEY_PERSONAL_INFO    = "personal_information"
 
     private val activities = listOf("Walking", "Running", "Cycling", "Resting")
+
+    fun seedAllData() {
+        seedPersonalInformation()
+        seedHeartRateData()
+        seedPedometerData()
+    }
+
+    fun seedPersonalInformation() {
+        Paper.book().write(
+            KEY_PERSONAL_INFO,
+            PersonalInformation(
+                name         = "John",
+                gender       = Gender.MALE,
+                height       = "175",
+                heightUnit   = "cm",
+                weight       = "70",
+                weightUnit   = "kg",
+                selectedYear  = 1995,
+                selectedMonth = 5,
+                selectedDay   = 15,
+                formatedDate  = "15/05/1995",
+                age           = "30"
+            )
+        )
+    }
 
     fun seedHeartRateData() {
         val existing: MutableList<HeartRateMonitorData> =

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Sehat</string>
     <string name="title_dashboard">Home</string>
+    <string name="accessibility_service_description">Allows Sehat to lock the screen on double-tap without requiring your PIN.</string>
     <string name="title_pedometer">Pedometer</string>
     <string name="title_heart_rate">Heart Rate</string>
     <string name="title_women_health">Women Health</string>
@@ -70,4 +71,21 @@
     <string name="start_time">Start time:</string>
     <string name="end_time">End time:</string>
     <string name="calories_burned">Calories burned:</string>
+    <string name="about_me">About me</string>
+    <string name="customization">Customization</string>
+    <string name="customization_desc">Theme, dark mode, double-tap lock</string>
+    <string name="theme_forest">Forest</string>
+    <string name="theme_ocean">Ocean</string>
+    <string name="theme_sunset">Sunset</string>
+    <string name="theme_berry">Berry</string>
+    <string name="theme_color">Theme Color</string>
+    <string name="appearance">Appearance</string>
+    <string name="accessibility">Accessibility</string>
+    <string name="seed_data">Seed Data</string>
+    <string name="seed_data_desc">Populate app with demo data</string>
+    <string name="default_screen">Default Screen</string>
+    <string name="default_screen_desc">Choose which screen opens on launch</string>
+    <string name="general">General</string>
+    <string name="faq">FAQ</string>
+    <string name="faq_desc">Frequently asked questions</string>
 </resources>
