@@ -94,6 +94,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".meditation.BreathingExerciseActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".setting.view.DashboardSettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

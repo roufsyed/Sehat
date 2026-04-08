@@ -42,6 +42,7 @@ class CustomizationActivity : BaseActivity() {
         binding.switchDarkMode.isChecked = isDarkMode
 
         setupDefaultScreen()
+        setupNavOrder()
         setupThemeCards()
         setupDarkModeSwitch()
         setupDoubleTapSwitch()
@@ -249,6 +250,12 @@ class CustomizationActivity : BaseActivity() {
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
+        }
+    }
+
+    private fun setupNavOrder() {
+        binding.llNavOrder.setOnClickListener {
+            startActivity(Intent(this, NavOrderActivity::class.java))
         }
     }
 

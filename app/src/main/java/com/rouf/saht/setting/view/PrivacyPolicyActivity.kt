@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.color.MaterialColors
+import com.rouf.saht.R
 import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.databinding.ActivityPrivacyPolicyBinding
 
@@ -19,6 +20,9 @@ class PrivacyPolicyActivity : BaseActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.navigationIcon?.setTint(
+            androidx.core.content.ContextCompat.getColor(this, R.color.dark_grey)
+        )
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         val surfaceColor = MaterialColors.getColor(
@@ -70,8 +74,12 @@ class PrivacyPolicyActivity : BaseActivity() {
             "If you select a custom meditation sound, a pointer (URI) to the file on your device is stored locally. The sound file itself is not copied or uploaded."
         ),
         FaqItem.Entry(
+            "Breathing exercises",
+            "The guided breathing exercises (4-7-8 and Box Breathing) run entirely on-device using simple animations and timers. No data is collected, recorded, or stored during a breathing session."
+        ),
+        FaqItem.Entry(
             "App settings and preferences",
-            "Theme choices, pedometer settings, default screen, and other preferences are stored locally on your device."
+            "Theme choices, dark mode, pedometer settings, heart rate monitor settings, default screen, navigation tab order, dashboard card visibility, and other preferences are stored locally on your device."
         ),
 
         // ── What We Don't Do ──
@@ -107,7 +115,11 @@ class PrivacyPolicyActivity : BaseActivity() {
         ),
         FaqItem.Entry(
             "Foreground Service / Notifications",
-            "Android requires a persistent notification to keep the pedometer step-counting service running in the background. This notification is only shown while the pedometer is actively counting steps."
+            "Android requires a persistent notification to keep the pedometer step-counting service and meditation audio playback running in the background. These notifications are only shown while their respective features are active."
+        ),
+        FaqItem.Entry(
+            "Audio (READ_MEDIA_AUDIO)",
+            "Required only when you add a custom meditation sound from your device storage. Sehat reads the selected audio file for playback; it does not scan, index, or access any other audio files on your device."
         ),
         FaqItem.Entry(
             "Accessibility Service",

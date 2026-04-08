@@ -25,6 +25,9 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private lateinit var gestureDetector: GestureDetector
 
+    /** Tracks the last nav order we applied so we only rebuild when it changes. */
+    private var lastAppliedNavOrder: List<String>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,15 +43,23 @@ class MainActivity : BaseActivity() {
         }
 
         val navView: BottomNavigationView = binding.navView
+
+        // Apply custom nav order before wiring up the navigation controller,
+        // so the menu is in the correct order when setupWithNavController syncs state.
         applyNavOrder(navView)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         navController = navHostFragment.navController
 
+        // Two-way sync: tab taps navigate, destination changes update the selected tab.
         navView.setupWithNavController(navController)
 
+        // On fresh launch, select the user's default screen.
+        // Posted so it runs after setupWithNavController's initial sync
+        // (which selects the nav graph's startDestination).
         if (savedInstanceState == null) {
-            navigateToRequestedScreen(intent)
+            navView.post { selectScreen(intent) }
         }
 
         gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
@@ -64,15 +75,27 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        applyNavOrder(binding.navView)
+        // Only rebuild the menu if the saved order actually changed
+        // (e.g. user returned from NavOrderActivity after reordering).
+        // This avoids clearing the menu and resetting the selected tab
+        // on every resume (coming back from Settings, Home Settings, etc.).
+        val currentOrder = Paper.book().read<List<String>>(NavOrderActivity.PREF_NAV_ORDER)
+        if (currentOrder != lastAppliedNavOrder) {
+            applyNavOrder(binding.navView)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        navigateToRequestedScreen(intent)
+        selectScreen(intent)
     }
 
-    private fun navigateToRequestedScreen(intent: Intent?) {
+    /**
+     * Selects the appropriate bottom-nav tab. If the intent carries an explicit
+     * target (e.g. from a notification), that takes priority; otherwise falls
+     * back to the user's configured default screen.
+     */
+    private fun selectScreen(intent: Intent?) {
         val target = intent?.getStringExtra(EXTRA_NAVIGATE_TO)
         val navId = if (target != null) {
             CustomizationActivity.defaultScreenNavId(target)
@@ -83,9 +106,7 @@ class MainActivity : BaseActivity() {
             ) ?: CustomizationActivity.SCREEN_DASHBOARD
             CustomizationActivity.defaultScreenNavId(defaultScreen)
         }
-        if (navId != R.id.navigation_dashboard) {
-            binding.navView.selectedItemId = navId
-        }
+        binding.navView.selectedItemId = navId
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -93,32 +114,48 @@ class MainActivity : BaseActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
+    /**
+     * Reorders the BottomNavigationView menu items to match the user's
+     * saved preference, preserving the currently selected tab.
+     *
+     * Skips the rebuild entirely when the saved order is null (user has
+     * never customised → use the XML-declared order).
+     */
     private fun applyNavOrder(navView: BottomNavigationView) {
         val savedOrder = Paper.book().read<List<String>>(NavOrderActivity.PREF_NAV_ORDER)
-            ?: return // default XML order
+        lastAppliedNavOrder = savedOrder
+        if (savedOrder == null) return
+
+        // Remember which tab is currently active so we can restore it
+        // after the menu is cleared and rebuilt.
+        val previousSelectedId = navView.selectedItemId
 
         val menu = navView.menu
-        // Store original menu items
         data class MenuEntry(val id: Int, val title: CharSequence, val icon: android.graphics.drawable.Drawable?)
-        val originals = mutableListOf<MenuEntry>()
-        for (i in 0 until menu.size()) {
-            val item = menu.getItem(i)
-            originals.add(MenuEntry(item.itemId, item.title ?: "", item.icon))
+        val originals = (0 until menu.size()).map { i ->
+            menu.getItem(i).let { MenuEntry(it.itemId, it.title ?: "", it.icon) }
         }
 
         menu.clear()
 
-        // Re-add in saved order
+        // Re-add items in the user's preferred order
         for ((order, key) in savedOrder.withIndex()) {
             val navId = NavOrderActivity.getNavId(key)
             val orig = originals.find { it.id == navId } ?: continue
             menu.add(0, orig.id, order, orig.title).icon = orig.icon
         }
-        // Add any items not in saved order (safety)
+        // Safety net: append any items not present in the saved order
+        // (e.g. a new tab was added in an app update).
         for (orig in originals) {
             if (menu.findItem(orig.id) == null) {
                 menu.add(0, orig.id, menu.size(), orig.title).icon = orig.icon
             }
+        }
+
+        // Restore selection. The guard prevents setting an invalid id
+        // (0 on first launch before any tab is selected).
+        if (previousSelectedId != 0 && menu.findItem(previousSelectedId) != null) {
+            navView.selectedItemId = previousSelectedId
         }
     }
 

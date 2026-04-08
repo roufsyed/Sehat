@@ -76,14 +76,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private val navOrderLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            requireActivity().recreate()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -172,10 +164,6 @@ class SettingsFragment : Fragment() {
 
         binding.llCustomization.setOnClickListener {
             customizationLauncher.launch(Intent(activity, CustomizationActivity::class.java))
-        }
-
-        binding.llNavOrder.setOnClickListener {
-            navOrderLauncher.launch(Intent(activity, NavOrderActivity::class.java))
         }
 
         binding.llPersonalInformation.setOnClickListener {

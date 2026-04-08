@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:scrollbars="none"
+    android:fillViewport="true"
     tools:context=".dashboard.DashboardFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
     <!-- Empty state -->
     <LinearLayout
@@ -22,30 +23,44 @@
         android:padding="32dp"
         android:visibility="gone">
 
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_dashboard_black_24dp"
+            android:alpha="0.3"
+            app:tint="?attr/colorOnSurface"
+            android:layout_marginBottom="24dp"
+            android:importantForAccessibility="no" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No cards visible"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enable dashboard cards from\nSettings > Dashboard"
+            android:text="Choose which cards appear on your\nhome screen from Home Settings"
             android:textSize="14sp"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
-            android:layout_marginBottom="20dp" />
+            android:lineSpacingExtra="3dp"
+            android:layout_marginBottom="28dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOpenDashboardSettings"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Open Settings"
-            app:cornerRadius="20dp"
-            style="@style/Widget.Material3.Button.OutlinedButton" />
+            android:layout_height="48dp"
+            android:text="Home Settings"
+            android:textAllCaps="false"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_settings_24"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.TonalButton" />
     </LinearLayout>
 
     <LinearLayout

@@ -25,6 +25,9 @@ class NavOrderActivity : BaseActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.navigationIcon?.setTint(
+            androidx.core.content.ContextCompat.getColor(this, R.color.dark_grey)
+        )
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         val surfaceColor = MaterialColors.getColor(

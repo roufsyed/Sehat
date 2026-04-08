@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.color.MaterialColors
+import com.rouf.saht.R
 import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.databinding.ActivityDashboardSettingsBinding
 import io.paperdb.Paper
@@ -19,6 +20,9 @@ class DashboardSettingsActivity : BaseActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.navigationIcon?.setTint(
+            androidx.core.content.ContextCompat.getColor(this, R.color.dark_grey)
+        )
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         val surfaceColor = MaterialColors.getColor(

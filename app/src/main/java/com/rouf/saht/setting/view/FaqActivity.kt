@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.color.MaterialColors
+import com.rouf.saht.R
 import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.databinding.ActivityFaqBinding
 
@@ -19,6 +20,9 @@ class FaqActivity : BaseActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.navigationIcon?.setTint(
+            androidx.core.content.ContextCompat.getColor(this, R.color.dark_grey)
+        )
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         val surfaceColor = MaterialColors.getColor(
@@ -51,7 +55,7 @@ class FaqActivity : BaseActivity() {
         ),
         FaqItem.Entry(
             "Why does the app show a persistent notification?",
-            "When the pedometer is running, Android requires a persistent foreground notification to keep the step-counting service alive in the background. Tapping the notification opens the app directly to the Pedometer screen. You can customise notification behaviour in your system notification settings."
+            "When the pedometer is running or meditation audio is playing, Android requires a persistent foreground notification to keep the service alive in the background. Tapping the notification opens the app. You can customise notification behaviour in your system notification settings."
         ),
         FaqItem.Entry(
             "Why does the app need Accessibility Service access?",
@@ -103,6 +107,25 @@ class FaqActivity : BaseActivity() {
             "The pedometer uses your phone's hardware step counter sensor. Accuracy depends on your device and where you carry it. For best results, keep the phone in your pocket or a secure holder. You can adjust the sensitivity in Settings > Pedometer Settings."
         ),
         FaqItem.Entry(
+            "How do the meditation sounds work?",
+            "Choose a sound and set a duration — the app plays the sound in a loop for the specified time via a background service. You can add your own audio files using the Add Sound button. Custom sounds are picked from your device storage; only a reference (URI) is saved, not a copy of the file."
+        ),
+        FaqItem.Entry(
+            "What are the breathing exercises?",
+            "Sehat includes two guided breathing exercises:\n\n" +
+            "\u2022 4-7-8 Relaxing \u2014 Inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds. A calming technique often used to reduce anxiety and aid sleep.\n\n" +
+            "\u2022 Box Breathing \u2014 Inhale, hold, exhale, hold \u2014 each for 4 seconds. Used by athletes and first responders to sharpen focus and manage stress.\n\n" +
+            "An animated circle expands and contracts to guide your breathing. Tap Start and follow the on-screen cues. You can stop at any time."
+        ),
+        FaqItem.Entry(
+            "Can I customise which cards appear on the home screen?",
+            "Yes. Go to Settings > Home Settings (or tap the Home Settings button on the empty dashboard). Toggle individual cards on or off to build the dashboard that works for you."
+        ),
+        FaqItem.Entry(
+            "Can I reorder the bottom navigation tabs?",
+            "Yes. Go to Settings > Customization > Navigation Order. Drag the items into your preferred order. Changes take effect immediately."
+        ),
+        FaqItem.Entry(
             "Can I change the default screen shown on launch?",
             "Yes. Go to Settings > Customization > Default Screen and pick the tab you would like to see when you open the app."
         ),
@@ -132,7 +155,7 @@ class FaqActivity : BaseActivity() {
         ),
         FaqItem.Entry(
             "Third-party libraries",
-            "Sehat uses open-source libraries including MPAndroidChart for data visualisation, Hilt for dependency injection, Room for local database storage, and PaperDB for preferences. These libraries run entirely on-device and do not transmit any data externally."
+            "Sehat uses open-source libraries including MPAndroidChart for data visualisation, Hilt for dependency injection, PaperDB for local data storage, and Media3/ExoPlayer for meditation audio playback. These libraries run entirely on-device and do not transmit any data externally."
         ),
         FaqItem.Entry(
             "Contact & support",

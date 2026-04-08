@@ -106,6 +106,7 @@ class MeditationFragment : Fragment() {
         }
 
         initChipListeners()
+        initBreathingCards()
         initRandomMeditationQuote()
     }
 
@@ -297,6 +298,21 @@ class MeditationFragment : Fragment() {
         Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, emptyList<Sound>()) ?: emptyList()
 
     private fun allSounds(): List<Sound> = builtInSounds + loadCustomSounds()
+
+    // ---- Breathing exercises ----
+
+    private fun initBreathingCards() {
+        binding.cardBreathing478.setOnClickListener {
+            startActivity(Intent(requireContext(), BreathingExerciseActivity::class.java).apply {
+                putExtra(BreathingExerciseActivity.EXTRA_PATTERN, BreathingExerciseActivity.PATTERN_478)
+            })
+        }
+        binding.cardBreathingBox.setOnClickListener {
+            startActivity(Intent(requireContext(), BreathingExerciseActivity::class.java).apply {
+                putExtra(BreathingExerciseActivity.EXTRA_PATTERN, BreathingExerciseActivity.PATTERN_BOX)
+            })
+        }
+    }
 
     // ---- Misc ----
 
