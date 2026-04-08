@@ -62,6 +62,11 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        applyNavOrder(binding.navView)
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         navigateToRequestedScreen(intent)
