@@ -117,6 +117,8 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
     }
 
     private fun updateGraph(lineChart: LineChart, heartRateData: HeartRateMonitorData) {
+        if (heartRateData.bpmGraphEntries.size < 2) return
+
         val textColorBasedOnDarkMode = if (isDarkModeEnabled())
             Color.WHITE
         else
@@ -131,13 +133,16 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
         dataSet.fillColor = Color.RED
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(false)
+        dataSet.setDrawIcons(false)
 
+        lineChart.clear()
         val lineData = LineData(dataSet)
         lineChart.data = lineData
         lineChart.legend.textColor = textColorBasedOnDarkMode
         lineChart.setTouchEnabled(true)
         lineChart.isDoubleTapToZoomEnabled = false
 
+        lineChart.notifyDataSetChanged()
         lineChart.invalidate()
     }
 

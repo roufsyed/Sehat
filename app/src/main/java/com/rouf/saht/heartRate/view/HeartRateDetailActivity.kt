@@ -127,6 +127,8 @@ class HeartRateDetailActivity : BaseActivity() {
     }
 
     private fun updateGraph(lineChart: LineChart, bpmGraphEntries: MutableList<Entry>) {
+        if (bpmGraphEntries.size < 2) return
+
         val textColorBasedOnDarkMode = if (isDarkMode())
             Color.WHITE
         else
@@ -141,8 +143,10 @@ class HeartRateDetailActivity : BaseActivity() {
         dataSet.fillColor = Color.RED
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(false)
+        dataSet.setDrawIcons(false)
 
 
+        lineChart.clear()
         val lineData = LineData(dataSet)
         lineChart.data = lineData
         lineChart.legend.textColor = textColorBasedOnDarkMode

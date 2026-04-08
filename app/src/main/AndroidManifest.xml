@@ -90,6 +90,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".setting.view.NavOrderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".setting.view.DashboardSettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

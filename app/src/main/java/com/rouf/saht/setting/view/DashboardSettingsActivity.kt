@@ -42,6 +42,15 @@ class DashboardSettingsActivity : BaseActivity() {
         binding.switchBmi.isChecked = Paper.book().read(PREF_SHOW_BMI, true) ?: true
         binding.switchWeeklyChart.isChecked = Paper.book().read(PREF_SHOW_WEEKLY_CHART, true) ?: true
         binding.switchHrZones.isChecked = Paper.book().read(PREF_SHOW_HR_ZONES, true) ?: true
+        binding.switchDistance.isChecked = Paper.book().read(PREF_SHOW_DISTANCE, true) ?: true
+        binding.switchCalories.isChecked = Paper.book().read(PREF_SHOW_CALORIES, true) ?: true
+        binding.switchActiveDuration.isChecked = Paper.book().read(PREF_SHOW_ACTIVE_DURATION, true) ?: true
+        binding.switchBpmActivity.isChecked = Paper.book().read(PREF_SHOW_BPM_BY_ACTIVITY, true) ?: true
+        binding.switchPeakBpm.isChecked = Paper.book().read(PREF_SHOW_PEAK_BPM, true) ?: true
+        binding.switchRecovery.isChecked = Paper.book().read(PREF_SHOW_RECOVERY, true) ?: true
+        binding.switchCorrelation.isChecked = Paper.book().read(PREF_SHOW_CORRELATION, true) ?: true
+        binding.switchWeeklySummary.isChecked = Paper.book().read(PREF_SHOW_WEEKLY_SUMMARY, true) ?: true
+        binding.switchRecords.isChecked = Paper.book().read(PREF_SHOW_RECORDS, true) ?: true
     }
 
     private fun setupListeners() {
@@ -60,6 +69,33 @@ class DashboardSettingsActivity : BaseActivity() {
         binding.switchHrZones.setOnCheckedChangeListener { _, checked ->
             Paper.book().write(PREF_SHOW_HR_ZONES, checked)
         }
+        binding.switchDistance.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_DISTANCE, checked)
+        }
+        binding.switchCalories.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_CALORIES, checked)
+        }
+        binding.switchActiveDuration.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_ACTIVE_DURATION, checked)
+        }
+        binding.switchBpmActivity.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_BPM_BY_ACTIVITY, checked)
+        }
+        binding.switchPeakBpm.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_PEAK_BPM, checked)
+        }
+        binding.switchRecovery.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_RECOVERY, checked)
+        }
+        binding.switchCorrelation.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_CORRELATION, checked)
+        }
+        binding.switchWeeklySummary.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_WEEKLY_SUMMARY, checked)
+        }
+        binding.switchRecords.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_RECORDS, checked)
+        }
     }
 
     companion object {
@@ -68,5 +104,14 @@ class DashboardSettingsActivity : BaseActivity() {
         const val PREF_SHOW_BMI = "dashboard_show_bmi"
         const val PREF_SHOW_WEEKLY_CHART = "dashboard_show_weekly_chart"
         const val PREF_SHOW_HR_ZONES = "dashboard_show_hr_zones"
+        const val PREF_SHOW_DISTANCE = "dashboard_show_distance"
+        const val PREF_SHOW_CALORIES = "dashboard_show_calories"
+        const val PREF_SHOW_ACTIVE_DURATION = "dashboard_show_active_duration"
+        const val PREF_SHOW_BPM_BY_ACTIVITY = "dashboard_show_bpm_activity"
+        const val PREF_SHOW_PEAK_BPM = "dashboard_show_peak_bpm"
+        const val PREF_SHOW_RECOVERY = "dashboard_show_recovery"
+        const val PREF_SHOW_CORRELATION = "dashboard_show_correlation"
+        const val PREF_SHOW_WEEKLY_SUMMARY = "dashboard_show_weekly_summary"
+        const val PREF_SHOW_RECORDS = "dashboard_show_records"
     }
 }

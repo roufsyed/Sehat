@@ -45,6 +45,7 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
             binding.tvHeartRate.text = "${heartRateData.bpm}\nBPM"
             binding.tvTime.text = TimeUtil.timestampToDateTime(heartRateData.timeStamp)
             binding.tvActivityPerformed.text = heartRateData.activityPerformed
+            binding.lineChart.clear()
             customizeChartAppearance(binding.lineChart)
             updateGraph(binding.lineChart, heartRateData)
 
@@ -109,6 +110,8 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
     }
 
     private fun updateGraph(lineChart: LineChart, heartRateData: HeartRateMonitorData) {
+        if (heartRateData.bpmGraphEntries.size < 2) return
+
         val textColorBasedOnDarkMode = if (isDarkModeEnabled())
             Color.WHITE
         else
@@ -123,6 +126,7 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
         dataSet.fillColor = Color.RED
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(false)
+        dataSet.setDrawIcons(false)
 
         val lineData = LineData(dataSet)
         lineChart.data = lineData
@@ -130,6 +134,7 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
         lineChart.setTouchEnabled(true)
         lineChart.isDoubleTapToZoomEnabled = false
 
+        lineChart.notifyDataSetChanged()
         lineChart.invalidate()
     }
 

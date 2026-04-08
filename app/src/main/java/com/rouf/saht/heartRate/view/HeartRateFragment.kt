@@ -357,6 +357,8 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun updateGraph(lineChart: LineChart) {
+        if (bpmEntries.size < 2) return
+
         val textColorBasedOnDarkMode = if (isDarkMode())
             Color.WHITE
         else
@@ -371,8 +373,10 @@ class HeartRateFragment : Fragment() {
         dataSet.fillColor = Color.RED
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(false)
+        dataSet.setDrawIcons(false)
 
 
+        lineChart.clear()
         val lineData = LineData(dataSet)
         lineChart.data = lineData
         lineChart.legend.textColor = textColorBasedOnDarkMode

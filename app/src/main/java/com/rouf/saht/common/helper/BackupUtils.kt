@@ -12,6 +12,7 @@ import com.rouf.saht.common.model.Sound
 import com.rouf.saht.heartRate.data.HeartRateData
 import com.rouf.saht.setting.view.CustomizationActivity
 import com.rouf.saht.setting.view.DashboardSettingsActivity
+import com.rouf.saht.setting.view.NavOrderActivity
 import com.rouf.saht.setting.view.SettingsFragment
 import io.paperdb.Paper
 import java.io.InputStreamReader
@@ -44,6 +45,9 @@ object BackupUtils {
             // Onboarding
             exportMap[KEY_ONBOARDING] = Paper.book().read<Boolean>(KEY_ONBOARDING, null)
 
+            // Nav order
+            exportMap[NavOrderActivity.PREF_NAV_ORDER] = Paper.book().read<List<String>>(NavOrderActivity.PREF_NAV_ORDER, null)
+
             // Custom meditation sounds
             exportMap[KEY_CUSTOM_SOUNDS] = Paper.book().read<List<Sound>>(KEY_CUSTOM_SOUNDS, null)
 
@@ -53,6 +57,15 @@ object BackupUtils {
             exportMap[DashboardSettingsActivity.PREF_SHOW_BMI] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_BMI, null)
             exportMap[DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART, null)
             exportMap[DashboardSettingsActivity.PREF_SHOW_HR_ZONES] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_HR_ZONES, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_DISTANCE] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_DISTANCE, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_CALORIES] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_CALORIES, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_ACTIVE_DURATION] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_ACTIVE_DURATION, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_BPM_BY_ACTIVITY] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_BPM_BY_ACTIVITY, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_PEAK_BPM] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_PEAK_BPM, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_RECOVERY] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_RECOVERY, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_CORRELATION] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_CORRELATION, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_WEEKLY_SUMMARY] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_WEEKLY_SUMMARY, null)
+            exportMap[DashboardSettingsActivity.PREF_SHOW_RECORDS] = Paper.book().read<Boolean>(DashboardSettingsActivity.PREF_SHOW_RECORDS, null)
 
             val json = gson.toJson(exportMap)
             context.contentResolver.openOutputStream(uri)?.use { stream ->
@@ -120,6 +133,12 @@ object BackupUtils {
                 Paper.book().write(KEY_ONBOARDING, it as Boolean)
             }
 
+            // Nav order
+            dataMap[NavOrderActivity.PREF_NAV_ORDER]?.let {
+                val listType = object : TypeToken<List<String>>() {}.type
+                Paper.book().write(NavOrderActivity.PREF_NAV_ORDER, gson.fromJson<List<String>>(gson.toJson(it), listType))
+            }
+
             // Custom meditation sounds
             dataMap[KEY_CUSTOM_SOUNDS]?.let {
                 val listType = object : TypeToken<List<Sound>>() {}.type
@@ -132,7 +151,16 @@ object BackupUtils {
                 DashboardSettingsActivity.PREF_SHOW_HEART_RATE,
                 DashboardSettingsActivity.PREF_SHOW_BMI,
                 DashboardSettingsActivity.PREF_SHOW_WEEKLY_CHART,
-                DashboardSettingsActivity.PREF_SHOW_HR_ZONES
+                DashboardSettingsActivity.PREF_SHOW_HR_ZONES,
+                DashboardSettingsActivity.PREF_SHOW_DISTANCE,
+                DashboardSettingsActivity.PREF_SHOW_CALORIES,
+                DashboardSettingsActivity.PREF_SHOW_ACTIVE_DURATION,
+                DashboardSettingsActivity.PREF_SHOW_BPM_BY_ACTIVITY,
+                DashboardSettingsActivity.PREF_SHOW_PEAK_BPM,
+                DashboardSettingsActivity.PREF_SHOW_RECOVERY,
+                DashboardSettingsActivity.PREF_SHOW_CORRELATION,
+                DashboardSettingsActivity.PREF_SHOW_WEEKLY_SUMMARY,
+                DashboardSettingsActivity.PREF_SHOW_RECORDS
             )) {
                 dataMap[key]?.let { Paper.book().write(key, it as Boolean) }
             }
