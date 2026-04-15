@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -88,36 +89,27 @@ class PedometerForegroundService : Service(), SensorEventListener {
         super.onCreate()
         isRunning = true
         Log.i(TAG, "Service created")
-        Log.d(TAG, "onCreate: \n totalSteps: $totalSteps \n prevTotalSteps: $previousTotalSteps ")
 
+        // startForeground must be called quickly on the main thread or Android kills the service
+        val notificationHelper = NotificationHelper(this)
+        val initialNotification = notificationHelper.getServiceNotification("Steps: 0", "Calories Burnt: 0.0 kcal")
+        startForeground(NOTIFICATION_ID, initialNotification)
+
+        // Load sensitivity setting first, then initialize the sensor with the correct value.
+        // Previously initializeStepSensor() was called before this coroutine completed, so the
+        // sensor was always registered with LOW_SENSITIVITY regardless of user preference.
         serviceScope.launch {
             val pedometerSettings = settingRepository.getPedometerSettings()
             pedometerSensitivity = pedometerSettings?.sensitivityLevel ?: PedometerSensitivity.MEDIUM
-
             sensitivity = when (pedometerSensitivity) {
-                PedometerSensitivity.LOW -> {
-                    LOW_SENSITIVITY
-                }
-
-                PedometerSensitivity.MEDIUM -> {
-                    MEDIUM_SENSITIVITY
-                }
-
-                PedometerSensitivity.HIGH -> {
-                    HIGH_SENSITIVITY
-                }
+                PedometerSensitivity.LOW    -> LOW_SENSITIVITY
+                PedometerSensitivity.MEDIUM -> MEDIUM_SENSITIVITY
+                PedometerSensitivity.HIGH   -> HIGH_SENSITIVITY
             }
-            Log.d(TAG, "onCreate: sensitivity: $sensitivity")
+            Log.d(TAG, "onCreate: sensitivity loaded: $sensitivity")
+            // SensorManager.registerListener needs a Looper thread; switch to Main for sensor init
+            withContext(Dispatchers.Main) { initializeStepSensor() }
         }
-
-        // Start foreground service immediately
-        val notificationHelper = NotificationHelper(this)
-        val initialNotification = notificationHelper.getServiceNotification("Steps: 0" ,"Calories Burnt: 0.0 kcal")
-        startForeground(NOTIFICATION_ID, initialNotification)
-
-//        loadData()
-        initializeStepSensor()
-        setSensitivity(sensitivity)
     }
 
     private fun setSensitivity(newSensitivity: Int) {
