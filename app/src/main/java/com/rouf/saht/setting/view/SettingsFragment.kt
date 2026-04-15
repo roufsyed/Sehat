@@ -2,6 +2,7 @@ package com.rouf.saht.setting.view
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
@@ -12,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -113,8 +116,10 @@ class SettingsFragment : Fragment() {
         val primaryDark = BaseActivity.effectivePrimaryDark(requireContext())
         val primary = BaseActivity.effectivePrimary(requireContext())
 
-        // Status bar matches the gradient start color
+        // Status bar matches the gradient start color (dark background → white icons)
         window.statusBarColor = primaryDark
+        WindowInsetsControllerCompat(window, window.decorView)
+            .isAppearanceLightStatusBars = false
 
         // Update the AppBarLayout gradient background
         val appBarBg = binding.appBar.background
@@ -244,7 +249,16 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        requireActivity().window.statusBarColor = originalStatusBarColor
+        val window = requireActivity().window
+        window.statusBarColor = originalStatusBarColor
+        val isNight = when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> true
+            AppCompatDelegate.MODE_NIGHT_NO -> false
+            else -> resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        }
+        WindowInsetsControllerCompat(window, window.decorView)
+            .isAppearanceLightStatusBars = !isNight
         super.onDestroyView()
         _binding = null
     }

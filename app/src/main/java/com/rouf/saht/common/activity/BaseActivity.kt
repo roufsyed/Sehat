@@ -2,6 +2,7 @@ package com.rouf.saht.common.activity
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -10,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -67,6 +70,22 @@ abstract class BaseActivity : AppCompatActivity() {
                     }
                 }, true
             )
+        } else {
+            // Use AppCompatDelegate as the authoritative source so this is correct
+            // immediately after setDefaultNightMode() triggers a recreation, before
+            // resources.configuration.uiMode has propagated the change.
+            val isNight = when (AppCompatDelegate.getDefaultNightMode()) {
+                AppCompatDelegate.MODE_NIGHT_YES -> true
+                AppCompatDelegate.MODE_NIGHT_NO -> false
+                else -> resources.configuration.uiMode and
+                        Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+            }
+            val surfaceColor = MaterialColors.getColor(
+                this, com.google.android.material.R.attr.colorSurface, 0
+            )
+            window.statusBarColor = surfaceColor
+            WindowInsetsControllerCompat(window, window.decorView)
+                .isAppearanceLightStatusBars = !isNight
         }
     }
 
