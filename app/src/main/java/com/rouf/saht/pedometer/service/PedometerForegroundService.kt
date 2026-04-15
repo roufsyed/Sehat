@@ -27,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -51,6 +53,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
     }
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + Job())
+    private val pedometerDataMutex = Mutex()
     private var sensorManager: SensorManager? = null
     private var stepSensor: Sensor? = null
     private var sensitivity = LOW_SENSITIVITY
@@ -238,14 +241,15 @@ class PedometerForegroundService : Service(), SensorEventListener {
     }
 
     private suspend fun updatePedometerDataInDB(currentSteps: Int, caloriesBurned: Double) {
-        // add distance, duration later
-        pedometerData.steps = currentSteps
-        pedometerData.goal = settingRepository.getPedometerSettings()?.stepGoal ?: 0
-        pedometerData.caloriesBurned = caloriesBurned
-        pedometerData.endTime = System.currentTimeMillis()
-        pedometerData.totalExerciseDuration = getTotalExerciseDuration()
-        pedometerData.distanceMeters = getDistanceInMeters(steps = currentSteps)
-        pedometerRepository.updatePedometerDataInDB(pedometerData)
+        pedometerDataMutex.withLock {
+            pedometerData.steps = currentSteps
+            pedometerData.goal = settingRepository.getPedometerSettings()?.stepGoal ?: 0
+            pedometerData.caloriesBurned = caloriesBurned
+            pedometerData.endTime = System.currentTimeMillis()
+            pedometerData.totalExerciseDuration = getTotalExerciseDuration()
+            pedometerData.distanceMeters = getDistanceInMeters(steps = currentSteps)
+            pedometerRepository.updatePedometerDataInDB(pedometerData)
+        }
     }
 
     private fun getTotalExerciseDuration(): Long {
