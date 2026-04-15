@@ -174,8 +174,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NOTIFICATION_ID, notification)
 
-//            saveData() // Save the steps persistently
-            CoroutineScope(Dispatchers.IO).launch {
+            serviceScope.launch(Dispatchers.IO) {
                 updatePedometerDataInDB(currentSteps, caloriesBurned)
             }
 
