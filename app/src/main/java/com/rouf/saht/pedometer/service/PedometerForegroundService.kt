@@ -136,7 +136,23 @@ class PedometerForegroundService : Service(), SensorEventListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "Service started")
+        Log.d(TAG, "Service onStartCommand")
+        // Re-read sensitivity on every start command so that settings changed while
+        // the service is already running take effect immediately.
+        // sensorManager null-guard covers the rare race where onStartCommand fires
+        // before the onCreate coroutine has finished initialising the sensor.
+        serviceScope.launch {
+            val settings = settingRepository.getPedometerSettings()
+            val newSensitivity = when (settings?.sensitivityLevel ?: PedometerSensitivity.MEDIUM) {
+                PedometerSensitivity.LOW    -> LOW_SENSITIVITY
+                PedometerSensitivity.MEDIUM -> MEDIUM_SENSITIVITY
+                PedometerSensitivity.HIGH   -> HIGH_SENSITIVITY
+            }
+            if (newSensitivity != sensitivity && sensorManager != null) {
+                Log.d(TAG, "onStartCommand: applying new sensitivity $newSensitivity")
+                withContext(Dispatchers.Main) { setSensitivity(newSensitivity) }
+            }
+        }
         return START_STICKY
     }
 

@@ -160,6 +160,15 @@ class PedometerFragment : Fragment() {
             lifecycleScope.launch { pedometerViewModel.updateStateActive(serviceRunning) }
             if (serviceRunning) initViewActiveState() else initViewInActiveState()
         }
+        // If the service is running, re-send a start command so it re-reads settings.
+        // This picks up any sensitivity change the user just saved in Pedometer Settings
+        // without needing to stop and restart the pedometer.
+        if (serviceRunning) {
+            ContextCompat.startForegroundService(
+                requireContext(),
+                Intent(requireContext(), PedometerForegroundService::class.java)
+            )
+        }
         updateBatteryBanner()
         lifecycleScope.launch {
             settingsViewModel.getPersonalInformation()
