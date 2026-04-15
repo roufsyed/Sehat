@@ -409,11 +409,13 @@ class HeartRateFragment : Fragment() {
     }
 
     override fun onPause() {
+        stopHeartRateMonitoringTimer()
         stopHeartRateMonitoring()
         super.onPause()
     }
 
     override fun onDestroyView() {
+        stopHeartRateMonitoringTimer()
         super.onDestroyView()
         _binding = null
     }
