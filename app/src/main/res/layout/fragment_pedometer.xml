@@ -136,5 +136,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="82dp"
+        android:visibility="gone"
         android:text="@string/bmi_reading"/>
+
+    <!-- Battery optimisation warning banner -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/banner_battery"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="80dp"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="?attr/colorSecondaryContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="4dp"
+            android:paddingVertical="10dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_warning"
+                android:importantForAccessibility="no"
+                app:tint="?attr/colorOnSecondaryContainer" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Battery optimization may stop step counting in the background."
+                android:textSize="13sp"
+                android:textColor="?attr/colorOnSecondaryContainer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_battery_allow"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Allow"
+                android:textSize="13sp"
+                android:textColor="?attr/colorOnSecondaryContainer"
+                android:minWidth="0dp"
+                android:paddingHorizontal="8dp" />
+
+            <ImageButton
+                android:id="@+id/btn_battery_dismiss"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add"
+                android:rotation="45"
+                android:background="@android:color/transparent"
+                android:contentDescription="Dismiss"
+                app:tint="?attr/colorOnSecondaryContainer" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

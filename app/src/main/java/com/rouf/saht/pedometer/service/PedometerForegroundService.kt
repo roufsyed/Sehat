@@ -42,6 +42,11 @@ class PedometerForegroundService : Service(), SensorEventListener {
         const val HIGH_SENSITIVITY = SensorManager.SENSOR_DELAY_GAME          // 20,000 microseconds
         const val MEDIUM_SENSITIVITY = SensorManager.SENSOR_DELAY_UI          // 60,000 microseconds
         const val LOW_SENSITIVITY = SensorManager.SENSOR_DELAY_NORMAL         // 200,000 microseconds
+
+        /** True while the service is alive. Stays accurate across process death+restart
+         *  because it lives in the same process as the service itself. */
+        var isRunning = false
+            private set
     }
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + Job())
@@ -81,6 +86,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
+        isRunning = true
         Log.i(TAG, "Service created")
         Log.d(TAG, "onCreate: \n totalSteps: $totalSteps \n prevTotalSteps: $previousTotalSteps ")
 
@@ -193,6 +199,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
 
     override fun onDestroy() {
+        isRunning = false
         serviceScope.cancel()
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "resetData: \n totalSteps: $totalSteps \n previousTotalSteps: $previousTotalSteps ")

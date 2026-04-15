@@ -5,8 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +59,7 @@ class PedometerFragment : Fragment() {
     private var activeState: Boolean = false
 
     private var BMI_FLAG = false
+    private var batteryBannerDismissed = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -78,6 +83,7 @@ class PedometerFragment : Fragment() {
         initViews()
         onClick()
         observers()
+        updateBatteryBanner()
 
         lifecycleScope.launch {
             Log.d(TAG, "onDestroy: getPedometerListFromFB -> ${pedometerViewModel.getPedometerListFromDB()}")
@@ -88,7 +94,10 @@ class PedometerFragment : Fragment() {
     }
 
     private fun initViews() {
-        val stateActive = pedometerViewModel.getActiveState()
+        // Use the service flag as the truth source. The ViewModel's in-memory state
+        // is unreliable after process death + START_STICKY service restart.
+        val stateActive = PedometerForegroundService.isRunning
+        lifecycleScope.launch { pedometerViewModel.updateStateActive(stateActive) }
 
         if (stateActive) {
             initViewActiveState()
@@ -144,6 +153,14 @@ class PedometerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Re-sync button state in case the service was stopped externally
+        // (e.g. system killed it while the app was backgrounded but the process survived).
+        val serviceRunning = PedometerForegroundService.isRunning
+        if (serviceRunning != pedometerViewModel.getActiveState()) {
+            lifecycleScope.launch { pedometerViewModel.updateStateActive(serviceRunning) }
+            if (serviceRunning) initViewActiveState() else initViewInActiveState()
+        }
+        updateBatteryBanner()
         lifecycleScope.launch {
             settingsViewModel.getPersonalInformation()
             settingsViewModel.getPedometerSettings()
@@ -293,13 +310,13 @@ class PedometerFragment : Fragment() {
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                settingsViewModel.personalInformation.observe(viewLifecycleOwner) { personalInformation ->
-                    setBMI(personalInformation)
-                }
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                settingsViewModel.personalInformation.observe(viewLifecycleOwner) { personalInformation ->
+//                    setBMI(personalInformation)
+//                }
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -333,9 +350,49 @@ class PedometerFragment : Fragment() {
     }
 
     private fun initiateForegroundService() {
+        requestIgnoreBatteryOptimizationsIfNeeded()
         val startIntent = Intent(requireContext(), PedometerForegroundService::class.java)
         startIntent.putExtra("sensitivity_level", pedometerSensitivity)
         ContextCompat.startForegroundService(requireContext(), startIntent)
+    }
+
+    private fun requestIgnoreBatteryOptimizationsIfNeeded() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val pm = requireContext().getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (pm.isIgnoringBatteryOptimizations(requireContext().packageName)) return
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Keep pedometer running")
+            .setMessage(
+                "To count steps reliably while the screen is off, allow Sehat to run " +
+                "without battery restrictions. Tap \"Allow\" and disable battery optimization for Sehat."
+            )
+            .setPositiveButton("Allow") { _, _ ->
+                openBatterySettings()
+            }
+            .setNegativeButton("Not now", null)
+            .show()
+    }
+
+    private fun updateBatteryBanner() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val pm = requireContext().getSystemService(Context.POWER_SERVICE) as PowerManager
+        val needsBanner = !pm.isIgnoringBatteryOptimizations(requireContext().packageName)
+                && !batteryBannerDismissed
+        binding.bannerBattery.visibility = if (needsBanner) View.VISIBLE else View.GONE
+        if (needsBanner) {
+            binding.btnBatteryAllow.setOnClickListener { openBatterySettings() }
+            binding.btnBatteryDismiss.setOnClickListener {
+                batteryBannerDismissed = true
+                binding.bannerBattery.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun openBatterySettings() {
+        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+            data = Uri.parse("package:${requireContext().packageName}")
+        }
+        startActivity(intent)
     }
 
     private fun stopForegroundService() {
