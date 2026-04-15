@@ -55,7 +55,7 @@ class PedometerFragment : Fragment() {
     private lateinit var pedometerViewModel: PedometerViewModel
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var pedometerSettings: PedometerSettings
-    private lateinit var pedometerSensitivity: PedometerSensitivity
+    private var pedometerSensitivity: PedometerSensitivity = PedometerSensitivity.MEDIUM
     private var activeState: Boolean = false
 
     private var BMI_FLAG = false
@@ -352,7 +352,6 @@ class PedometerFragment : Fragment() {
     private fun initiateForegroundService() {
         requestIgnoreBatteryOptimizationsIfNeeded()
         val startIntent = Intent(requireContext(), PedometerForegroundService::class.java)
-        startIntent.putExtra("sensitivity_level", pedometerSensitivity)
         ContextCompat.startForegroundService(requireContext(), startIntent)
     }
 
