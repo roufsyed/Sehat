@@ -64,7 +64,7 @@ class HeartRateDetailActivity : BaseActivity() {
         dialog.setContentView(dialogBinding.root)
         dialog.setCancelable(true)
 
-        val window: Window = dialog.window!!
+        val window = dialog.window ?: return
         val wlp = window.attributes
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT
         wlp.height = WindowManager.LayoutParams.WRAP_CONTENT
