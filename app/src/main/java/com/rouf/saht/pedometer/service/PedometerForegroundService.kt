@@ -56,7 +56,10 @@ class PedometerForegroundService : Service(), SensorEventListener {
     private var sensitivity = LOW_SENSITIVITY
     private var listener: SensorEventListener? = null
 
-    private val calorieCalculator = CalorieCalculator(weightKg = 70f, isRunning = false)
+    // @Volatile because it is written from a background coroutine and read on the
+    // main thread inside onSensorChanged (sensor callbacks run on the main Looper).
+    @Volatile
+    private var calorieCalculator = CalorieCalculator(weightKg = 70f, isRunning = false)
 
     private val pedometerData: PedometerData by lazy {
         PedometerData(
@@ -100,6 +103,11 @@ class PedometerForegroundService : Service(), SensorEventListener {
         // sensor was always registered with LOW_SENSITIVITY regardless of user preference.
         serviceScope.launch {
             val pedometerSettings = settingRepository.getPedometerSettings()
+            val personalInfo = settingRepository.getPersonalInformation()
+            val weightKg = personalInfo?.weight?.toFloatOrNull() ?: 70f
+            calorieCalculator = CalorieCalculator(weightKg = weightKg, isRunning = false)
+            Log.d(TAG, "onCreate: weight loaded: ${weightKg} kg")
+
             pedometerSensitivity = pedometerSettings?.sensitivityLevel ?: PedometerSensitivity.MEDIUM
             sensitivity = when (pedometerSensitivity) {
                 PedometerSensitivity.LOW    -> LOW_SENSITIVITY
@@ -143,6 +151,10 @@ class PedometerForegroundService : Service(), SensorEventListener {
         // before the onCreate coroutine has finished initialising the sensor.
         serviceScope.launch {
             val settings = settingRepository.getPedometerSettings()
+            val personalInfo = settingRepository.getPersonalInformation()
+            val weightKg = personalInfo?.weight?.toFloatOrNull() ?: 70f
+            calorieCalculator = CalorieCalculator(weightKg = weightKg, isRunning = false)
+
             val newSensitivity = when (settings?.sensitivityLevel ?: PedometerSensitivity.MEDIUM) {
                 PedometerSensitivity.LOW    -> LOW_SENSITIVITY
                 PedometerSensitivity.MEDIUM -> MEDIUM_SENSITIVITY
