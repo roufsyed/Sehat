@@ -474,9 +474,9 @@ class HeartRateFragment : Fragment() {
             val activityPerformed: String = dialogBinding.etActivityPerformed.text.toString().trim()
             Log.d(TAG, "showSaveBPMRecordDialog: activityPerformed: $activityPerformed")
 
-            if(activityPerformed.isNotEmpty() || activityPerformed.isNotBlank()) {
+            if (activityPerformed.isNotBlank()) {
                 // Call viewModel save method to list of heart rate data
-                this.heartRateMonitorData.activityPerformed = dialogBinding.etActivityPerformed.text.toString()
+                this.heartRateMonitorData.activityPerformed = activityPerformed
                 Log.d(TAG, "showSaveBPMRecordDialog: heart rate data -> ${this.heartRateMonitorData}")
 
                 lifecycleScope.launch(Dispatchers.IO){
