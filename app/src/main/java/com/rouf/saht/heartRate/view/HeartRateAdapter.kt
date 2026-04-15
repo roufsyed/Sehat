@@ -64,7 +64,7 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
         init {
             itemView.setOnClickListener {
                 val pos = bindingAdapterPosition
-                if (pos != RecyclerView.NO_ID) onItemClick(pos)
+                if (pos.toLong() != RecyclerView.NO_ID) onItemClick(pos)
             }
         }
 

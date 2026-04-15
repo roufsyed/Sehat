@@ -58,7 +58,7 @@ object HeartRateZoneUtils {
 
         val total = counts.values.sum().toFloat()
         if (total == 0f) return emptyMap()
-        return counts.mapValues { (_, count) -> (count / total * 100).let { Math.round(it) / 100f } }
+        return counts.mapValues { (_, count) -> count / total }
     }
 
     private fun getAge(): Int? {
