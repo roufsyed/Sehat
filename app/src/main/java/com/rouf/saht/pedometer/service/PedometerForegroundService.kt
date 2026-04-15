@@ -180,10 +180,16 @@ class PedometerForegroundService : Service(), SensorEventListener {
                 presentTimeStamp = TimeUtil.getCurrentTimestamp()
             )
 
+            if (!isSameDay) {
+                // Day boundary crossed — reset so steps count from 0 for the new day
+                isReset = false
+                pedometerData.startTime = System.currentTimeMillis()
+                Log.d(TAG, "onSensorChanged: new day detected, resetting step offset")
+            }
+
             if (!isReset) {
-                // First run or no reset
-                stepOffset = totalSteps.roundToInt() // Set initial offset
-                isReset = true // Mark as initialized
+                stepOffset = totalSteps.roundToInt()
+                isReset = true
             }
 
             val currentSteps: Int = (totalSteps - stepOffset).roundToInt()
