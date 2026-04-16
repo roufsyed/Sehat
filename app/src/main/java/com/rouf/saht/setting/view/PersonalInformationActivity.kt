@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.rouf.saht.R
 import com.rouf.saht.common.model.Gender
 import com.rouf.saht.common.model.PersonalInformation
+import com.rouf.saht.common.model.WeightEntry
 import com.rouf.saht.databinding.ActivityPersonalInformationBinding
 import com.rouf.saht.pedometer.viewModel.PedometerViewModel
 import com.rouf.saht.setting.SettingsViewModel
@@ -102,6 +103,10 @@ class PersonalInformationActivity : BaseActivity() {
 
             lifecycleScope.launch {
                 settingsViewModel.savePersonalInformation(personalInformation)
+                val weightKg = personalInformation.weight.toDoubleOrNull()
+                if (weightKg != null && weightKg > 0) {
+                    settingsViewModel.appendWeightEntry(WeightEntry(weightKg = weightKg))
+                }
             }
 
             oldGender = personalInformation.gender
