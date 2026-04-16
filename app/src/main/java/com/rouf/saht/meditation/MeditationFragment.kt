@@ -118,13 +118,15 @@ class MeditationFragment : Fragment() {
             IntentFilter(MeditationService.ACTION_PLAYBACK_STOPPED),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
-        // Restore playing state if the service is still running (e.g. user navigated away and back)
+        // Restore playing state only if the service is still actively running
         val playing = MeditationService.currentSoundFile
         if (playing != null && currentPlayingFile != playing) {
-            currentPlayingFile = playing
-            adapter.updatePlayingSound(playing)
             val remaining = MeditationService.endTimeMs - System.currentTimeMillis()
-            if (remaining > 0) startTimer(remaining)
+            if (remaining > 0) {
+                currentPlayingFile = playing
+                adapter.updatePlayingSound(playing)
+                startTimer(remaining)
+            }
         }
     }
 
