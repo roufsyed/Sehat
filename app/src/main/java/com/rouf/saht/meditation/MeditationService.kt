@@ -16,6 +16,8 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.rouf.saht.R
+import com.rouf.saht.common.activity.MainActivity
+import com.rouf.saht.setting.view.CustomizationActivity
 
 class MeditationService : Service() {
 
@@ -113,18 +115,33 @@ class MeditationService : Service() {
     }
 
     private fun buildNotification(soundName: String): Notification {
+        // Tapping the notification body opens the app directly on the meditation tab
+        val openAppIntent = Intent(this, MainActivity::class.java).apply {
+            putExtra(MainActivity.EXTRA_NAVIGATE_TO, CustomizationActivity.SCREEN_MEDITATION)
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val contentPendingIntent = PendingIntent.getActivity(
+            this,
+            1,
+            openAppIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         val stopPendingIntent = PendingIntent.getService(
             this,
             0,
             Intent(this, MeditationService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+
         val contentText = if (soundName.isNotEmpty()) "Playing: $soundName" else "Preparing…"
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Meditation in Progress")
             .setContentText(contentText)
             .setSmallIcon(R.drawable.ic_play)
+            .setContentIntent(contentPendingIntent)
             .setOngoing(true)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .addAction(R.drawable.ic_pause, "Stop", stopPendingIntent)
             .build()
     }
