@@ -1024,7 +1024,7 @@ class DashboardFragment : Fragment() {
         // Longest consecutive active day streak
         val activeDates = pedData.map { it.date }.distinct().sorted()
         var maxStreak = 0
-        var currentStreak = 1
+        var currentStreak = if (activeDates.isNotEmpty()) 1 else 0
         val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
         for (i in 1 until activeDates.size) {
             val prev = dateFormat.parse(activeDates[i - 1])
