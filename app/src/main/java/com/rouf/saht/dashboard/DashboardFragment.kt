@@ -133,6 +133,7 @@ class DashboardFragment : Fragment() {
                 && Paper.book().read(DashboardSettingsActivity.PREF_SHOW_CORRELATION, true) == false
                 && Paper.book().read(DashboardSettingsActivity.PREF_SHOW_WEEKLY_SUMMARY, true) == false
                 && Paper.book().read(DashboardSettingsActivity.PREF_SHOW_RECORDS, true) == false
+                && Paper.book().read(DashboardSettingsActivity.PREF_SHOW_INSIGHTS, true) == false
         b.llEmptyState.visibility = if (allHidden) View.VISIBLE else View.GONE
         b.llDashboardContent.visibility = if (allHidden) View.GONE else View.VISIBLE
 
@@ -947,6 +948,9 @@ class DashboardFragment : Fragment() {
             if (showCorrelation) setupCorrelationChart(pedData, hrData)
             if (showSummary) setupWeeklySummary(pedData, hrData)
             if (showRecords) setupPersonalRecords(pedData, hrData)
+
+            val showInsights = Paper.book().read(DashboardSettingsActivity.PREF_SHOW_INSIGHTS, true) != false
+            if (showInsights) setupInsightsCard(buildInsights(pedData, hrData))
         }
     }
 
@@ -1122,6 +1126,120 @@ class DashboardFragment : Fragment() {
             daySteps >= (goalByDate[date] ?: 10000)
         }
         b.tvRecordGoalDays.text = goalDays.toString()
+    }
+
+    // ---- Insights ----
+
+    /**
+     * Pure function — no side effects, no binding access.
+     * Returns up to 4 plain-language insight strings derived from the supplied data.
+     * Returns an empty list when there is insufficient data to generate any insight.
+     */
+    private fun buildInsights(
+        pedData: List<PedometerData>,
+        hrData: List<com.rouf.saht.common.model.HeartRateMonitorData>
+    ): List<String> {
+        val insights = mutableListOf<String>()
+        val now = System.currentTimeMillis()
+        val oneDay = 24L * 60 * 60 * 1000
+        val thisWeekStart = now - 7 * oneDay
+        val lastWeekStart = now - 14 * oneDay
+
+        val thisWeekPed = pedData.filter { it.timestamp >= thisWeekStart }
+        val lastWeekPed = pedData.filter { it.timestamp in lastWeekStart until thisWeekStart }
+
+        // 1 — Steps % change week-over-week
+        val thisWeekSteps = thisWeekPed.sumOf { it.steps }
+        val lastWeekSteps = lastWeekPed.sumOf { it.steps }
+        if (thisWeekSteps > 0 && lastWeekSteps > 0) {
+            val pct = Math.round((thisWeekSteps - lastWeekSteps).toDouble() / lastWeekSteps * 100).toInt()
+            when {
+                pct > 5  -> insights.add("You walked $pct% more steps this week than last week 💪")
+                pct < -5 -> insights.add("You walked ${-pct}% fewer steps this week than last week")
+            }
+        }
+
+        // 2 — Goal days hit this week
+        val stepsByDay = thisWeekPed.groupBy { it.date }
+            .mapValues { (_, v) -> v.sumOf { it.steps } }
+        val goalByDay = thisWeekPed.groupBy { it.date }
+            .mapValues { (_, v) -> v.maxByOrNull { it.timestamp }?.goal?.takeIf { it > 0 } ?: 0 }
+        val daysWithGoals = goalByDay.count { (_, g) -> g > 0 }
+        if (daysWithGoals > 0) {
+            val goalHitDays = stepsByDay.count { (date, steps) ->
+                val g = goalByDay[date] ?: 0
+                g > 0 && steps >= g
+            }
+            when {
+                goalHitDays == 0              -> insights.add("No step goals hit yet this week — keep going!")
+                goalHitDays == daysWithGoals  -> insights.add("You hit your step goal every active day this week! 🎉")
+                else                          -> insights.add("You hit your step goal $goalHitDays out of $daysWithGoals active days this week")
+            }
+        }
+
+        // 3 — Active days out of the last 7
+        val activeDays = thisWeekPed.map { it.date }.distinct().size
+        if (activeDays > 0) {
+            insights.add("You were active $activeDays out of the last 7 days")
+        }
+
+        // 4 — Resting HR monthly trend (requires ≥ 4 resting sessions)
+        if (insights.size < 4) {
+            val monthAgo = now - 30 * oneDay
+            val restingThisMonth = hrData
+                .filter { it.timeStamp >= monthAgo && (it.isResting || it.activityPerformed.equals("Resting", ignoreCase = true)) }
+                .sortedBy { it.timeStamp }
+            if (restingThisMonth.size >= 4) {
+                val half = restingThisMonth.size / 2
+                val early  = restingThisMonth.take(half).map { it.bpm }.average()
+                val recent = restingThisMonth.drop(half).map { it.bpm }.average()
+                val diff = Math.round(early - recent).toInt()
+                when {
+                    diff >= 3  -> insights.add("Your resting HR dropped $diff BPM this month — great progress! 📉")
+                    diff <= -3 -> insights.add("Your resting HR rose ${-diff} BPM this month — consider more rest")
+                }
+            }
+        }
+
+        // 5 — Calorie % change week-over-week (filler if < 4 insights so far)
+        if (insights.size < 4) {
+            val thisWeekCal = thisWeekPed.sumOf { it.caloriesBurned }
+            val lastWeekCal = lastWeekPed.sumOf { it.caloriesBurned }
+            if (thisWeekCal > 0.0 && lastWeekCal > 0.0) {
+                val pct = Math.round((thisWeekCal - lastWeekCal) / lastWeekCal * 100).toInt()
+                when {
+                    pct > 5  -> insights.add("You burned $pct% more calories this week than last week 🔥")
+                    pct < -5 -> insights.add("You burned ${-pct}% fewer calories this week than last week")
+                }
+            }
+        }
+
+        return insights.take(4)
+    }
+
+    private fun setupInsightsCard(insights: List<String>) {
+        val b = _binding ?: return
+        if (insights.isEmpty()) {
+            b.cardInsights.visibility = View.GONE
+            return
+        }
+        b.cardInsights.visibility = View.VISIBLE
+        b.llInsights.removeAllViews()
+
+        val isDark = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+        val textColor = if (isDark) Color.WHITE else Color.DKGRAY
+
+        for (insight in insights) {
+            val tv = android.widget.TextView(requireContext()).apply {
+                text = "• $insight"
+                textSize = 14f
+                setTextColor(textColor)
+                setPadding(0, (6 * resources.displayMetrics.density).toInt(), 0, (6 * resources.displayMetrics.density).toInt())
+            }
+            b.llInsights.addView(tv)
+        }
     }
 
     override fun onDestroyView() {
