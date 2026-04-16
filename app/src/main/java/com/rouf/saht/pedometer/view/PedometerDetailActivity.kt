@@ -99,7 +99,7 @@ class PedometerDetailActivity : BaseActivity() {
         binding.goalValue.text = "${Util.formatWithCommas(pedometerData.goal)} steps"
         binding.caloriesBurnedValue.text = "${Math.round(pedometerData.caloriesBurned).toInt()} kcal"
         binding.distanceValue.text = Util.formatDistance(pedometerData.distanceMeters)
-        binding.totalExerciseDurationValue.text = "${pedometerData.totalExerciseDuration / 1000} sec"
+        binding.totalExerciseDurationValue.text = Util.formatDuration(pedometerData.totalExerciseDuration.toDouble())
         binding.startTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(pedometerData.startTime))
         binding.endTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(pedometerData.endTime))
     }
