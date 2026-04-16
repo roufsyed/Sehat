@@ -48,8 +48,9 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
     inner class PedometerViewHolder(private val binding: ItemPedometerBinding) : RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(pedometerData: PedometerData) {
-            val stepsText = "${pedometerData.steps}\nsteps"
-            binding.tvSteps.text = Util.boldSubstring(stepsText, pedometerData.steps.toString())
+            val formattedSteps = Util.formatWithCommas(pedometerData.steps)
+            val stepsText = "$formattedSteps\nsteps"
+            binding.tvSteps.text = Util.boldSubstring(stepsText, formattedSteps)
 
             val dateText = "Date: ${pedometerData.date}"
             binding.tvDate.text = Util.boldSubstring(
