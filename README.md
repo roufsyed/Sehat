@@ -11,11 +11,35 @@ Most health apps send your data to the cloud, sell it to advertisers, or require
 
 ## Screenshots
 
-| Pedometer | Heart Rate | Meditation | Settings |
-|:---------:|:----------:|:----------:|:--------:|
-| ![Pedometer](screenshots/pedometer.png) | ![Heart Rate](screenshots/heart_rate.png) | ![Meditation](screenshots/meditation.png) | ![Settings](screenshots/settings.png) |
+### Home
 
-> Place screenshots in a `screenshots/` folder at the project root.
+| Light | Dark | Steps | Distance | Calories |
+|:-----:|:----:|:-----:|:--------:|:--------:|
+| ![Home Light](sehat_screenshots/home_light.jpeg) | ![Home Dark](sehat_screenshots/home_1_dark.jpeg) | ![Home Steps](sehat_screenshots/home_2_light.jpeg) | ![Home Distance](sehat_screenshots/home_3_light.jpeg) | ![Home Calories](sehat_screenshots/home_4_light.jpeg) |
+
+### Pedometer
+
+| Light | Dark |
+|:-----:|:----:|
+| ![Pedometer Light](sehat_screenshots/pedometer_light.jpeg) | ![Pedometer Dark](sehat_screenshots/pedometer_dark.jpeg) |
+
+### Heart Rate
+
+| Light |
+|:-----:|
+| ![Heart Rate](sehat_screenshots/heart_rate_light.jpeg) |
+
+### Meditation
+
+| Light | Box Breathing |
+|:-----:|:-------------:|
+| ![Meditation Light](sehat_screenshots/Meditation_light.jpeg) | ![Box Breathing](sehat_screenshots/meditation_box_breathing.jpeg) |
+
+### Settings
+
+| Light | Dark |
+|:-----:|:----:|
+| ![Settings Light](sehat_screenshots/settings_light.jpeg) | ![Settings Dark](sehat_screenshots/settings_dark.jpeg) |
 
 ## Privacy first
 
