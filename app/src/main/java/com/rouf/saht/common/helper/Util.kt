@@ -30,14 +30,14 @@ object Util {
     }
 
     fun formatDuration(milliseconds: Double): String {
-        val totalSeconds = milliseconds / 1000
-        val totalMinutes = totalSeconds / 60
-        val totalHours = totalMinutes / 60
+        val totalSeconds = (milliseconds / 1000).toLong()
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
 
-        return if (totalMinutes < 60) {
-            "${totalMinutes.toInt()} min"  // Show minutes (whole number)
-        } else {
-            "${roundToTwoDecimalPlaces(totalHours)} hr"  // Show hours with 2 decimal places
+        return when {
+            hours > 0 && minutes > 0 -> "$hours hr $minutes min"
+            hours > 0                -> "$hours hr"
+            else                     -> "$minutes min"
         }
     }
 

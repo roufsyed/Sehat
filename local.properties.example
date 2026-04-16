@@ -1,9 +1,0 @@
-# Signing configuration for release builds.
-# Copy relevant lines into your local.properties file and fill in your values.
-# local.properties is gitignored — never commit it.
-
-# Path to your keystore file (absolute or relative to project root)
-KEYSTORE_FILE=/Users/yourname/rouf-key.jks
-KEYSTORE_PASSWORD=your_keystore_password
-KEY_ALIAS=rouf-key
-KEY_PASSWORD=your_key_password
