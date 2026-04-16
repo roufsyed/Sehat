@@ -18,20 +18,23 @@
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="4dp"
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
         android:orientation="horizontal"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBack"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:text="Back"
+            android:textColor="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp" />
 
         <LinearLayout
             android:id="@+id/dotsContainer"
