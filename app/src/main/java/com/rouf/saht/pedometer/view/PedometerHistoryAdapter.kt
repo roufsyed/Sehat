@@ -6,13 +6,16 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.rouf.saht.R
 import com.rouf.saht.common.helper.TimeUtil
 import com.rouf.saht.common.helper.Util
 import com.rouf.saht.common.model.HeartRateMonitorData
@@ -45,7 +48,6 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
     inner class PedometerViewHolder(private val binding: ItemPedometerBinding) : RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(pedometerData: PedometerData) {
-            // TODO: add goal to the pedometer data object and process it here
             val stepsText = "${pedometerData.steps}\nsteps"
             binding.tvSteps.text = Util.boldSubstring(stepsText, pedometerData.steps.toString())
 
@@ -66,6 +68,20 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
 
             val distanceText = "Distance 🏃‍♂️: ${Util.formatDistance(pedometerData.distanceMeters)}"
             binding.tvDistance.text = Util.boldSubstring(distanceText, Util.formatDistance(pedometerData.distanceMeters))
+
+            val goal = pedometerData.goal
+            if (goal > 0) {
+                val goalHit = pedometerData.steps >= goal
+                val progressText = "${Util.formatWithCommas(pedometerData.steps)} / ${Util.formatWithCommas(goal)} steps"
+                binding.tvGoal.text = if (goalHit) "Goal: $progressText ✓" else "Goal: $progressText"
+                binding.tvGoal.setTextColor(
+                    if (goalHit) ContextCompat.getColor(context, R.color.zone_moderate)
+                    else ContextCompat.getColor(context, R.color.dark_grey)
+                )
+                binding.tvGoal.visibility = View.VISIBLE
+            } else {
+                binding.tvGoal.visibility = View.GONE
+            }
         }
 
         init {
