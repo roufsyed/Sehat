@@ -27,7 +27,7 @@ Most health apps send your data to the cloud, sell it to advertisers, or require
 
 | Light |
 |:-----:|
-| ![Heart Rate](sehat_screenshots/heart_rate_light.jpeg) |
+| <img src="sehat_screenshots/heart_rate_light.jpeg" width="400"/> |
 
 ### Meditation
 
