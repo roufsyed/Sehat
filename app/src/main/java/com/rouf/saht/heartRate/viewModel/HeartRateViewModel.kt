@@ -71,4 +71,8 @@ class HeartRateViewModel @Inject constructor(
         return monitorHeartRateUseCase.deleteByTimestamp(timestamp)
     }
 
+    suspend fun getAllHeartRateData(): List<HeartRateMonitorData> {
+        return monitorHeartRateUseCase.getHeartRateMonitorData() ?: emptyList()
+    }
+
 }
