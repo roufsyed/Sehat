@@ -63,8 +63,9 @@ class PedometerHistoryAdapter(private val context: Context) : RecyclerView.Adapt
                 Util.formatDuration(pedometerData.totalExerciseDuration.toDouble())
             )
 
-            val caloriesText = "Calories 🔥: ${pedometerData.caloriesBurned} kcal"
-            binding.tvCalories.text = Util.boldSubstring(caloriesText, "${pedometerData.caloriesBurned} kcal")
+            val roundedCal = Math.round(pedometerData.caloriesBurned).toInt()
+            val caloriesText = "Calories 🔥: $roundedCal kcal"
+            binding.tvCalories.text = Util.boldSubstring(caloriesText, "$roundedCal kcal")
 
             val distanceText = "Distance 🏃‍♂️: ${Util.formatDistance(pedometerData.distanceMeters)}"
             binding.tvDistance.text = Util.boldSubstring(distanceText, Util.formatDistance(pedometerData.distanceMeters))
