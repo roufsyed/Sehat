@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import java.util.Locale
 import androidx.annotation.RequiresApi
 import com.rouf.saht.common.activity.BaseActivity
 import androidx.lifecycle.ViewModelProvider
@@ -45,7 +47,10 @@ class HeartRateDetailActivity : BaseActivity() {
         heartRateViewModel = ViewModelProvider(this@HeartRateDetailActivity)[HeartRateViewModel::class.java]
 
         heartRateData = intent.getParcelableExtra<HeartRateMonitorData>("heartRateData")
-        heartRateData?.let { initView(it) }
+        heartRateData?.let { data ->
+            initView(data)
+            lifecycleScope.launch { loadComparison(data) }
+        }
 
         onClick()
     }
@@ -154,6 +159,43 @@ class HeartRateDetailActivity : BaseActivity() {
         lineChart.isDoubleTapToZoomEnabled = false
 
         lineChart.invalidate()
+    }
+
+    /**
+     * Loads all saved sessions, finds others with the same activity, and shows
+     * how this session's BPM compares to the per-activity average.
+     * Hidden when the activity label is blank or when this is the only session of its type.
+     */
+    private suspend fun loadComparison(current: HeartRateMonitorData) {
+        val activity = current.activityPerformed.trim()
+        if (activity.isBlank()) {
+            binding.cardComparison.visibility = View.GONE
+            return
+        }
+
+        val allSessions = heartRateViewModel.getAllHeartRateData()
+        val sameSessions = allSessions.filter {
+            it.activityPerformed.equals(activity, ignoreCase = true) &&
+            it.timeStamp != current.timeStamp
+        }
+
+        if (sameSessions.isEmpty()) {
+            binding.cardComparison.visibility = View.GONE
+            return
+        }
+
+        val activityAvg = Math.round(sameSessions.map { it.bpm }.average()).toInt()
+        val delta = current.bpm - activityAvg
+
+        val activityLabel = activity.lowercase(Locale.getDefault())
+        binding.tvThisSession.text = "This session: ${current.bpm} BPM"
+        binding.tvActivityAverage.text = "Your $activityLabel average: $activityAvg BPM"
+        binding.tvComparisonDelta.text = when {
+            delta > 0 -> "$delta BPM above your average"
+            delta < 0 -> "${-delta} BPM below your average"
+            else      -> "Exactly at your average"
+        }
+        binding.cardComparison.visibility = View.VISIBLE
     }
 
     private fun isDarkMode(): Boolean {
