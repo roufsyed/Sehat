@@ -33,6 +33,7 @@ import com.rouf.saht.common.helper.BMIUtils
 import com.rouf.saht.common.helper.HeartRateZoneUtils
 import com.rouf.saht.common.helper.Util
 import com.rouf.saht.common.model.PedometerData
+import com.rouf.saht.common.model.WeightEntry
 import com.rouf.saht.databinding.FragmentDashboardBinding
 import com.rouf.saht.heartRate.viewModel.HeartRateViewModel
 import com.rouf.saht.pedometer.viewModel.PedometerViewModel
@@ -180,7 +181,9 @@ class DashboardFragment : Fragment() {
     private fun loadBmi() {
         viewLifecycleOwner.lifecycleScope.launch {
             val info = settingsViewModel.getPersonalInformation()
+            val history = settingsViewModel.getWeightHistory()
             val b = _binding ?: return@launch
+
             val heightStr = info.height
             val weightStr = info.weight
             if (heightStr.isNotEmpty() && weightStr.isNotEmpty()) {
@@ -193,6 +196,63 @@ class DashboardFragment : Fragment() {
                     b.tvDashboardBmi.setTextColor(BMIUtils.getCategoryColor(requireContext(), bmi))
                 }
             }
+
+            if (history.size >= 2) {
+                renderWeightTrendChart(history.takeLast(30))
+            }
+        }
+    }
+
+    private fun renderWeightTrendChart(history: List<WeightEntry>) {
+        val b = _binding ?: return
+        b.lineChartBmiTrend.visibility = View.VISIBLE
+
+        val entries = history.mapIndexed { i, entry ->
+            Entry(i.toFloat(), entry.weightKg.toFloat())
+        }
+
+        val isDark = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+        val lineColor = BaseActivity.effectivePrimary(requireContext())
+        val dataSet = LineDataSet(entries, "").apply {
+            color = lineColor
+            setCircleColor(lineColor)
+            circleRadius = 3f
+            lineWidth = 2f
+            setDrawValues(false)
+            setDrawIcons(false)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawFilled(true)
+            fillColor = lineColor
+            fillAlpha = 30
+        }
+
+        val minWeight = entries.minOf { it.y }
+        val maxWeight = entries.maxOf { it.y }
+        val padding = (maxWeight - minWeight).coerceAtLeast(1f) * 0.2f
+        val axisTextColor = if (isDark) Color.WHITE else Color.DKGRAY
+
+        b.lineChartBmiTrend.apply {
+            clear()
+            data = LineData(dataSet)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setTouchEnabled(false)
+            xAxis.isEnabled = false
+            axisLeft.apply {
+                isEnabled = true
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                textSize = 9f
+                textColor = axisTextColor
+                axisMinimum = minWeight - padding
+                axisMaximum = maxWeight + padding
+                setLabelCount(3, true)
+            }
+            axisRight.isEnabled = false
+            animateY(400)
         }
     }
 
