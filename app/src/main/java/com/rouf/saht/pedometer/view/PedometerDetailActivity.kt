@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.rouf.saht.R
 import com.rouf.saht.common.helper.TimeUtil
+import com.rouf.saht.common.helper.Util
 import com.rouf.saht.common.model.PedometerData
 import com.rouf.saht.databinding.ActivityPedometerDetailBinding
 import com.rouf.saht.databinding.DialogConfirmationBinding
@@ -96,8 +97,8 @@ class PedometerDetailActivity : BaseActivity() {
         binding.dateValue.text = TimeUtil.timestampToDateTime(pedometerData.timestamp)
         binding.stepsValue.text = "${pedometerData.steps} steps"
         binding.goalValue.text = "${pedometerData.goal} steps"
-        binding.caloriesBurnedValue.text = "${pedometerData.caloriesBurned} kcal"
-        binding.distanceValue.text = "${pedometerData.distanceMeters} meters"
+        binding.caloriesBurnedValue.text = "${Math.round(pedometerData.caloriesBurned).toInt()} kcal"
+        binding.distanceValue.text = Util.formatDistance(pedometerData.distanceMeters)
         binding.totalExerciseDurationValue.text = "${pedometerData.totalExerciseDuration / 1000} sec"
         binding.startTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(pedometerData.startTime))
         binding.endTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(pedometerData.endTime))
