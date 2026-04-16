@@ -640,7 +640,7 @@ class DashboardFragment : Fragment() {
         }
 
         val totalMinutes = recent.sumOf { it.totalExerciseDuration } / 60000.0
-        val avgMinPerDay = (totalMinutes / 30).toInt()
+        val avgMinPerDay = Math.round(totalMinutes / 30).toInt()
         b.tvAvgDuration.text = avgMinPerDay.toString()
         b.tvDurationSubtitle.text = "${recent.size} active days in the last 30 days"
     }
