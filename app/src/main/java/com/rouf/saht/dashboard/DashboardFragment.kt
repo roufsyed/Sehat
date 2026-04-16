@@ -1052,8 +1052,15 @@ class DashboardFragment : Fragment() {
         val maxCal = calByDate.values.maxOrNull() ?: 0.0
         b.tvRecordMaxCalories.text = String.format("%.0f", maxCal)
 
-        // Days goal was hit
-        val goalDays = stepsByDate.count { (_, steps) -> steps >= 10000 }
+        // Days goal was hit — use each day's stored goal; fall back to 10,000 for legacy entries
+        val goalByDate = pedData
+            .groupBy { it.date }
+            .mapValues { (_, items) ->
+                items.maxByOrNull { it.timestamp }?.goal?.takeIf { it > 0 } ?: 10000
+            }
+        val goalDays = stepsByDate.count { (date, daySteps) ->
+            daySteps >= (goalByDate[date] ?: 10000)
+        }
         b.tvRecordGoalDays.text = goalDays.toString()
     }
 
