@@ -95,8 +95,8 @@ class PedometerDetailActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initView(pedometerData: PedometerData) {
         binding.dateValue.text = TimeUtil.timestampToDateTime(pedometerData.timestamp)
-        binding.stepsValue.text = "${pedometerData.steps} steps"
-        binding.goalValue.text = "${pedometerData.goal} steps"
+        binding.stepsValue.text = "${Util.formatWithCommas(pedometerData.steps)} steps"
+        binding.goalValue.text = "${Util.formatWithCommas(pedometerData.goal)} steps"
         binding.caloriesBurnedValue.text = "${Math.round(pedometerData.caloriesBurned).toInt()} kcal"
         binding.distanceValue.text = Util.formatDistance(pedometerData.distanceMeters)
         binding.totalExerciseDurationValue.text = "${pedometerData.totalExerciseDuration / 1000} sec"
