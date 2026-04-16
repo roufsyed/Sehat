@@ -55,6 +55,7 @@ class DashboardSettingsActivity : BaseActivity() {
         binding.switchCorrelation.isChecked = Paper.book().read(PREF_SHOW_CORRELATION, true) ?: true
         binding.switchWeeklySummary.isChecked = Paper.book().read(PREF_SHOW_WEEKLY_SUMMARY, true) ?: true
         binding.switchRecords.isChecked = Paper.book().read(PREF_SHOW_RECORDS, true) ?: true
+        binding.switchInsights.isChecked = Paper.book().read(PREF_SHOW_INSIGHTS, true) ?: true
     }
 
     private fun setupListeners() {
@@ -100,6 +101,9 @@ class DashboardSettingsActivity : BaseActivity() {
         binding.switchRecords.setOnCheckedChangeListener { _, checked ->
             Paper.book().write(PREF_SHOW_RECORDS, checked)
         }
+        binding.switchInsights.setOnCheckedChangeListener { _, checked ->
+            Paper.book().write(PREF_SHOW_INSIGHTS, checked)
+        }
     }
 
     companion object {
@@ -117,5 +121,6 @@ class DashboardSettingsActivity : BaseActivity() {
         const val PREF_SHOW_CORRELATION = "dashboard_show_correlation"
         const val PREF_SHOW_WEEKLY_SUMMARY = "dashboard_show_weekly_summary"
         const val PREF_SHOW_RECORDS = "dashboard_show_records"
+        const val PREF_SHOW_INSIGHTS = "dashboard_show_insights"
     }
 }
