@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.components.YAxis
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -259,6 +260,9 @@ class DashboardFragment : Fragment() {
 
     private var cachedPedometerData: List<PedometerData> = emptyList()
 
+    /** Tracks the last non-Custom filter position so we can restore it if the picker is cancelled. */
+    private var lastValidStepsFilterPosition = 0
+
     private fun loadWeeklyChart() {
         viewLifecycleOwner.lifecycleScope.launch {
             cachedPedometerData = withContext(Dispatchers.IO) {
@@ -266,7 +270,7 @@ class DashboardFragment : Fragment() {
             } ?: emptyList()
 
             if (_binding != null) {
-                setupStepsChart(isMonthly = false)
+                setupStepsChart(7)
                 setupChartFilter()
             }
         }
@@ -274,50 +278,137 @@ class DashboardFragment : Fragment() {
 
     private fun setupChartFilter() {
         val b = _binding ?: return
-        val options = listOf("Weekly", "Monthly")
+        val options = listOf("Weekly", "Monthly", "3 Months", "6 Months", "Custom")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, options)
         b.actvStepsFilter.setAdapter(adapter)
         b.actvStepsFilter.setOnItemClickListener { _, _, position, _ ->
-            setupStepsChart(isMonthly = position == 1)
+            when (position) {
+                4    -> showStepsDateRangePicker(options)
+                else -> {
+                    lastValidStepsFilterPosition = position
+                    val days = when (position) { 1 -> 30; 2 -> 90; 3 -> 180; else -> 7 }
+                    setupStepsChart(days)
+                }
+            }
         }
     }
 
-    private fun setupStepsChart(isMonthly: Boolean) {
+    private fun showStepsDateRangePicker(options: List<String>) {
+        val b = _binding ?: return
+        val restoreText = options[lastValidStepsFilterPosition]
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select date range")
+            .build()
+        picker.addOnPositiveButtonClickListener { selection ->
+            val fromMs = selection.first ?: return@addOnPositiveButtonClickListener
+            val toMs = (selection.second ?: return@addOnPositiveButtonClickListener) + 86400000L - 1
+            val oneDay = 24L * 60 * 60 * 1000
+            val approxDays = ((toMs - fromMs) / oneDay + 1).toInt().coerceAtLeast(1)
+            setupStepsChartForRange(fromMs, toMs, approxDays)
+        }
+        picker.addOnNegativeButtonClickListener { b.actvStepsFilter.setText(restoreText, false) }
+        picker.addOnCancelListener { b.actvStepsFilter.setText(restoreText, false) }
+        picker.show(parentFragmentManager, "STEPS_DATE_RANGE")
+    }
+
+    /** Sets up the steps chart for a fixed number of past days ending today. */
+    private fun setupStepsChart(daysBack: Int) {
+        val now = System.currentTimeMillis()
+        val fromMs = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, -(daysBack - 1))
+            set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        setupStepsChartForRange(fromMs, now, daysBack)
+    }
+
+    /**
+     * Renders the steps bar chart for an arbitrary date range.
+     * Aggregation strategy is chosen based on [approxDays]:
+     *   ≤ 31  → daily bars
+     *   ≤ 93  → weekly aggregated bars
+     *   else  → monthly aggregated bars
+     */
+    private fun setupStepsChartForRange(fromMs: Long, toMs: Long, approxDays: Int) {
         val chart = _binding?.barChartWeekly ?: return
+        val oneDay = 24L * 60 * 60 * 1000
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
         val labels = mutableListOf<String>()
         val entries = mutableListOf<BarEntry>()
+        var barWidth = 0.7f
+        var labelCount = 7
 
-        if (isMonthly) {
-            val dayFormat = SimpleDateFormat("d", Locale.getDefault())
-            val count = 30
-            for (i in (count - 1) downTo 0) {
+        when {
+            approxDays <= 31 -> {
+                val labelFormat = if (approxDays <= 7)
+                    SimpleDateFormat("EEE", Locale.getDefault())
+                else
+                    SimpleDateFormat("d", Locale.getDefault())
+                barWidth   = if (approxDays <= 7) 0.6f else 0.8f
+                labelCount = if (approxDays <= 7) 7 else 10
+
                 val cal = Calendar.getInstance()
-                cal.add(Calendar.DAY_OF_YEAR, -i)
-                val dateStr = dateFormat.format(cal.time)
-                val label = dayFormat.format(cal.time)
-                labels.add(label)
-
-                val steps = cachedPedometerData
-                    .filter { it.date == dateStr }
-                    .sumOf { it.steps }
-                entries.add(BarEntry(((count - 1) - i).toFloat(), steps.toFloat()))
+                cal.timeInMillis = fromMs
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val dateStr = dateFormat.format(cal.time)
+                    labels.add(labelFormat.format(cal.time))
+                    val steps = cachedPedometerData
+                        .filter { it.date == dateStr }
+                        .sumOf { it.steps }
+                    entries.add(BarEntry(idx.toFloat(), steps.toFloat()))
+                    cal.add(Calendar.DAY_OF_YEAR, 1)
+                    idx++
+                }
             }
-        } else {
-            val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
-            for (i in 6 downTo 0) {
+
+            approxDays <= 93 -> {
+                // Weekly aggregation — one bar per 7-day window
+                val labelFormat = SimpleDateFormat("d MMM", Locale.getDefault())
+                var weekStart = fromMs
+                var idx = 0
+                while (weekStart < toMs) {
+                    val weekEnd = minOf(weekStart + 7 * oneDay, toMs + 1)
+                    val steps = cachedPedometerData
+                        .filter { it.timestamp in weekStart until weekEnd }
+                        .sumOf { it.steps }
+                    labels.add(labelFormat.format(Date(weekStart)))
+                    entries.add(BarEntry(idx.toFloat(), steps.toFloat()))
+                    weekStart = weekEnd
+                    idx++
+                }
+                labelCount = minOf(entries.size, 7)
+            }
+
+            else -> {
+                // Monthly aggregation — one bar per calendar month
+                val labelFormat = SimpleDateFormat("MMM", Locale.getDefault())
                 val cal = Calendar.getInstance()
-                cal.add(Calendar.DAY_OF_YEAR, -i)
-                val dateStr = dateFormat.format(cal.time)
-                val label = dayFormat.format(cal.time)
-                labels.add(label)
-
-                val steps = cachedPedometerData
-                    .filter { it.date == dateStr }
-                    .sumOf { it.steps }
-                entries.add(BarEntry((6 - i).toFloat(), steps.toFloat()))
+                cal.timeInMillis = fromMs
+                cal.set(Calendar.DAY_OF_MONTH, 1)
+                cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0); cal.set(Calendar.MILLISECOND, 0)
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val monthStart = cal.timeInMillis
+                    cal.add(Calendar.MONTH, 1)
+                    val monthEnd = cal.timeInMillis
+                    val steps = cachedPedometerData
+                        .filter { it.timestamp in monthStart until monthEnd }
+                        .sumOf { it.steps }
+                    labels.add(labelFormat.format(Date(monthStart)))
+                    entries.add(BarEntry(idx.toFloat(), steps.toFloat()))
+                    idx++
+                }
+                labelCount = minOf(entries.size, 6)
             }
+        }
+
+        if (entries.isEmpty()) {
+            chart.clear()
+            chart.invalidate()
+            return
         }
 
         val isDark = resources.configuration.uiMode and
@@ -331,7 +422,7 @@ class DashboardFragment : Fragment() {
         }
 
         chart.apply {
-            data = BarData(dataSet).apply { barWidth = if (isMonthly) 0.8f else 0.6f }
+            data = BarData(dataSet).apply { this.barWidth = barWidth }
             description.isEnabled = false
             legend.isEnabled = false
             setTouchEnabled(false)
@@ -339,7 +430,7 @@ class DashboardFragment : Fragment() {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = IndexAxisValueFormatter(labels)
                 granularity = 1f
-                labelCount = if (isMonthly) 10 else 7
+                this.labelCount = labelCount
                 setDrawGridLines(false)
                 this.textColor = textColor
             }
