@@ -9,6 +9,7 @@ import com.rouf.saht.common.model.HeartRateMonitorSettings
 import com.rouf.saht.common.model.PedometerSensitivity
 import com.rouf.saht.common.model.PedometerSettings
 import com.rouf.saht.common.model.PersonalInformation
+import com.rouf.saht.common.model.WeightEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -93,6 +94,17 @@ class SettingsViewModel @Inject constructor(
             unit = "seconds",
             sensitivityLevel = HeartRateMonitorSensitivity.MEDIUM
         )
+    }
+
+    /*
+    * Weight history
+    * */
+    suspend fun appendWeightEntry(entry: WeightEntry) {
+        settingRepository.appendWeightEntry(entry)
+    }
+
+    suspend fun getWeightHistory(): List<WeightEntry> {
+        return settingRepository.getWeightHistory()
     }
 
 }
