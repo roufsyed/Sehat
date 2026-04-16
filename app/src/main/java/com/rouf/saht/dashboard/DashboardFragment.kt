@@ -262,6 +262,9 @@ class DashboardFragment : Fragment() {
 
     /** Tracks the last non-Custom filter position so we can restore it if the picker is cancelled. */
     private var lastValidStepsFilterPosition = 0
+    private var lastValidDistanceFilterPosition = 0
+    private var lastValidCaloriesFilterPosition = 0
+    private var lastValidZoneFilterPosition = 1  // default = "1 Month"
 
     private fun loadWeeklyChart() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -472,7 +475,7 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private val zoneFilterOptions = listOf("Today", "1 Month", "3 Months", "6 Months", "1 Year")
+    private val zoneFilterOptions = listOf("Today", "1 Month", "3 Months", "6 Months", "1 Year", "Custom")
     private val zoneFilterDays = listOf(0, 30, 90, 180, 365)
 
     private fun setupZoneFilter() {
@@ -480,15 +483,33 @@ class DashboardFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, zoneFilterOptions)
         b.actvZoneFilter.setAdapter(adapter)
         b.actvZoneFilter.setOnItemClickListener { _, _, position, _ ->
-            renderZoneChart(daysBack = zoneFilterDays[position])
+            if (position < zoneFilterDays.size) {
+                lastValidZoneFilterPosition = position
+                renderZoneChart(daysBack = zoneFilterDays[position])
+            } else {
+                showZoneDateRangePicker()
+            }
         }
     }
 
-    private fun renderZoneChart(daysBack: Int) {
+    private fun showZoneDateRangePicker() {
         val b = _binding ?: return
+        val restoreText = zoneFilterOptions[lastValidZoneFilterPosition]
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select date range")
+            .build()
+        picker.addOnPositiveButtonClickListener { selection ->
+            val fromMs = selection.first ?: return@addOnPositiveButtonClickListener
+            val toMs = (selection.second ?: return@addOnPositiveButtonClickListener) + 86400000L - 1
+            renderZoneChartCustomRange(fromMs, toMs)
+        }
+        picker.addOnNegativeButtonClickListener { b.actvZoneFilter.setText(restoreText, false) }
+        picker.addOnCancelListener { b.actvZoneFilter.setText(restoreText, false) }
+        picker.show(parentFragmentManager, "ZONE_DATE_RANGE")
+    }
 
+    private fun renderZoneChart(daysBack: Int) {
         val cutoff = if (daysBack == 0) {
-            // Today: start of current day
             Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
                 set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
@@ -496,8 +517,15 @@ class DashboardFragment : Fragment() {
         } else {
             System.currentTimeMillis() - daysBack.toLong() * 24 * 60 * 60 * 1000
         }
+        renderZoneChartWithData(cachedHrData.filter { it.timeStamp >= cutoff })
+    }
 
-        val filtered = cachedHrData.filter { it.timeStamp >= cutoff }
+    private fun renderZoneChartCustomRange(fromMs: Long, toMs: Long) {
+        renderZoneChartWithData(cachedHrData.filter { it.timeStamp in fromMs..toMs })
+    }
+
+    private fun renderZoneChartWithData(filtered: List<com.rouf.saht.common.model.HeartRateMonitorData>) {
+        val b = _binding ?: return
         if (filtered.isEmpty()) {
             b.pieChartZones.clear()
             b.llZoneLegend.removeAllViews()
@@ -631,11 +659,11 @@ class DashboardFragment : Fragment() {
             if (data.isEmpty() || _binding == null) return@launch
 
             if (showDistance) {
-                setupDistanceChart(data, isMonthly = false)
+                setupDistanceChart(data, 7)
                 setupDistanceFilter(data)
             }
             if (showCalories) {
-                setupCaloriesChart(data, isMonthly = false)
+                setupCaloriesChart(data, 7)
                 setupCaloriesFilter(data)
             }
             if (showDuration) {
@@ -644,51 +672,131 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private val periodOptions = listOf("Weekly", "Monthly")
+    // ---- Distance card ----
 
     private fun setupDistanceFilter(data: List<PedometerData>) {
         val b = _binding ?: return
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, periodOptions)
+        val options = listOf("Weekly", "Monthly", "3 Months", "6 Months", "Custom")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, options)
         b.actvDistanceFilter.setAdapter(adapter)
         b.actvDistanceFilter.setOnItemClickListener { _, _, pos, _ ->
-            setupDistanceChart(data, isMonthly = pos == 1)
+            when (pos) {
+                4    -> showDistanceDateRangePicker(data, options)
+                else -> {
+                    lastValidDistanceFilterPosition = pos
+                    val days = when (pos) { 1 -> 30; 2 -> 90; 3 -> 180; else -> 7 }
+                    setupDistanceChart(data, days)
+                }
+            }
         }
     }
 
-    private fun setupDistanceChart(allData: List<PedometerData>, isMonthly: Boolean) {
+    private fun showDistanceDateRangePicker(data: List<PedometerData>, options: List<String>) {
+        val b = _binding ?: return
+        val restoreText = options[lastValidDistanceFilterPosition]
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select date range")
+            .build()
+        picker.addOnPositiveButtonClickListener { selection ->
+            val fromMs = selection.first ?: return@addOnPositiveButtonClickListener
+            val toMs = (selection.second ?: return@addOnPositiveButtonClickListener) + 86400000L - 1
+            val approxDays = ((toMs - fromMs) / (24L * 60 * 60 * 1000) + 1).toInt().coerceAtLeast(1)
+            setupDistanceChartForRange(data, fromMs, toMs, approxDays)
+        }
+        picker.addOnNegativeButtonClickListener { b.actvDistanceFilter.setText(restoreText, false) }
+        picker.addOnCancelListener { b.actvDistanceFilter.setText(restoreText, false) }
+        picker.show(parentFragmentManager, "DISTANCE_DATE_RANGE")
+    }
+
+    private fun setupDistanceChart(data: List<PedometerData>, daysBack: Int) {
+        val now = System.currentTimeMillis()
+        val fromMs = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, -(daysBack - 1))
+            set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        setupDistanceChartForRange(data, fromMs, now, daysBack)
+    }
+
+    private fun setupDistanceChartForRange(allData: List<PedometerData>, fromMs: Long, toMs: Long, approxDays: Int) {
         val chart = _binding?.lineChartDistance ?: return
-        val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val oneDay = 24L * 60 * 60 * 1000
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val labels = mutableListOf<String>()
         val entries = mutableListOf<Entry>()
+        var labelCount = 7
 
-        val count = if (isMonthly) 30 else 7
-        val labelFormat = if (isMonthly) java.text.SimpleDateFormat("d", java.util.Locale.getDefault())
-            else java.text.SimpleDateFormat("EEE", java.util.Locale.getDefault())
-
-        for (i in (count - 1) downTo 0) {
-            val cal = Calendar.getInstance()
-            cal.add(Calendar.DAY_OF_YEAR, -i)
-            val dateStr = dateFormat.format(cal.time)
-            labels.add(labelFormat.format(cal.time))
-
-            val km = allData.filter { it.date == dateStr }.sumOf { it.distanceMeters } / 1000.0
-            entries.add(Entry(((count - 1) - i).toFloat(), km.toFloat()))
+        when {
+            approxDays <= 31 -> {
+                val labelFormat = if (approxDays <= 7) SimpleDateFormat("EEE", Locale.getDefault())
+                                  else SimpleDateFormat("d", Locale.getDefault())
+                labelCount = if (approxDays <= 7) 7 else 10
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = fromMs
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val dateStr = dateFormat.format(cal.time)
+                    labels.add(labelFormat.format(cal.time))
+                    val km = allData.filter { it.date == dateStr }.sumOf { it.distanceMeters } / 1000.0
+                    entries.add(Entry(idx.toFloat(), km.toFloat()))
+                    cal.add(Calendar.DAY_OF_YEAR, 1)
+                    idx++
+                }
+            }
+            approxDays <= 93 -> {
+                val labelFormat = SimpleDateFormat("d MMM", Locale.getDefault())
+                var weekStart = fromMs
+                var idx = 0
+                while (weekStart < toMs) {
+                    val weekEnd = minOf(weekStart + 7 * oneDay, toMs + 1)
+                    val km = allData.filter { it.timestamp in weekStart until weekEnd }
+                        .sumOf { it.distanceMeters } / 1000.0
+                    labels.add(labelFormat.format(Date(weekStart)))
+                    entries.add(Entry(idx.toFloat(), km.toFloat()))
+                    weekStart = weekEnd
+                    idx++
+                }
+                labelCount = minOf(entries.size, 7)
+            }
+            else -> {
+                val labelFormat = SimpleDateFormat("MMM", Locale.getDefault())
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = fromMs
+                cal.set(Calendar.DAY_OF_MONTH, 1)
+                cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0); cal.set(Calendar.MILLISECOND, 0)
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val monthStart = cal.timeInMillis
+                    cal.add(Calendar.MONTH, 1)
+                    val monthEnd = cal.timeInMillis
+                    val km = allData.filter { it.timestamp in monthStart until monthEnd }
+                        .sumOf { it.distanceMeters } / 1000.0
+                    labels.add(labelFormat.format(Date(monthStart)))
+                    entries.add(Entry(idx.toFloat(), km.toFloat()))
+                    idx++
+                }
+                labelCount = minOf(entries.size, 6)
+            }
         }
+
+        if (entries.isEmpty()) { chart.clear(); chart.invalidate(); return }
 
         val isDark = resources.configuration.uiMode and
                 android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
                 android.content.res.Configuration.UI_MODE_NIGHT_YES
         val textColor = if (isDark) Color.WHITE else Color.DKGRAY
+        val primaryColor = BaseActivity.effectivePrimary(requireContext())
 
         val dataSet = LineDataSet(entries, "Distance (km)").apply {
-            color = BaseActivity.effectivePrimary(requireContext())
-            setCircleColor(BaseActivity.effectivePrimary(requireContext()))
+            color = primaryColor
+            setCircleColor(primaryColor)
             circleRadius = 3f
             lineWidth = 2f
             setDrawValues(false)
             setDrawIcons(false)
             setDrawFilled(true)
-            fillColor = BaseActivity.effectivePrimary(requireContext())
+            fillColor = primaryColor
             fillAlpha = 40
             mode = LineDataSet.Mode.CUBIC_BEZIER
         }
@@ -703,7 +811,7 @@ class DashboardFragment : Fragment() {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = IndexAxisValueFormatter(labels)
                 granularity = 1f
-                labelCount = if (isMonthly) 10 else 7
+                this.labelCount = labelCount
                 setDrawGridLines(false)
                 this.textColor = textColor
             }
@@ -717,34 +825,117 @@ class DashboardFragment : Fragment() {
         }
     }
 
+    // ---- Calories card ----
+
     private fun setupCaloriesFilter(data: List<PedometerData>) {
         val b = _binding ?: return
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, periodOptions)
+        val options = listOf("Weekly", "Monthly", "3 Months", "6 Months", "Custom")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, options)
         b.actvCaloriesFilter.setAdapter(adapter)
         b.actvCaloriesFilter.setOnItemClickListener { _, _, pos, _ ->
-            setupCaloriesChart(data, isMonthly = pos == 1)
+            when (pos) {
+                4    -> showCaloriesDateRangePicker(data, options)
+                else -> {
+                    lastValidCaloriesFilterPosition = pos
+                    val days = when (pos) { 1 -> 30; 2 -> 90; 3 -> 180; else -> 7 }
+                    setupCaloriesChart(data, days)
+                }
+            }
         }
     }
 
-    private fun setupCaloriesChart(allData: List<PedometerData>, isMonthly: Boolean) {
+    private fun showCaloriesDateRangePicker(data: List<PedometerData>, options: List<String>) {
+        val b = _binding ?: return
+        val restoreText = options[lastValidCaloriesFilterPosition]
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select date range")
+            .build()
+        picker.addOnPositiveButtonClickListener { selection ->
+            val fromMs = selection.first ?: return@addOnPositiveButtonClickListener
+            val toMs = (selection.second ?: return@addOnPositiveButtonClickListener) + 86400000L - 1
+            val approxDays = ((toMs - fromMs) / (24L * 60 * 60 * 1000) + 1).toInt().coerceAtLeast(1)
+            setupCaloriesChartForRange(data, fromMs, toMs, approxDays)
+        }
+        picker.addOnNegativeButtonClickListener { b.actvCaloriesFilter.setText(restoreText, false) }
+        picker.addOnCancelListener { b.actvCaloriesFilter.setText(restoreText, false) }
+        picker.show(parentFragmentManager, "CALORIES_DATE_RANGE")
+    }
+
+    private fun setupCaloriesChart(data: List<PedometerData>, daysBack: Int) {
+        val now = System.currentTimeMillis()
+        val fromMs = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, -(daysBack - 1))
+            set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        setupCaloriesChartForRange(data, fromMs, now, daysBack)
+    }
+
+    private fun setupCaloriesChartForRange(allData: List<PedometerData>, fromMs: Long, toMs: Long, approxDays: Int) {
         val chart = _binding?.barChartCalories ?: return
-        val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val oneDay = 24L * 60 * 60 * 1000
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val labels = mutableListOf<String>()
         val entries = mutableListOf<BarEntry>()
+        var barWidth = 0.7f
+        var labelCount = 7
 
-        val count = if (isMonthly) 30 else 7
-        val labelFormat = if (isMonthly) java.text.SimpleDateFormat("d", java.util.Locale.getDefault())
-            else java.text.SimpleDateFormat("EEE", java.util.Locale.getDefault())
-
-        for (i in (count - 1) downTo 0) {
-            val cal = Calendar.getInstance()
-            cal.add(Calendar.DAY_OF_YEAR, -i)
-            val dateStr = dateFormat.format(cal.time)
-            labels.add(labelFormat.format(cal.time))
-
-            val cal_val = allData.filter { it.date == dateStr }.sumOf { it.caloriesBurned }
-            entries.add(BarEntry(((count - 1) - i).toFloat(), cal_val.toFloat()))
+        when {
+            approxDays <= 31 -> {
+                val labelFormat = if (approxDays <= 7) SimpleDateFormat("EEE", Locale.getDefault())
+                                  else SimpleDateFormat("d", Locale.getDefault())
+                barWidth   = if (approxDays <= 7) 0.6f else 0.8f
+                labelCount = if (approxDays <= 7) 7 else 10
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = fromMs
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val dateStr = dateFormat.format(cal.time)
+                    labels.add(labelFormat.format(cal.time))
+                    val cal_val = allData.filter { it.date == dateStr }.sumOf { it.caloriesBurned }
+                    entries.add(BarEntry(idx.toFloat(), cal_val.toFloat()))
+                    cal.add(Calendar.DAY_OF_YEAR, 1)
+                    idx++
+                }
+            }
+            approxDays <= 93 -> {
+                val labelFormat = SimpleDateFormat("d MMM", Locale.getDefault())
+                var weekStart = fromMs
+                var idx = 0
+                while (weekStart < toMs) {
+                    val weekEnd = minOf(weekStart + 7 * oneDay, toMs + 1)
+                    val cal_val = allData.filter { it.timestamp in weekStart until weekEnd }
+                        .sumOf { it.caloriesBurned }
+                    labels.add(labelFormat.format(Date(weekStart)))
+                    entries.add(BarEntry(idx.toFloat(), cal_val.toFloat()))
+                    weekStart = weekEnd
+                    idx++
+                }
+                labelCount = minOf(entries.size, 7)
+            }
+            else -> {
+                val labelFormat = SimpleDateFormat("MMM", Locale.getDefault())
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = fromMs
+                cal.set(Calendar.DAY_OF_MONTH, 1)
+                cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0); cal.set(Calendar.MILLISECOND, 0)
+                var idx = 0
+                while (cal.timeInMillis <= toMs) {
+                    val monthStart = cal.timeInMillis
+                    cal.add(Calendar.MONTH, 1)
+                    val monthEnd = cal.timeInMillis
+                    val cal_val = allData.filter { it.timestamp in monthStart until monthEnd }
+                        .sumOf { it.caloriesBurned }
+                    labels.add(labelFormat.format(Date(monthStart)))
+                    entries.add(BarEntry(idx.toFloat(), cal_val.toFloat()))
+                    idx++
+                }
+                labelCount = minOf(entries.size, 6)
+            }
         }
+
+        if (entries.isEmpty()) { chart.clear(); chart.invalidate(); return }
 
         val isDark = resources.configuration.uiMode and
                 android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
@@ -757,7 +948,7 @@ class DashboardFragment : Fragment() {
         }
 
         chart.apply {
-            data = BarData(dataSet).apply { barWidth = if (isMonthly) 0.8f else 0.6f }
+            data = BarData(dataSet).apply { this.barWidth = barWidth }
             description.isEnabled = false
             legend.isEnabled = false
             setTouchEnabled(false)
@@ -765,7 +956,7 @@ class DashboardFragment : Fragment() {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = IndexAxisValueFormatter(labels)
                 granularity = 1f
-                labelCount = if (isMonthly) 10 else 7
+                this.labelCount = labelCount
                 setDrawGridLines(false)
                 this.textColor = textColor
             }
