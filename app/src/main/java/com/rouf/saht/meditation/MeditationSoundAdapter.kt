@@ -56,7 +56,7 @@ class MeditationSoundAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is SoundViewHolder  -> holder.bind(soundList[position])
+            is SoundViewHolder  -> if (position < soundList.size) holder.bind(soundList[position])
             is AddSoundViewHolder -> holder.bind()
         }
     }
