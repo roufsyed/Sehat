@@ -4,12 +4,12 @@ import android.content.Context
 import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.rouf.saht.common.model.HeartRateMonitorData
 import com.rouf.saht.common.model.HeartRateMonitorSettings
 import com.rouf.saht.common.model.PedometerData
 import com.rouf.saht.common.model.PedometerSettings
 import com.rouf.saht.common.model.PersonalInformation
 import com.rouf.saht.common.model.Sound
-import com.rouf.saht.heartRate.data.HeartRateData
 import com.rouf.saht.setting.view.CustomizationActivity
 import com.rouf.saht.setting.view.DashboardSettingsActivity
 import com.rouf.saht.setting.view.NavOrderActivity
@@ -27,7 +27,7 @@ object BackupUtils {
     fun exportData(context: Context, uri: Uri): Boolean {
         return try {
             val exportMap = mutableMapOf<String, Any?>()
-            exportMap["heart_rate_monitor_data"] = Paper.book().read<List<HeartRateData>>("heart_rate_monitor_data", emptyList())
+            exportMap["heart_rate_monitor_data"] = Paper.book().read<List<HeartRateMonitorData>>("heart_rate_monitor_data", emptyList())
             exportMap["pedometer_data_list"] = Paper.book().read<List<PedometerData>>("pedometer_data_list", emptyList())
             exportMap["personal_information"] = Paper.book().read<PersonalInformation>("personal_information", null)
             exportMap["pedometer_data"] = Paper.book().read<PedometerData>("pedometer_data", null)
@@ -88,8 +88,8 @@ object BackupUtils {
             val dataMap: Map<String, Any> = gson.fromJson(json, type)
 
             dataMap["heart_rate_monitor_data"]?.let {
-                val listType = object : TypeToken<List<HeartRateData>>() {}.type
-                Paper.book().write("heart_rate_monitor_data", gson.fromJson<List<HeartRateData>>(gson.toJson(it), listType))
+                val listType = object : TypeToken<List<HeartRateMonitorData>>() {}.type
+                Paper.book().write("heart_rate_monitor_data", gson.fromJson<List<HeartRateMonitorData>>(gson.toJson(it), listType))
             }
             dataMap["pedometer_data_list"]?.let {
                 val listType = object : TypeToken<List<PedometerData>>() {}.type
