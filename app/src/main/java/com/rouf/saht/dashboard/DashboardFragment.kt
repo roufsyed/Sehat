@@ -2,12 +2,18 @@ package com.rouf.saht.dashboard
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.DragEvent
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
+import com.google.android.material.card.MaterialCardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -59,6 +65,8 @@ class DashboardFragment : Fragment() {
     private lateinit var heartRateViewModel: HeartRateViewModel
     private lateinit var settingsViewModel: SettingsViewModel
 
+    private var autoScrollRunnable: Runnable? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +84,8 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         applyDashboardVisibility()
+        applyCardOrder()
+        setupCardDrag()
         loadSteps()
         loadHeartRate()
         loadBmi()
@@ -84,6 +94,11 @@ class DashboardFragment : Fragment() {
         loadPedometerAnalytics()
         loadHeartRateAnalytics()
         // Combined analytics loaded after HR data is cached in loadHeartRateZones
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applyCardOrder()
     }
 
     private fun applyDashboardVisibility() {
@@ -1525,7 +1540,169 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        stopAutoScroll()
+        _binding?.llDashboardContent?.setOnDragListener(null)
         super.onDestroyView()
         _binding = null
+    }
+
+    // ── Card ordering ──────────────────────────────────────────────────────────
+
+    private fun buildCardViewMap(): Map<String, View> {
+        val b = _binding ?: return emptyMap()
+        return linkedMapOf(
+            DashboardCardId.STEPS.key           to b.cardSteps,
+            DashboardCardId.HR_BMI_ROW.key      to b.llHrBmiRow,
+            DashboardCardId.WEEKLY_CHART.key    to b.cardWeeklyChart,
+            DashboardCardId.HR_ZONES.key        to b.cardHrZones,
+            DashboardCardId.DISTANCE.key        to b.cardDistance,
+            DashboardCardId.CALORIES.key        to b.cardCalories,
+            DashboardCardId.ACTIVE_DURATION.key to b.cardActiveDuration,
+            DashboardCardId.BPM_ACTIVITY.key    to b.cardBpmByActivity,
+            DashboardCardId.PEAK_BPM.key        to b.cardPeakBpm,
+            DashboardCardId.RECOVERY.key        to b.cardRecovery,
+            DashboardCardId.CORRELATION.key     to b.cardCorrelation,
+            DashboardCardId.INSIGHTS.key        to b.cardInsights,
+            DashboardCardId.WEEKLY_SUMMARY.key  to b.cardWeeklySummary,
+            DashboardCardId.RECORDS.key         to b.cardRecords
+        )
+    }
+
+    private fun applyCardOrder() {
+        val b = _binding ?: return
+        val parent = b.llDashboardContent
+        val cardMap = buildCardViewMap()
+        if (cardMap.isEmpty()) return
+
+        val saved: List<String> = Paper.book().read(DashboardCardId.PREF_CARD_ORDER) ?: emptyList()
+        val ordered = saved.filter { cardMap.containsKey(it) } +
+                DashboardCardId.DEFAULT_ORDER.filter { it !in saved && cardMap.containsKey(it) }
+
+        // Skip reorder if already in the correct sequence (avoids unnecessary layout pass)
+        val current = (0 until parent.childCount).mapNotNull { i ->
+            val v = parent.getChildAt(i)
+            cardMap.entries.find { it.value === v }?.key
+        }
+        if (current == ordered) return
+
+        parent.removeAllViews()
+        ordered.forEach { key -> cardMap[key]?.let { parent.addView(it) } }
+    }
+
+    private fun persistCardOrder() {
+        val b = _binding ?: return
+        val parent = b.llDashboardContent
+        val cardMap = buildCardViewMap()
+        if (cardMap.isEmpty()) return
+        val byView: Map<View, String> = cardMap.entries.associate { (k, v) -> v to k }
+        val order = (0 until parent.childCount).mapNotNull { byView[parent.getChildAt(it)] }
+        Paper.book().write(DashboardCardId.PREF_CARD_ORDER, order)
+    }
+
+    // ── Drag-and-drop ──────────────────────────────────────────────────────────
+
+    private fun setupCardDrag() {
+        val b = _binding ?: return
+        val d = resources.displayMetrics.density
+        val size = (32 * d).toInt()
+        val margin = (6 * d).toInt()
+
+        // Individual full-width cards: handle drags the card itself
+        listOf(
+            b.cardSteps, b.cardWeeklyChart, b.cardHrZones, b.cardDistance,
+            b.cardCalories, b.cardActiveDuration, b.cardBpmByActivity,
+            b.cardPeakBpm, b.cardRecovery, b.cardCorrelation,
+            b.cardInsights, b.cardWeeklySummary, b.cardRecords
+        ).forEach { card -> attachDragHandle(card, card, size, margin) }
+
+        // HR/BMI row: handle sits on cardHeartRate but drags the whole row
+        attachDragHandle(b.cardHeartRate, b.llHrBmiRow, size, margin)
+
+        b.llDashboardContent.setOnDragListener(makeDragListener(b.llDashboardContent))
+    }
+
+    private fun attachDragHandle(host: MaterialCardView, dragTarget: View, size: Int, margin: Int) {
+        val handle = ImageView(requireContext()).apply {
+            setImageResource(R.drawable.ic_drag_handle)
+            alpha = 0.45f
+            contentDescription = "Drag to reorder"
+        }
+        host.addView(handle, FrameLayout.LayoutParams(size, size).apply {
+            gravity = Gravity.TOP or Gravity.END
+            topMargin = margin
+            rightMargin = margin
+        })
+        handle.setOnLongClickListener {
+            dragTarget.visibility = View.INVISIBLE
+            dragTarget.startDragAndDrop(null, View.DragShadowBuilder(dragTarget), dragTarget, 0)
+            true
+        }
+    }
+
+    private fun makeDragListener(parent: LinearLayout): View.OnDragListener {
+        return View.OnDragListener { _, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_STARTED -> true
+
+                DragEvent.ACTION_DRAG_LOCATION -> {
+                    handleAutoScroll(event.y)
+                    true
+                }
+
+                DragEvent.ACTION_DROP -> {
+                    val dragged = event.localState as? View ?: return@OnDragListener false
+                    val dropY = event.y
+                    val siblings = (0 until parent.childCount)
+                        .map { parent.getChildAt(it) }
+                        .filter { it !== dragged }
+                    var insertAt = 0
+                    siblings.forEachIndexed { i, child ->
+                        if (dropY > child.y + child.height / 2f) insertAt = i + 1
+                    }
+                    parent.removeView(dragged)
+                    parent.addView(dragged, insertAt.coerceIn(0, parent.childCount))
+                    persistCardOrder()
+                    true
+                }
+
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    stopAutoScroll()
+                    (event.localState as? View)?.visibility = View.VISIBLE
+                    true
+                }
+
+                else -> true
+            }
+        }
+    }
+
+    private fun handleAutoScroll(eventY: Float) {
+        val b = _binding ?: return
+        val sv = b.root as? ScrollView ?: return
+        val threshold = 120f
+        val visY = eventY - sv.scrollY
+        stopAutoScroll()
+        when {
+            visY < threshold -> startAutoScroll(sv, -18)
+            visY > sv.height - threshold -> startAutoScroll(sv, 18)
+        }
+    }
+
+    private fun startAutoScroll(sv: ScrollView, dy: Int) {
+        val r = object : Runnable {
+            override fun run() {
+                if (_binding == null) return
+                sv.scrollBy(0, dy)
+                sv.postDelayed(this, 40)
+            }
+        }
+        autoScrollRunnable = r
+        sv.post(r)
+    }
+
+    private fun stopAutoScroll() {
+        val r = autoScrollRunnable ?: return
+        _binding?.root?.removeCallbacks(r)
+        autoScrollRunnable = null
     }
 }

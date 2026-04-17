@@ -4,8 +4,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.color.MaterialColors
+import android.widget.Toast
 import com.rouf.saht.R
 import com.rouf.saht.common.activity.BaseActivity
+import com.rouf.saht.dashboard.DashboardCardId
 import com.rouf.saht.databinding.ActivityDashboardSettingsBinding
 import io.paperdb.Paper
 
@@ -103,6 +105,11 @@ class DashboardSettingsActivity : BaseActivity() {
         }
         binding.switchInsights.setOnCheckedChangeListener { _, checked ->
             Paper.book().write(PREF_SHOW_INSIGHTS, checked)
+        }
+
+        binding.btnResetCardOrder.setOnClickListener {
+            Paper.book().delete(DashboardCardId.PREF_CARD_ORDER)
+            Toast.makeText(this, "Card order reset to default", Toast.LENGTH_SHORT).show()
         }
     }
 
