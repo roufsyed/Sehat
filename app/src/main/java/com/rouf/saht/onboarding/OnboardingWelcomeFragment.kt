@@ -2,19 +2,33 @@ package com.rouf.saht.onboarding
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.rouf.saht.common.helper.BackupUtils
 import com.rouf.saht.databinding.FragmentOnboardingWelcomeBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OnboardingWelcomeFragment : Fragment(), OnboardingPageFragment {
 
     private var _binding: FragmentOnboardingWelcomeBinding? = null
     private val binding get() = _binding!!
     private var hoverAnimator: AnimatorSet? = null
+
+    private val importLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) handleImport(uri)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +43,38 @@ class OnboardingWelcomeFragment : Fragment(), OnboardingPageFragment {
         super.onViewCreated(view, savedInstanceState)
         startHoverAnimation()
         animateTextEntrance()
+
+        binding.btnImportBackup.setOnClickListener {
+            importLauncher.launch("application/json")
+        }
+    }
+
+    private fun handleImport(uri: Uri) {
+        val b = _binding ?: return
+        b.btnImportBackup.isEnabled = false
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val success = withContext(Dispatchers.IO) {
+                BackupUtils.importData(requireContext(), uri)
+            }
+
+            val binding = _binding
+            if (binding == null) return@launch  // fragment detached while IO was in flight
+
+            if (success) {
+                (requireActivity() as? OnboardingActivity)?.completeOnboarding()
+            } else {
+                binding.btnImportBackup.isEnabled = true
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Restore Failed")
+                    .setMessage(
+                        "The selected file could not be read. " +
+                        "Please make sure you chose a valid Sehat backup file (.json)."
+                    )
+                    .setPositiveButton("OK", null)
+                    .show()
+            }
+        }
     }
 
     private fun startHoverAnimation() {
@@ -55,7 +101,12 @@ class OnboardingWelcomeFragment : Fragment(), OnboardingPageFragment {
     }
 
     private fun animateTextEntrance() {
-        val views = listOf(binding.tvTitle, binding.tvSubtitle, binding.tvPrivacyNote)
+        val views = listOf(
+            binding.tvTitle,
+            binding.tvSubtitle,
+            binding.btnImportBackup,
+            binding.tvPrivacyNote
+        )
         views.forEach { it.alpha = 0f; it.translationY = 40f }
 
         views.forEachIndexed { index, v ->

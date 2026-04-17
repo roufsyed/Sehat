@@ -45,11 +45,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnImportBackup"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Restore from backup"
+        android:textAllCaps="false"
+        android:textColor="#CCFFFFFF"
+        android:textSize="14sp"
+        app:icon="@drawable/ic_restore_24"
+        app:iconTint="#CCFFFFFF"
+        app:iconGravity="textStart"
+        app:iconPadding="6dp"
+        app:layout_constraintBottom_toTopOf="@id/tvPrivacyNote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/tvPrivacyNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:text="All data stays on your device, always."
         android:textColor="#CCFFFFFF"
