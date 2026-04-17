@@ -4,7 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.color.MaterialColors
-import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rouf.saht.R
 import com.rouf.saht.common.activity.BaseActivity
 import com.rouf.saht.dashboard.DashboardCardId
@@ -40,6 +40,7 @@ class DashboardSettingsActivity : BaseActivity() {
 
         loadState()
         setupListeners()
+        refreshResetButton()
     }
 
     private fun loadState() {
@@ -108,9 +109,36 @@ class DashboardSettingsActivity : BaseActivity() {
         }
 
         binding.btnResetCardOrder.setOnClickListener {
-            Paper.book().delete(DashboardCardId.PREF_CARD_ORDER)
-            Toast.makeText(this, "Card order reset to default", Toast.LENGTH_SHORT).show()
+            if (isCardOrderDefault()) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Already the Default Order")
+                    .setMessage(
+                        "Your home cards are already arranged in the default order.\n\n" +
+                        "Long-press the grip icon on any card to drag and rearrange them to your liking."
+                    )
+                    .setPositiveButton("Got it", null)
+                    .show()
+            } else {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Reset Card Order?")
+                    .setMessage("This will restore the default arrangement of your home screen cards.")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Reset") { _, _ ->
+                        Paper.book().delete(DashboardCardId.PREF_CARD_ORDER)
+                        refreshResetButton()
+                    }
+                    .show()
+            }
         }
+    }
+
+    private fun isCardOrderDefault(): Boolean {
+        val saved: List<String>? = Paper.book().read(DashboardCardId.PREF_CARD_ORDER)
+        return saved == null || saved == DashboardCardId.DEFAULT_ORDER
+    }
+
+    private fun refreshResetButton() {
+        binding.btnResetCardOrder.alpha = if (isCardOrderDefault()) 0.38f else 1f
     }
 
     companion object {
