@@ -41,8 +41,8 @@ abstract class BaseActivity : AppCompatActivity() {
     private var customSecondaryDark = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_FOREST)
-            ?: CustomizationActivity.THEME_FOREST
+        val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_OCEAN)
+            ?: CustomizationActivity.THEME_OCEAN
         setTheme(CustomizationActivity.themeResId(key))
 
         if (key == CustomizationActivity.THEME_CUSTOM) {
@@ -306,8 +306,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         fun effectivePrimary(context: Context): Int {
-            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_FOREST)
-                ?: CustomizationActivity.THEME_FOREST
+            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_OCEAN)
+                ?: CustomizationActivity.THEME_OCEAN
             if (key == CustomizationActivity.THEME_CUSTOM) {
                 try {
                     return Color.parseColor(
@@ -321,8 +321,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         fun effectivePrimaryDark(context: Context): Int {
-            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_FOREST)
-                ?: CustomizationActivity.THEME_FOREST
+            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_OCEAN)
+                ?: CustomizationActivity.THEME_OCEAN
             if (key == CustomizationActivity.THEME_CUSTOM) {
                 try {
                     val primary = Color.parseColor(
@@ -337,8 +337,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         fun effectiveSecondary(context: Context): Int {
-            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_FOREST)
-                ?: CustomizationActivity.THEME_FOREST
+            val key = Paper.book().read(CustomizationActivity.PREF_THEME, CustomizationActivity.THEME_OCEAN)
+                ?: CustomizationActivity.THEME_OCEAN
             if (key == CustomizationActivity.THEME_CUSTOM) {
                 try {
                     return Color.parseColor(

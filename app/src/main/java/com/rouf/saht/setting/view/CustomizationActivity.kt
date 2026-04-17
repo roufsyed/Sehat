@@ -34,7 +34,7 @@ class CustomizationActivity : BaseActivity() {
         binding = ActivityCustomizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val currentTheme = Paper.book().read(PREF_THEME, THEME_FOREST) ?: THEME_FOREST
+        val currentTheme = Paper.book().read(PREF_THEME, THEME_OCEAN) ?: THEME_OCEAN
         updateThemeSelection(currentTheme)
         updateCustomCardPreview()
 
@@ -77,7 +77,7 @@ class CustomizationActivity : BaseActivity() {
             THEME_AMOLED     to binding.cardThemeAmoled,
         ).forEach { (key, card) ->
             card.setOnClickListener {
-                if (Paper.book().read(PREF_THEME, THEME_FOREST) != key) {
+                if (Paper.book().read(PREF_THEME, THEME_OCEAN) != key) {
                     Paper.book().write(PREF_THEME, key)
                     if (key == THEME_AMOLED) {
                         Paper.book().write(SettingsFragment.PREF_DARK_MODE, true)
@@ -261,7 +261,7 @@ class CustomizationActivity : BaseActivity() {
 
     private fun setupDarkModeSwitch() {
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            val currentTheme = Paper.book().read(PREF_THEME, THEME_FOREST) ?: THEME_FOREST
+            val currentTheme = Paper.book().read(PREF_THEME, THEME_OCEAN) ?: THEME_OCEAN
             if (!isChecked && currentTheme == THEME_AMOLED) {
                 // AMOLED requires dark mode — prevent disabling
                 binding.switchDarkMode.isChecked = true
