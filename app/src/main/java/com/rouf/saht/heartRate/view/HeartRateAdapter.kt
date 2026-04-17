@@ -132,7 +132,6 @@ class HeartRateAdapter(private val context: Context) : RecyclerView.Adapter<Hear
         val lineData = LineData(dataSet)
         lineChart.data = lineData
         lineChart.legend.textColor = textColorBasedOnDarkMode
-        lineChart.setTouchEnabled(true)
         lineChart.isDoubleTapToZoomEnabled = false
 
         lineChart.notifyDataSetChanged()
