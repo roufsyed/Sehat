@@ -79,10 +79,13 @@ class HeartRateHistoryActivity : BaseActivity() {
         heartRateViewModel.heartRateMonitorData.observe(this) { data ->
             fullList = data ?: emptyList()
             val checkedId = binding.chipGroupFilter.checkedChipId
-            if (checkedId == R.id.chip_custom && customFromDate > 0) {
-                showData(fullList.filter { it.timeStamp in customFromDate..customToDate })
-            } else {
-                applyFilter(checkedId)
+            when {
+                checkedId == R.id.chip_custom && customFromDate > 0 ->
+                    showData(fullList.filter { it.timeStamp in customFromDate..customToDate })
+                checkedId == R.id.chip_custom ->
+                    // dates were never confirmed — silently fall back to All
+                    binding.chipAll.isChecked = true
+                else -> applyFilter(checkedId)
             }
         }
     }
@@ -94,6 +97,7 @@ class HeartRateHistoryActivity : BaseActivity() {
     }
 
     private fun showDateRangePicker() {
+        if (supportFragmentManager.findFragmentByTag("HR_DATE_RANGE") != null) return
         val picker = MaterialDatePicker.Builder.dateRangePicker()
             .setTitleText("Select date range")
             .build()
@@ -102,8 +106,8 @@ class HeartRateHistoryActivity : BaseActivity() {
             customToDate = (selection.second ?: return@addOnPositiveButtonClickListener) + 86400000L - 1
             showData(fullList.filter { it.timeStamp in customFromDate..customToDate })
         }
-        picker.addOnNegativeButtonClickListener {
-            binding.chipAll.isChecked = true
+        picker.addOnDismissListener {
+            if (customFromDate == 0L) binding.chipAll.isChecked = true
         }
         picker.show(supportFragmentManager, "HR_DATE_RANGE")
     }
