@@ -45,8 +45,27 @@ class OnboardingWelcomeFragment : Fragment(), OnboardingPageFragment {
         animateTextEntrance()
 
         binding.btnImportBackup.setOnClickListener {
-            importLauncher.launch("application/json")
+            showImportExplanation()
         }
+    }
+
+    private fun showImportExplanation() {
+        if (_binding == null) return
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Restore from Backup")
+            .setMessage(
+                "Restoring will bring back:\n\n" +
+                "• Heart rate session history\n" +
+                "• Daily step counts & pedometer history\n" +
+                "• Personal profile (name, age, height, weight)\n" +
+                "• App settings, theme & dashboard layout\n\n" +
+                "Choose a Sehat backup file (.json) to continue."
+            )
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Choose File") { _, _ ->
+                importLauncher.launch("application/json")
+            }
+            .show()
     }
 
     private fun handleImport(uri: Uri) {

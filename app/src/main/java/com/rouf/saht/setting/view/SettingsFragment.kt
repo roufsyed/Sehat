@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.paperdb.Paper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -46,12 +47,21 @@ class SettingsFragment : Fragment() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                val success = BackupUtils.exportData(requireContext(), uri)
-                Toast.makeText(
-                    requireContext(),
-                    if (success) "Data exported successfully" else "Export failed",
-                    Toast.LENGTH_SHORT
-                ).show()
+                _binding ?: return@let
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val success = withContext(Dispatchers.IO) {
+                        BackupUtils.exportData(requireContext(), uri)
+                    }
+                    if (_binding == null) return@launch
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(if (success) "Backup Saved" else "Backup Failed")
+                        .setMessage(
+                            if (success) "Your data has been backed up successfully."
+                            else "Something went wrong while saving the backup. Please try again."
+                        )
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
             }
         }
     }
@@ -61,12 +71,21 @@ class SettingsFragment : Fragment() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                val success = BackupUtils.importData(requireContext(), uri)
-                Toast.makeText(
-                    requireContext(),
-                    if (success) "Data imported successfully" else "Import failed",
-                    Toast.LENGTH_SHORT
-                ).show()
+                _binding ?: return@let
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val success = withContext(Dispatchers.IO) {
+                        BackupUtils.importData(requireContext(), uri)
+                    }
+                    if (_binding == null) return@launch
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(if (success) "Restore Complete" else "Restore Failed")
+                        .setMessage(
+                            if (success) "Your data has been restored successfully."
+                            else "The selected file could not be read. Please make sure you chose a valid Sehat backup file (.json)."
+                        )
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
             }
         }
     }
@@ -204,21 +223,8 @@ class SettingsFragment : Fragment() {
                 .setTitle("Data")
                 .setItems(items) { _, which ->
                     when (which) {
-                        0 -> {
-                            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                                addCategory(Intent.CATEGORY_OPENABLE)
-                                type = "application/json"
-                                putExtra(Intent.EXTRA_TITLE, "sehat_backup.json")
-                            }
-                            exportLauncher.launch(intent)
-                        }
-                        1 -> {
-                            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                                addCategory(Intent.CATEGORY_OPENABLE)
-                                type = "application/json"
-                            }
-                            importLauncher.launch(intent)
-                        }
+                        0 -> showExportExplanation()
+                        1 -> showImportExplanation()
                     }
                 }
                 .show()
@@ -241,6 +247,51 @@ class SettingsFragment : Fragment() {
         binding.llPrivacyPolicy.setOnClickListener {
             startActivity(Intent(activity, PrivacyPolicyActivity::class.java))
         }
+    }
+
+    private fun showExportExplanation() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Back Up Your Data")
+            .setMessage(
+                "Your backup will include:\n\n" +
+                "• Heart rate session history\n" +
+                "• Daily step counts & pedometer history\n" +
+                "• Personal profile (name, age, height, weight)\n" +
+                "• App settings, theme & dashboard layout\n\n" +
+                "The backup file can be used to restore your data on this or another device."
+            )
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Back Up") { _, _ ->
+                val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "application/json"
+                    putExtra(Intent.EXTRA_TITLE, "sehat_backup.json")
+                }
+                exportLauncher.launch(intent)
+            }
+            .show()
+    }
+
+    private fun showImportExplanation() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Restore from Backup")
+            .setMessage(
+                "Restoring will bring back:\n\n" +
+                "• Heart rate session history\n" +
+                "• Daily step counts & pedometer history\n" +
+                "• Personal profile (name, age, height, weight)\n" +
+                "• App settings, theme & dashboard layout\n\n" +
+                "Your current data will be replaced. Choose a valid Sehat backup file (.json) to continue."
+            )
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Choose File") { _, _ ->
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "application/json"
+                }
+                importLauncher.launch(intent)
+            }
+            .show()
     }
 
     companion object {

@@ -24,6 +24,12 @@ object BackupUtils {
     private const val KEY_ONBOARDING = "onboarding_complete"
     private const val KEY_CUSTOM_SOUNDS = "custom_meditation_sounds"
 
+    private val KNOWN_KEYS = setOf(
+        "heart_rate_monitor_data", "pedometer_data_list", "personal_information",
+        "pedometer_data", "pedometer_settings", "heart_rate_monitor_settings",
+        KEY_ONBOARDING, KEY_CUSTOM_SOUNDS
+    )
+
     fun exportData(context: Context, uri: Uri): Boolean {
         return try {
             val exportMap = mutableMapOf<String, Any?>()
@@ -86,6 +92,8 @@ object BackupUtils {
 
             val type = object : TypeToken<Map<String, Any>>() {}.type
             val dataMap: Map<String, Any> = gson.fromJson(json, type)
+
+            if (KNOWN_KEYS.none { it in dataMap }) return false
 
             dataMap["heart_rate_monitor_data"]?.let {
                 val listType = object : TypeToken<List<HeartRateMonitorData>>() {}.type
