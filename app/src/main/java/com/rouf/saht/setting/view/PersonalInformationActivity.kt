@@ -15,7 +15,8 @@ import android.widget.TextView
 import android.content.res.ColorStateList
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import android.graphics.drawable.Animatable
+import androidx.appcompat.content.res.AppCompatResources
 import com.rouf.saht.common.activity.BaseActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.rouf.saht.R
@@ -222,18 +223,16 @@ class PersonalInformationActivity : BaseActivity() {
 
     private fun showSuccessAnimation() {
         val ivSuccess = binding.ivSuccess
+        val drawable = AppCompatResources.getDrawable(this, R.drawable.avd_success)
+        ivSuccess.setImageDrawable(drawable)
         ivSuccess.visibility = View.VISIBLE
-
-        Glide.with(this)
-            .load(R.drawable.gif_success)
-            .into(ivSuccess)
+        (drawable as? Animatable)?.start()
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isDestroyed && !isFinishing) {
-                Glide.with(this).clear(ivSuccess)
                 ivSuccess.visibility = View.GONE
             }
-        }, 2200)
+        }, 2400)
     }
 
     private fun hideKeyboard() {

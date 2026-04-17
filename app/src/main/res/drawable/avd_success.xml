@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="200dp"
+            android:height="200dp"
+            android:viewportWidth="200"
+            android:viewportHeight="200">
+
+            <group
+                android:name="circle_group"
+                android:pivotX="100"
+                android:pivotY="100"
+                android:scaleX="0"
+                android:scaleY="0">
+                <path
+                    android:fillColor="?attr/colorPrimary"
+                    android:pathData="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0" />
+            </group>
+
+            <path
+                android:name="check"
+                android:fillColor="@android:color/transparent"
+                android:strokeColor="@android:color/white"
+                android:strokeWidth="11"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round"
+                android:pathData="M58,106 L86,134 L148,66"
+                android:trimPathEnd="0" />
+
+        </vector>
+    </aapt:attr>
+
+    <target android:name="circle_group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:duration="350"
+                    android:interpolator="@android:interpolator/overshoot" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:duration="350"
+                    android:interpolator="@android:interpolator/overshoot" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="check">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="trimPathEnd"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:duration="320"
+                android:startOffset="220"
+                android:interpolator="@android:interpolator/fast_out_slow_in" />
+        </aapt:attr>
+    </target>
+
+</animated-vector>
