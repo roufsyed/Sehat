@@ -216,8 +216,21 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        binding.llExport.setOnClickListener { showExportExplanation() }
-        binding.llImport.setOnClickListener { showImportExplanation() }
+        binding.llData.setOnClickListener {
+            val items = arrayOf("Export data", "Import data")
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Data")
+                .setItems(items) { _, which ->
+                    binding.root.post {
+                        if (_binding == null) return@post
+                        when (which) {
+                            0 -> showExportExplanation()
+                            1 -> showImportExplanation()
+                        }
+                    }
+                }
+                .show()
+        }
 
         if (BuildConfig.DEBUG) {
             binding.cardSeedData.visibility = View.VISIBLE

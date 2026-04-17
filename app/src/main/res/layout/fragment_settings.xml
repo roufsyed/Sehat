@@ -389,9 +389,9 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Back Up -->
+            <!-- Data -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_export"
+                android:id="@+id/card_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -399,7 +399,7 @@
                 app:cardCornerRadius="12dp">
 
                 <LinearLayout
-                    android:id="@+id/ll_export"
+                    android:id="@+id/ll_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
@@ -411,68 +411,25 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_backup_24"
-                        android:contentDescription="Back up data" />
+                        android:src="@drawable/ic_data"
+                        android:contentDescription="Data management" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/hr_measurement_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Back Up"
+                            android:text="@string/data"
                             android:textStyle="bold"
                             android:textSize="16sp" />
                         <TextView
+                            android:id="@+id/hr_measurement_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Export your health data to a file"
-                            android:textSize="13sp"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Restore -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_import"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="12dp">
-
-                <LinearLayout
-                    android:id="@+id/ll_import"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="14dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_restore_24"
-                        android:contentDescription="Restore from backup" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Restore"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Import from a backup file"
+                            android:text="@string/import_export"
                             android:textSize="13sp"
                             android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
