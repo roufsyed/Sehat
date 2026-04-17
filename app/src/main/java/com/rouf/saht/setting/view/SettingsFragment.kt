@@ -11,7 +11,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowInsetsControllerCompat
@@ -236,7 +235,11 @@ class SettingsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.IO) {
                     DebugDataSeeder.seedAllData()
                 }
-                Toast.makeText(requireContext(), "Demo data seeded", Toast.LENGTH_SHORT).show()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Demo Data Seeded")
+                    .setMessage("Sample health data has been added to the app.")
+                    .setPositiveButton("OK", null)
+                    .show()
             }
         }
 

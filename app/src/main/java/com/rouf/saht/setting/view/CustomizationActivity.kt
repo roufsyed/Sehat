@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -265,7 +264,11 @@ class CustomizationActivity : BaseActivity() {
             if (!isChecked && currentTheme == THEME_AMOLED) {
                 // AMOLED requires dark mode — prevent disabling
                 binding.switchDarkMode.isChecked = true
-                Toast.makeText(this, "AMOLED theme requires dark mode", Toast.LENGTH_SHORT).show()
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Dark Mode Required")
+                    .setMessage("AMOLED theme uses a pure black background and requires dark mode to be enabled.")
+                    .setPositiveButton("OK", null)
+                    .show()
                 return@setOnCheckedChangeListener
             }
             Paper.book().write(SettingsFragment.PREF_DARK_MODE, isChecked)

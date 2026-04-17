@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import android.content.res.ColorStateList
@@ -190,7 +189,11 @@ class PedometerFragment : Fragment() {
                     if (btnState == "Start") {
                         togglePedometer()
                     } else {
-                        Toast.makeText(activity, "Long press to stop", Toast.LENGTH_SHORT).show()
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Pedometer Running")
+                            .setMessage("Long-press the button to stop the pedometer.")
+                            .setPositiveButton("OK", null)
+                            .show()
                     }
                 } else {
                     requestActivityNotificationPermission()
@@ -201,7 +204,11 @@ class PedometerFragment : Fragment() {
         }
 
         binding.btnReset.setOnClickListener {
-            Toast.makeText(activity, "Long press to reset steps", Toast.LENGTH_SHORT).show()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Reset Steps")
+                .setMessage("Long-press the reset button to clear today's step count.")
+                .setPositiveButton("OK", null)
+                .show()
         }
 
         binding.btnStartStop.setOnLongClickListener {
