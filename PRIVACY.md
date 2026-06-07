@@ -2,7 +2,7 @@
 
 *Last updated: April 2026*
 
-Sehat (سیہت) is a personal health tracking app built on a single principle: **your health data is yours alone**. This policy explains what data the app collects, where it is stored, and what it does not do.
+Sehat (صحت) is a personal health tracking app built on a single principle: **your health data is yours alone**. This policy explains what data the app collects, where it is stored, and what it does not do.
 
 ---
 

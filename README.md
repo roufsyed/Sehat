@@ -4,7 +4,7 @@
 [![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-blue.svg)](PRIVACY.md)
 [![GitHub Release](https://img.shields.io/github/v/tag/roufsyed/Sehat)](https://github.com/roufsyed/Sehat/releases)
 
-[Sehat](https://roufsyed.github.io/Sehat) (سیہت, meaning health in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.
+[Sehat](https://roufsyed.github.io/Sehat) (صحت, meaning health in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.
 
 ## Why it exists
 
