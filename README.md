@@ -1,9 +1,10 @@
-# Sehat - Personal Health Tracker
+# Sehat - Personal Health Tracker App
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-blue.svg)](PRIVACY.md)
+[![GitHub Release](https://img.shields.io/github/v/tag/roufsyed/Sehat)](https://github.com/roufsyed/Sehat/releases)
 
-Sehat (سیہت, meaning *health* in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.
+[Sehat](https://roufsyed.github.io/Sehat) (سیہت, meaning health in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.
 
 ## Why it exists
 
@@ -21,25 +22,24 @@ Most health apps send your data to the cloud, sell it to advertisers, or require
 
 | Light | Dark |
 |:-----:|:----:|
-| ![Pedometer Light](sehat_screenshots/pedometer_light.jpeg) | ![Pedometer Dark](sehat_screenshots/pedometer_dark.jpeg) |
-
+| <img src="sehat_screenshots/pedometer_light.jpeg" width="230"/> | <img src="sehat_screenshots/pedometer_dark.jpeg" width="230"/> |
 ### Heart Rate
 
 | Light |
 |:-----:|
-| <img src="sehat_screenshots/heart_rate_light.jpeg" width="400"/> |
+| <img src="sehat_screenshots/heart_rate_light.jpeg" width="230"/> |
 
 ### Meditation
 
 | Light | Box Breathing |
 |:-----:|:-------------:|
-| ![Meditation Light](sehat_screenshots/Meditation_light.jpeg) | ![Box Breathing](sehat_screenshots/meditation_box_breathing.jpeg) |
+| <img src="sehat_screenshots/Meditation_light.jpeg" width="230"/> | <img src="sehat_screenshots/meditation_box_breathing.jpeg" width="230"/> |
 
 ### Settings
 
 | Light | Dark |
 |:-----:|:----:|
-| ![Settings Light](sehat_screenshots/settings_light.jpeg) | ![Settings Dark](sehat_screenshots/settings_dark.jpeg) |
+| <img src="sehat_screenshots/settings_light.jpeg" width="230"/> | <img src="sehat_screenshots/settings_dark.jpeg" width="230"/> |
 
 ## Privacy first
 
