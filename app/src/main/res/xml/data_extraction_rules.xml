@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Data extraction rules for API 31+.
-    - Cloud backup: excluded — Kryo (PaperDB) files may not deserialize correctly
+    - Cloud backup: excluded - Kryo (PaperDB) files may not deserialize correctly
       across app version boundaries; prefer the in-app JSON export instead.
-    - Device transfer: included — same-device migration (e.g. phone upgrade) is safe
+    - Device transfer: included - same-device migration (e.g. phone upgrade) is safe
       because both sides run the same app version.
 -->
 <data-extraction-rules>

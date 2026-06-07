@@ -60,7 +60,7 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
-    <!-- 30-day step trend — always shows full history context regardless of filter chips -->
+    <!-- 30-day step trend - always shows full history context regardless of filter chips -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardTrendChart"
         android:layout_width="0dp"

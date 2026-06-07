@@ -133,7 +133,7 @@ class MeditationFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         requireContext().unregisterReceiver(playbackStoppedReceiver)
-        // Service keeps running in the background — do NOT stop it here.
+        // Service keeps running in the background - do NOT stop it here.
     }
 
     override fun onDestroyView() {
@@ -320,7 +320,7 @@ class MeditationFragment : Fragment() {
 
     private fun initRandomMeditationQuote() {
         val quote: MeditationQuote = MeditationQuotes.getRandomQuote()
-        binding.tvMotivationalQuote.text = "${quote.quote}\n— ${quote.author}"
+        binding.tvMotivationalQuote.text = "${quote.quote}\n- ${quote.author}"
     }
 
     private fun createNotificationChannel() {

@@ -184,7 +184,7 @@ class PedometerForegroundService : Service(), SensorEventListener {
             )
 
             if (!isSameDay) {
-                // Day boundary crossed — reset so steps count from 0 for the new day
+                // Day boundary crossed - reset so steps count from 0 for the new day
                 isReset = false
                 pedometerData.startTime = System.currentTimeMillis()
                 Log.d(TAG, "onSensorChanged: new day detected, resetting step offset")

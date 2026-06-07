@@ -9,7 +9,7 @@
     <string name="heart_rate_measurement_duration">Heart Rate Measurement Duration (Sec)</string>
     <string name="invalid_data">Insufficient data</string>
     <string name="bmi_result">Your BMI:</string>
-    <string name="step_recommendation">- For a healthy heart, we recommend walking at least 10,000 steps per day or engaging in 30-60 minutes of brisk walking daily. \n- Aim for a moderate intensity where you can talk but not sing comfortably. For additional benefits, include uphill or power walking.\n- Consistency is key—walk most days of the week to strengthen your heart and improve overall cardiovascular health.</string>
+    <string name="step_recommendation">- For a healthy heart, we recommend walking at least 10,000 steps per day or engaging in 30-60 minutes of brisk walking daily. \n- Aim for a moderate intensity where you can talk but not sing comfortably. For additional benefits, include uphill or power walking.\n- Consistency is key-walk most days of the week to strengthen your heart and improve overall cardiovascular health.</string>
     <string name="running">Running</string>
     <string name="activity_performed">Activity performed</string>
     <string name="title_women_health">Women Health</string>

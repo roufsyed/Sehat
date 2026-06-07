@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sehat - Private, on-device health tracking for Android</title>
+<meta name="description" content="Sehat counts your steps, reads your heart rate, and guides your breathing - entirely on your phone. No accounts, no cloud, no internet permission." />
+<meta name="theme-color" content="#2196F3" />
+<link rel="icon" type="image/png" href="assets/icon.png" />
+<link rel="apple-touch-icon" href="assets/icon.png" />
+<!-- Social share. Update the URL base if your GitHub Pages address differs. -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sehat" />
+<meta property="og:title" content="Sehat - Private, on-device health tracking for Android" />
+<meta property="og:description" content="Steps, heart rate and meditation that never leave your phone. No accounts, no cloud, no internet permission." />
+<meta property="og:url" content="https://roufsyed.github.io/sehat/" />
+<meta property="og:image" content="https://roufsyed.github.io/sehat/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Sehat - Private, on-device health tracking" />
+<meta name="twitter:description" content="Steps, heart rate and meditation that never leave your phone." />
+<meta name="twitter:image" content="https://roufsyed.github.io/sehat/assets/og-cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#top" aria-label="Sehat home">
+      <span class="brand__mark">
+        <img src="assets/icon.png" alt="Sehat logo" />
+      </span>
+      <span>Sehat <small class="urdu">سیہت</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#screens">Screenshots</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav__cta">
+      <a class="btn btn-ghost" href="https://github.com/roufsyed/sehat" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+        GitHub
+      </a>
+      <a class="btn btn-primary" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">Download</a>
+      <button class="btn btn-ghost nav__toggle" id="navToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<main id="top">
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow reveal"><span class="urdu">سیہت</span><span class="dot"></span> Sehat - “health” in Urdu</span>
+      <h1 class="reveal d1">Health tracking that <span class="accent">never leaves your phone.</span></h1>
+      <p class="hero__sub reveal d2">Sehat counts your steps, reads your heart rate from the camera, and guides your breathing - all stored on your device alone. No accounts. No cloud. No internet permission, at all.</p>
+      <div class="hero__cta reveal d3">
+        <a class="btn btn-primary btn-lg" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download APK
+        </a>
+        <a class="btn btn-ghost btn-lg" href="#features">See how it works</a>
+      </div>
+      <div class="hero__trust reveal d4">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> No accounts</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> No servers</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> No tracking</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Free &amp; open source</span>
+      </div>
+    </div>
+
+    <div class="hero__stage reveal d2">
+      <div class="phone hero__phone" style="--w: 300px;">
+        <span class="phone__punch"></span>
+        <div class="phone__screen"><img src="assets/home_dark.jpeg" alt="Sehat home screen showing today's steps, heart rate and BMI" /></div>
+      </div>
+
+      <div class="float-card float-steps">
+        <div class="fc-label">Today's steps</div>
+        <div class="fc-row"><span class="fc-num" id="stepCount">0</span><span class="fc-goal">/ 10,000</span></div>
+      </div>
+
+      <div class="float-card float-hr">
+        <svg class="hr-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.9-7.5-10.2A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7.5 2.8C19.5 16.1 12 21 12 21Z"/></svg>
+        <div class="hr-num" id="bpmCount">79 <small>BPM</small></div>
+      </div>
+
+      <div class="float-card float-lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke-linecap="round"/></svg>
+        <div><b>100% on-device</b><span>Nothing uploaded</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIVACY PILLARS ============ -->
+<section class="pillars">
+  <div class="wrap section" style="padding-top:80px;padding-bottom:80px;">
+    <div class="pillars__grid">
+      <div class="pillar reveal">
+        <div class="pillar__icon pi-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/><circle cx="12" cy="12" r="9"/><path d="m4 5 15 15" stroke-linecap="round"/></svg></div>
+        <h3>No INTERNET permission</h3>
+        <p>The app isn't granted network access. It is technically incapable of phoning home.</p>
+      </div>
+      <div class="pillar reveal d1">
+        <div class="pillar__icon pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+        <h3>Stored on your phone</h3>
+        <p>Steps, heart rate and settings live in a local on-device database - never a server.</p>
+      </div>
+      <div class="pillar reveal d2">
+        <div class="pillar__icon pi-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m8 8 8 8M16 8l-8 8" stroke-linecap="round"/></svg></div>
+        <h3>Zero tracking</h3>
+        <p>No ads, no analytics, no crash reporting, no third-party SDKs. Nobody is watching.</p>
+      </div>
+      <div class="pillar reveal d3">
+        <div class="pillar__icon pi-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 18 3 12l5-6M16 6l5 6-5 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Open source · MIT</h3>
+        <p>Every line is public. Read it, audit it, or build it yourself from source.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">What it does</span>
+      <h2>Three tools for a healthier day</h2>
+      <p>Everything you'd reach for in a fitness app - without handing your body's data to anyone.</p>
+    </div>
+
+    <!-- Pedometer -->
+    <div class="feature f-blue reveal">
+      <div class="feature__media">
+        <div class="phone" style="--w: 264px;"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/pedometer_light.jpeg" alt="Sehat pedometer screen with step ring, calories, distance and time" /></div></div>
+      </div>
+      <div class="feature__body">
+        <span class="feature__tag pi-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19c1-3 0-6 2-8s5-1 6-4M19 5c-1 3 0 5-2 7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="20" r="1.6" fill="currentColor"/><circle cx="17" cy="4" r="1.6" fill="currentColor"/></svg> Pedometer</span>
+        <h3>Count every step, even in your pocket</h3>
+        <p class="feature__lead">Sehat reads your phone's built-in step sensor and keeps counting in the background as a foreground service.</p>
+        <ul class="feature__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Live steps, distance, calories &amp; active time</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Configurable daily goal &amp; sensor sensitivity</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Session history and live BMI from your profile</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Heart rate -->
+    <div class="feature f-red flip reveal">
+      <div class="feature__media">
+        <div class="phone" style="--w: 264px;"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/heart_rate_light.jpeg" alt="Sehat heart rate monitor showing 79 BPM and a live chart" /></div></div>
+      </div>
+      <div class="feature__body">
+        <span class="feature__tag pi-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.9-7.5-10.2A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7.5 2.8C19.5 16.1 12 21 12 21Z"/></svg> Heart Rate</span>
+        <h3>Your pulse, read by the camera</h3>
+        <p class="feature__lead">Rest a fingertip on the lens. Sehat detects subtle shifts in reflected light to find your beat - no smartwatch required.</p>
+        <ul class="feature__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Real-time BPM with a live waveform chart</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Tag readings by activity - resting, walking, running</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> No frames recorded or stored - ever</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Meditation -->
+    <div class="feature f-green reveal">
+      <div class="feature__media">
+        <div class="phone" style="--w: 264px;"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/meditation_light.jpeg" alt="Sehat meditation screen with soundscapes and breathing exercises" /></div></div>
+      </div>
+      <div class="feature__body">
+        <span class="feature__tag pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c-2 3-2 6 0 9s2 6 0 9M5 8c2 1 3 3 3 5M19 8c-2 1-3 3-3 5" stroke-linecap="round" stroke-linejoin="round"/></svg> Meditation</span>
+        <h3>Breathe, focus, unwind</h3>
+        <p class="feature__lead">Six ambient soundscapes and guided breathing exercises to help you slow down - playing uninterrupted in the background.</p>
+        <ul class="feature__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Rain, waves, forest, birds, wind &amp; more</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Box breathing &amp; 4-7-8 with selectable durations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> Add your own sounds from device storage</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DARK PRIVACY DEEP-DIVE ============ -->
+<section class="privacy" id="privacy">
+  <div class="wrap">
+    <div class="privacy__head reveal">
+      <span class="kicker">Privacy, by architecture</span>
+      <h2>We didn't add privacy. We <span class="em">removed everything else.</span></h2>
+      <p>Most apps promise not to misuse your data. Sehat is built so it physically can't. There's no network permission in the manifest - so there's no way to send anything anywhere.</p>
+    </div>
+
+    <div class="manifest reveal d1">
+      <div class="manifest__bar"><i class="f1"></i><i class="f2"></i><i class="f3"></i><span>AndroidManifest.xml</span></div>
+      <div class="manifest__body">
+<div class="ln"><span class="mf-com">&lt;!-- Permissions Sehat requests --&gt;</span></div>
+<div class="ln"><span class="mf-tag">&lt;uses-permission</span> <span class="mf-attr">android:name=</span><span class="mf-str">"ACTIVITY_RECOGNITION"</span><span class="mf-tag">/&gt;</span></div>
+<div class="ln"><span class="mf-tag">&lt;uses-permission</span> <span class="mf-attr">android:name=</span><span class="mf-str">"CAMERA"</span><span class="mf-tag">/&gt;</span></div>
+<div class="ln"><span class="mf-tag">&lt;uses-permission</span> <span class="mf-attr">android:name=</span><span class="mf-str">"FOREGROUND_SERVICE"</span><span class="mf-tag">/&gt;</span></div>
+<div class="ln"><span class="mf-tag">&lt;uses-permission</span> <span class="mf-attr">android:name=</span><span class="mf-str">"POST_NOTIFICATIONS"</span><span class="mf-tag">/&gt;</span></div>
+<div class="ln">&nbsp;</div>
+<div class="ln"><span class="mf-com">&lt;!-- The one permission that never appears: --&gt;</span></div>
+<div class="ln"><span class="mf-strike">&lt;uses-permission android:name="android.permission.INTERNET"/&gt;</span></div>
+      </div>
+      <div class="manifest__note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        No <code>INTERNET</code> permission means no sockets, no requests, no exfiltration - guaranteed by Android itself.
+      </div>
+    </div>
+
+    <div class="flow reveal d2">
+      <div class="flow__node">
+        <div class="flow__chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 19h2" stroke-linecap="round"/></svg>
+          <h4>Your data</h4>
+          <p>Steps · heart rate · profile · settings</p>
+        </div>
+      </div>
+      <div class="flow__x">
+        <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg></div>
+        NEVER LEAVES
+      </div>
+      <div class="flow__node">
+        <div class="flow__chip" style="opacity:.55;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15a4 4 0 0 1 4-4 5 5 0 0 1 9.6-1.5A3.5 3.5 0 0 1 19 16H7a4 4 0 0 1-4-1Z"/></svg>
+          <h4>The cloud</h4>
+          <p>No servers · no sync · no account</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PERMISSIONS ============ -->
+<section class="section perms">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Full transparency</span>
+      <h2>Every permission, explained</h2>
+      <p>Sehat asks for exactly what each feature needs - and nothing more.</p>
+    </div>
+    <div class="perm-table reveal d1">
+      <div class="perm-row head"><span></span><span>Permission</span><span>Why it's needed</span></div>
+      <div class="perm-row">
+        <div class="perm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19c1-3 0-6 2-8s5-1 6-4" stroke-linecap="round"/><circle cx="7" cy="20" r="1.6" fill="currentColor"/></svg></div>
+        <div class="perm-name">ACTIVITY_RECOGNITION</div>
+        <div class="perm-why">Reads the hardware step counter so the pedometer can count your steps.</div>
+      </div>
+      <div class="perm-row">
+        <div class="perm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="3"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-2h5L16 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="perm-name">CAMERA</div>
+        <div class="perm-why">Measures heart rate from your fingertip. No photo or video is ever captured.</div>
+      </div>
+      <div class="perm-row">
+        <div class="perm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 2 8 2 8H4s2-1 2-8Z"/><path d="M10 20a2 2 0 0 0 4 0" stroke-linecap="round"/></svg></div>
+        <div class="perm-name">POST_NOTIFICATIONS</div>
+        <div class="perm-why">Shows the ongoing notification for background tracking and audio.</div>
+      </div>
+      <div class="perm-row">
+        <div class="perm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9h18" /></svg></div>
+        <div class="perm-name">FOREGROUND_SERVICE</div>
+        <div class="perm-why">Keeps step tracking and meditation audio running while the app is backgrounded.</div>
+      </div>
+      <div class="perm-row">
+        <div class="perm-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V6l9-2v12" /><circle cx="6.5" cy="18" r="2.5"/><circle cx="15.5" cy="16" r="2.5"/></svg></div>
+        <div class="perm-name">READ_MEDIA_AUDIO</div>
+        <div class="perm-why">Lets you pick your own meditation sounds from device storage (Android 13+).</div>
+      </div>
+    </div>
+    <p class="perm-foot reveal d2">Notably absent: <b>INTERNET</b>, location, contacts, and storage write permissions.</p>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="section" id="screens" style="padding-bottom:60px;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">A closer look</span>
+      <h2>Built for clarity, light or dark</h2>
+      <p>Clean Material design with light, dark and pure-black AMOLED themes, plus colour accents you can switch.</p>
+    </div>
+  </div>
+  <div class="gallery__scroller reveal d1" id="gallery">
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/home_light.jpeg" alt="Home dashboard, light theme" loading="lazy" /></div></div><span>Home · Light</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/home_dark.jpeg" alt="Home dashboard, dark theme" loading="lazy" /></div></div><span>Home · Dark</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/home_steps.jpeg" alt="Steps analytics" loading="lazy" /></div></div><span>Steps insights</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/heart_rate_light.jpeg" alt="Heart rate monitor" loading="lazy" /></div></div><span>Heart rate</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/pedometer_dark.jpeg" alt="Pedometer, dark theme" loading="lazy" /></div></div><span>Pedometer · Dark</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/meditation_light.jpeg" alt="Meditation soundscapes" loading="lazy" /></div></div><span>Soundscapes</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/box_breathing.jpeg" alt="Box breathing exercise" loading="lazy" /></div></div><span>Box breathing</span></figure>
+    <figure class="gallery__item"><div class="phone"><span class="phone__punch"></span><div class="phone__screen"><img src="assets/settings_dark.jpeg" alt="Settings screen" loading="lazy" /></div></div><span>Settings</span></figure>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq" style="background:var(--bg-2);border-top:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Questions</span>
+      <h2>Good to know</h2>
+      <p>Everything about how Sehat works, what it measures, and how it keeps your data private.</p>
+    </div>
+    <div class="faq">
+
+      <h3 class="faq__group reveal">Privacy &amp; data</h3>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Does the app use the internet?<span class="ico"></span></summary>
+        <div class="faq__a">No. Sehat doesn't request the <code>INTERNET</code> permission at all, so it works entirely offline and is technically incapable of making a network connection. There are no analytics, ads, or telemetry of any kind.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">How is my data stored?<span class="ico"></span></summary>
+        <div class="faq__a">All data - personal information, step counts, heart rate readings, and settings - is stored locally on your device. Nothing is sent to any server or third party. You can export or import your data at any time from <strong>Settings &gt; Data</strong>.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Is my data encrypted?<span class="ico"></span></summary>
+        <div class="faq__a">Your data is stored in the app's private internal storage, which is sandboxed by Android and inaccessible to other apps. On devices with file-based encryption (Android 7+), data at rest is automatically encrypted by the operating system.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">How do I export or back up my data?<span class="ico"></span></summary>
+        <div class="faq__a">Go to <strong>Settings &gt; Data &gt; Export data</strong>. You'll be prompted to choose a location to save a JSON backup file. To restore, use <strong>Import data</strong> from the same menu. The file never leaves your control.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Can I delete my health records?<span class="ico"></span></summary>
+        <div class="faq__a">Yes. Open any pedometer or heart rate history entry and tap the <strong>Delete</strong> button. Deleted records cannot be recovered.</div>
+      </details>
+
+      <h3 class="faq__group reveal">Accuracy &amp; measurement</h3>
+      <details class="faq__item reveal">
+        <summary class="faq__q">How accurate is the heart rate measurement?<span class="ico"></span></summary>
+        <div class="faq__a">The camera-based method provides an approximate reading suitable for general wellness tracking. For medical-grade accuracy, please use a certified medical device. Factors like movement, ambient light, and finger pressure can affect the reading.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">How accurate is the pedometer?<span class="ico"></span></summary>
+        <div class="faq__a">The pedometer uses your phone's hardware step counter sensor. Accuracy depends on your device and where you carry it. For best results, keep the phone in your pocket or a secure holder. You can adjust the sensitivity in <strong>Settings &gt; Pedometer Settings</strong>.</div>
+      </details>
+
+      <h3 class="faq__group reveal">Using the app</h3>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Can I change the default screen shown on launch?<span class="ico"></span></summary>
+        <div class="faq__a">Yes. Go to <strong>Settings &gt; Customization &gt; Default Screen</strong> and pick the tab you'd like to see when you open the app.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">What does the double-tap to lock feature do?<span class="ico"></span></summary>
+        <div class="faq__a">When enabled in <strong>Settings &gt; Customization</strong>, double-tapping anywhere on the screen locks your device. This uses Android's Accessibility Service and works without requiring your PIN or pattern on the lock screen (fingerprint unlock remains available).</div>
+      </details>
+
+      <h3 class="faq__group reveal">About the project</h3>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Is Sehat really free?<span class="ico"></span></summary>
+        <div class="faq__a">Yes - completely free and open source under the MIT license. There are no ads, no subscriptions, and no in-app purchases. You can even build it yourself from the source code.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">Why isn't it on the Play Store?<span class="ico"></span></summary>
+        <div class="faq__a">Sehat is distributed as a direct APK via <a href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">GitHub Releases</a>, keeping the project independent and fully transparent. Download the latest APK and install it directly.</div>
+      </details>
+      <details class="faq__item reveal">
+        <summary class="faq__q">What Android version do I need?<span class="ico"></span></summary>
+        <div class="faq__a">Sehat supports Android 7.0 (API 24) and newer, and is built against the latest Android 15 (API 35). Step counting requires a device with a hardware step sensor.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOWNLOAD CTA ============ -->
+<section class="cta-band">
+  <div class="wrap">
+    <div class="cta-card reveal">
+      <h2>Take your health back.</h2>
+      <p>Download Sehat and start tracking steps, heart rate and calm - knowing your data stays exactly where it belongs.</p>
+      <div class="hero__cta" style="justify-content:center;">
+        <a class="btn btn-primary btn-lg" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download APK
+        </a>
+        <a class="btn btn-dark btn-lg" href="https://github.com/roufsyed/sehat" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+          View source
+        </a>
+      </div>
+      <p class="cta-meta">MIT licensed · ~10 MB · Android 7.0+ · No INTERNET permission</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="#top">
+          <span class="brand__mark"><img src="assets/icon.png" alt="Sehat logo" /></span>
+          <span>Sehat <small class="urdu">سیہت</small></span>
+        </a>
+        <p class="footer__blurb">A personal health tracker that stays entirely on your phone. Built with care by <a href="https://roufsyed.github.io" target="_blank" rel="noopener" style="color:#6cb8f5;font-weight:700;">Rouf Syed</a> - your data stays yours.</p>
+        <a class="footer__dl" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>Download APK</a>
+      </div>
+      <div class="footer__col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#screens">Screenshots</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer__col">
+        <h4>Get it</h4>
+        <a href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">Download APK</a>
+        <a href="https://github.com/roufsyed/sehat" target="_blank" rel="noopener">Source code</a>
+        <a href="https://github.com/roufsyed/sehat/issues" target="_blank" rel="noopener">Report an issue</a>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="license.html">MIT License</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Sehat.</span>
+      <span><span class="urdu">سیہت</span> - health, kept private.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

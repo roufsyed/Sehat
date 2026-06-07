@@ -83,7 +83,7 @@ class HeartRateHistoryActivity : BaseActivity() {
                 checkedId == R.id.chip_custom && customFromDate > 0 ->
                     showData(fullList.filter { it.timeStamp in customFromDate..customToDate })
                 checkedId == R.id.chip_custom ->
-                    // dates were never confirmed — silently fall back to All
+                    // dates were never confirmed - silently fall back to All
                     binding.chipAll.isChecked = true
                 else -> applyFilter(checkedId)
             }

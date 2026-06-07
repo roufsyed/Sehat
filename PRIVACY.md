@@ -1,4 +1,4 @@
-# Privacy Policy — Sehat
+# Privacy Policy - Sehat
 
 *Last updated: April 2026*
 
@@ -51,7 +51,7 @@ Sehat does not request the `INTERNET` permission. The app is technically incapab
 
 ## Data backup and export
 
-The in-app backup feature lets you export all your health data to a JSON file on your own device. You choose the location using Android's standard file picker. The exported file is not transmitted anywhere — it stays on your device until you move or delete it yourself.
+The in-app backup feature lets you export all your health data to a JSON file on your own device. You choose the location using Android's standard file picker. The exported file is not transmitted anywhere - it stays on your device until you move or delete it yourself.
 
 ---
 

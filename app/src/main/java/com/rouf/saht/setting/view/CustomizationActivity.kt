@@ -56,7 +56,7 @@ class CustomizationActivity : BaseActivity() {
         super.onResume()
         val isServiceEnabled = LockScreenAccessibilityService.isEnabled(this)
         if (isServiceEnabled) {
-            // User just granted permission — enable the feature
+            // User just granted permission - enable the feature
             Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, true)
             binding.switchDoubleTapLock.isChecked = true
         } else {
@@ -262,7 +262,7 @@ class CustomizationActivity : BaseActivity() {
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             val currentTheme = Paper.book().read(PREF_THEME, THEME_OCEAN) ?: THEME_OCEAN
             if (!isChecked && currentTheme == THEME_AMOLED) {
-                // AMOLED requires dark mode — prevent disabling
+                // AMOLED requires dark mode - prevent disabling
                 binding.switchDarkMode.isChecked = true
                 MaterialAlertDialogBuilder(this)
                     .setTitle("Dark Mode Required")
@@ -289,7 +289,7 @@ class CustomizationActivity : BaseActivity() {
                 if (LockScreenAccessibilityService.isEnabled(this)) {
                     Paper.book().write(SettingsFragment.PREF_DOUBLE_TAP_LOCK, true)
                 } else {
-                    // Revert toggle — permission not granted yet
+                    // Revert toggle - permission not granted yet
                     binding.switchDoubleTapLock.isChecked = false
                     showAccessibilityPermissionDialog()
                 }

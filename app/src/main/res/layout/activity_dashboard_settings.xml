@@ -477,7 +477,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="Recovery Indicator" android:textStyle="bold" android:textSize="16sp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Resting heart rate trend — lower is better fitness" android:textSize="13sp"
+                            android:text="Resting heart rate trend - lower is better fitness" android:textSize="13sp"
                             android:textColor="?attr/colorOnSurfaceVariant" />
                     </LinearLayout>
                     <com.google.android.material.materialswitch.MaterialSwitch

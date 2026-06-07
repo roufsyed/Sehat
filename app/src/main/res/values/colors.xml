@@ -10,7 +10,7 @@
 
 
 
-    <!-- Screen background — slightly off-white so white cards have contrast -->
+    <!-- Screen background - slightly off-white so white cards have contrast -->
     <color name="background_light">#F2F4F6</color>
 
     <!-- Dark mode: deep background + slightly elevated surface for cards -->
@@ -76,7 +76,7 @@
     <color name="violet_700">#6A1B9A</color>
     <color name="cyan_500">#00BCD4</color>
 
-    <!-- M3 container / surface colors — light mode -->
+    <!-- M3 container / surface colors - light mode -->
     <color name="green_container">#C8E6C9</color>
     <color name="on_green_container">#1B5E20</color>
     <color name="red_container">#FFCDD2</color>

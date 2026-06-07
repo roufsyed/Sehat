@@ -162,7 +162,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Activity comparison card — hidden until data is loaded -->
+            <!-- Activity comparison card - hidden until data is loaded -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardComparison"
                 android:layout_width="match_parent"

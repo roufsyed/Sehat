@@ -107,7 +107,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Hilt — single source of truth for version
+    // Hilt - single source of truth for version
     implementation("com.google.dagger:hilt-android:2.53.1")
     kapt("com.google.dagger:hilt-compiler:2.53.1")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
@@ -130,7 +130,7 @@ dependencies {
     // Images
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // Heart rate — RxJava2 required by HeartRateOmeter AAR
+    // Heart rate - RxJava2 required by HeartRateOmeter AAR
     implementation(files("libs/heartrateometer-release.aar"))
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 

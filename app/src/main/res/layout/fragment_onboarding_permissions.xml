@@ -199,7 +199,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Measure your heart rate. Only active while measuring — no images are saved."
+                            android:text="Measure your heart rate. Only active while measuring - no images are saved."
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="13sp" />
 

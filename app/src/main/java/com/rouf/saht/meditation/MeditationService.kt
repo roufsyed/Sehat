@@ -43,7 +43,7 @@ class MeditationService : Service() {
                 val durationMs = intent.getLongExtra(EXTRA_DURATION_MS, DEFAULT_DURATION_MS)
 
                 if (soundFile.isNullOrBlank() || soundName.isNullOrBlank()) {
-                    Log.e(TAG, "Missing sound extras — aborting playback")
+                    Log.e(TAG, "Missing sound extras - aborting playback")
                     stopSelf()
                     return START_NOT_STICKY
                 }

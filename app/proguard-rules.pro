@@ -3,7 +3,7 @@
 -renamesourcefileattribute SourceFile
 
 # ---- App data models (PaperDB / Gson serialization) ----
-# These classes are serialized to disk — all fields must survive shrinking
+# These classes are serialized to disk - all fields must survive shrinking
 -keep class com.rouf.saht.common.model.** { *; }
 -keep class com.rouf.saht.heartRate.data.** { *; }
 

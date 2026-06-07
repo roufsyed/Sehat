@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy - Sehat</title>
+<meta name="description" content="Sehat's privacy policy: your health data is yours alone. No servers, no tracking, no internet permission." />
+<meta name="theme-color" content="#2196F3" />
+<link rel="icon" type="image/png" href="assets/icon.png" />
+<link rel="apple-touch-icon" href="assets/icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sehat" />
+<meta property="og:title" content="Privacy Policy - Sehat" />
+<meta property="og:description" content="Your health data is yours alone. No servers, no tracking, no internet permission." />
+<meta property="og:image" content="https://roufsyed.github.io/sehat/assets/og-cover.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://roufsyed.github.io/sehat/assets/og-cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav scrolled" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html" aria-label="Sehat home">
+      <span class="brand__mark">
+        <img src="assets/icon.png" alt="Sehat logo" />
+      </span>
+      <span>Sehat <small class="urdu">سیہت</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#privacy">Privacy</a>
+      <a href="index.html#screens">Screenshots</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <div class="nav__cta">
+      <a class="btn btn-ghost" href="license.html">License</a>
+      <a class="btn btn-primary" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">Download</a>
+    </div>
+  </div>
+</header>
+
+<section class="doc-hero">
+  <div class="wrap">
+    <a class="doc-back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to home
+    </a>
+    <h1>Privacy Policy</h1>
+    <p class="doc-sub">Sehat is built on a single principle: <strong>your health data is yours alone.</strong> This policy explains what the app collects, where it is stored, and what it deliberately does not do.</p>
+  </div>
+</section>
+
+<main class="doc-wrap">
+  <div class="doc-body">
+    <h2>What data Sehat collects</h2>
+    <p>All data is stored locally using an embedded on-device database (PaperDB). There is no user account, no login, and no server.</p>
+    <table class="doc-table">
+      <thead><tr><th>Data</th><th>Purpose</th><th>Where it is stored</th></tr></thead>
+      <tbody>
+        <tr><td>Step count, distance, calories, session duration</td><td>Pedometer feature</td><td>On your device only</td></tr>
+        <tr><td>Heart rate (BPM) and activity context</td><td>Heart rate monitor feature</td><td>On your device only</td></tr>
+        <tr><td>Personal information (name, age, height, weight, gender)</td><td>BMI calculation and calorie estimates</td><td>On your device only</td></tr>
+        <tr><td>Custom meditation sounds you add</td><td>Meditation feature</td><td>File URI on your device; Sehat stores a pointer, not a copy</td></tr>
+        <tr><td>App settings and preferences</td><td>App configuration</td><td>On your device only</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What Sehat does NOT do</h2>
+    <ul class="neg">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not transmit health data to any server, cloud service, or third party</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not require or use an internet connection for core features</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not collect analytics or usage statistics</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not display advertisements</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not include any third-party advertising or tracking SDKs</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg> Does not sell, rent, or share your data with anyone</li>
+    </ul>
+
+    <h2>Camera</h2>
+    <div class="doc-callout">
+      <p>The camera is used solely to measure heart rate by analyzing subtle changes in light reflected from your fingertip. <strong>No images or video are ever recorded, saved, or transmitted.</strong> The camera is active only while you are actively measuring your heart rate, and stops immediately when you press Stop or the session ends.</p>
+    </div>
+
+    <h2>Step sensor</h2>
+    <p>The app uses the device's built-in step counter hardware sensor via the <code>ACTIVITY_RECOGNITION</code> permission. The sensor data is processed on-device and only the final step count and derived metrics are stored locally.</p>
+
+    <h2>Network access</h2>
+    <div class="doc-callout green">
+      <p><strong>Sehat does not request the INTERNET permission.</strong> The app is technically incapable of making any network connection. No data is ever transmitted from your device.</p>
+    </div>
+
+    <h2>Data backup and export</h2>
+    <p>The in-app backup feature lets you export all your health data to a JSON file on your own device. You choose the location using Android's standard file picker. The exported file is not transmitted anywhere - it stays on your device until you move or delete it yourself.</p>
+
+    <h2>Data deletion</h2>
+    <p>To delete all health data stored by Sehat, uninstall the app. Android will remove all app data automatically. If you have exported a backup file, delete that file manually.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes materially, the updated version will be published in this repository with a new "Last updated" date.</p>
+
+    <h2>Contact</h2>
+    <p>If you have questions about this privacy policy, open an issue in the <a href="https://github.com/roufsyed/sehat" target="_blank" rel="noopener">Sehat GitHub repository</a>.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="index.html">
+          <span class="brand__mark"><img src="assets/icon.png" alt="Sehat logo" /></span>
+          <span>Sehat <small class="urdu">سیہت</small></span>
+        </a>
+        <p class="footer__blurb">A personal health tracker that stays entirely on your phone. Built with care by <a href="https://roufsyed.github.io" target="_blank" rel="noopener" style="color:#6cb8f5;font-weight:700;">Rouf Syed</a> - your data stays yours.</p>
+        <a class="footer__dl" href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>Download APK</a>
+      </div>
+      <div class="footer__col">
+        <h4>Product</h4>
+        <a href="index.html#features">Features</a>
+        <a href="index.html#privacy">Privacy</a>
+        <a href="index.html#screens">Screenshots</a>
+        <a href="index.html#faq">FAQ</a>
+      </div>
+      <div class="footer__col">
+        <h4>Get it</h4>
+        <a href="https://github.com/roufsyed/sehat/releases" target="_blank" rel="noopener">Download APK</a>
+        <a href="https://github.com/roufsyed/sehat" target="_blank" rel="noopener">Source code</a>
+        <a href="https://github.com/roufsyed/sehat/issues" target="_blank" rel="noopener">Report an issue</a>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="license.html">MIT License</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Sehat.</span>
+      <span><span class="urdu">سیہت</span> - health, kept private.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

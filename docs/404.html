@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page not found - Sehat</title>
+<meta name="theme-color" content="#2196F3" />
+<link rel="icon" type="image/png" href="assets/icon.png" />
+<link rel="apple-touch-icon" href="assets/icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .nf { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 40px 20px; position: relative; overflow: hidden; }
+  .nf::before { content: ''; position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(700px 420px at 70% 8%, rgba(33,150,243,.14), transparent 60%),
+                radial-gradient(560px 420px at 12% 20%, rgba(76,175,80,.10), transparent 55%); }
+  .nf__inner { position: relative; z-index: 1; max-width: 480px; }
+  .nf__mark { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 28px; overflow: hidden;
+    background: #fff; box-shadow: 0 10px 26px -8px rgba(244,113,116,.5), inset 0 0 0 1px rgba(0,0,0,.05); }
+  .nf__mark img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
+  .nf__code { font-size: clamp(3.4rem, 12vw, 5.5rem); font-weight: 800; letter-spacing: -.04em; color: var(--blue); line-height: 1; }
+  .nf h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin-top: 14px; }
+  .nf p { color: var(--muted); font-size: 1.08rem; margin-top: 16px; }
+  .nf .btn { margin-top: 30px; }
+</style>
+</head>
+<body>
+<main class="nf">
+  <div class="nf__inner">
+    <div class="nf__mark"><img src="assets/icon.png" alt="Sehat logo" /></div>
+    <div class="nf__code">404</div>
+    <h1>This page took a rest day.</h1>
+    <p>The page you're looking for isn't here. Let's get you back to tracking.</p>
+    <a class="btn btn-primary btn-lg" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to home
+    </a>
+  </div>
+</main>
+</body>
+</html>

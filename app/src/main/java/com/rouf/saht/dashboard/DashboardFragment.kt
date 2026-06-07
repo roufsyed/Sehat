@@ -382,7 +382,7 @@ class DashboardFragment : Fragment() {
             }
 
             approxDays <= 93 -> {
-                // Weekly aggregation — one bar per 7-day window
+                // Weekly aggregation - one bar per 7-day window
                 val labelFormat = SimpleDateFormat("d MMM", Locale.getDefault())
                 var weekStart = fromMs
                 var idx = 0
@@ -400,7 +400,7 @@ class DashboardFragment : Fragment() {
             }
 
             else -> {
-                // Monthly aggregation — one bar per calendar month
+                // Monthly aggregation - one bar per calendar month
                 val labelFormat = SimpleDateFormat("MMM", Locale.getDefault())
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = fromMs
@@ -1209,8 +1209,8 @@ class DashboardFragment : Fragment() {
         val diff = firstHalfAvg - secondHalfAvg
 
         val insight = when {
-            diff > 3  -> "Your resting HR is dropping — great fitness progress!"
-            diff < -3 -> "Your resting HR has increased — consider more rest"
+            diff > 3  -> "Your resting HR is dropping - great fitness progress!"
+            diff < -3 -> "Your resting HR has increased - consider more rest"
             else      -> "Your resting HR is stable"
         }
         val insightColor = when {
@@ -1413,7 +1413,7 @@ class DashboardFragment : Fragment() {
         val maxCal = calByDate.values.maxOrNull() ?: 0.0
         b.tvRecordMaxCalories.text = String.format("%.0f", maxCal)
 
-        // Days goal was hit — use each day's stored goal; fall back to 10,000 for legacy entries
+        // Days goal was hit - use each day's stored goal; fall back to 10,000 for legacy entries
         val goalByDate = pedData
             .groupBy { it.date }
             .mapValues { (_, items) ->
@@ -1428,7 +1428,7 @@ class DashboardFragment : Fragment() {
     // ---- Insights ----
 
     /**
-     * Pure function — no side effects, no binding access.
+     * Pure function - no side effects, no binding access.
      * Returns up to 4 plain-language insight strings derived from the supplied data.
      * Returns an empty list when there is insufficient data to generate any insight.
      */
@@ -1445,7 +1445,7 @@ class DashboardFragment : Fragment() {
         val thisWeekPed = pedData.filter { it.timestamp >= thisWeekStart }
         val lastWeekPed = pedData.filter { it.timestamp in lastWeekStart until thisWeekStart }
 
-        // 1 — Steps % change week-over-week
+        // 1 - Steps % change week-over-week
         val thisWeekSteps = thisWeekPed.sumOf { it.steps }
         val lastWeekSteps = lastWeekPed.sumOf { it.steps }
         if (thisWeekSteps > 0 && lastWeekSteps > 0) {
@@ -1456,7 +1456,7 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        // 2 — Goal days hit this week
+        // 2 - Goal days hit this week
         val stepsByDay = thisWeekPed.groupBy { it.date }
             .mapValues { (_, v) -> v.sumOf { it.steps } }
         val goalByDay = thisWeekPed.groupBy { it.date }
@@ -1468,19 +1468,19 @@ class DashboardFragment : Fragment() {
                 g > 0 && steps >= g
             }
             when {
-                goalHitDays == 0              -> insights.add("No step goals hit yet this week — keep going!")
+                goalHitDays == 0              -> insights.add("No step goals hit yet this week - keep going!")
                 goalHitDays == daysWithGoals  -> insights.add("You hit your step goal every active day this week! 🎉")
                 else                          -> insights.add("You hit your step goal $goalHitDays out of $daysWithGoals active days this week")
             }
         }
 
-        // 3 — Active days out of the last 7
+        // 3 - Active days out of the last 7
         val activeDays = thisWeekPed.map { it.date }.distinct().size
         if (activeDays > 0) {
             insights.add("You were active $activeDays out of the last 7 days")
         }
 
-        // 4 — Resting HR monthly trend (requires ≥ 4 resting sessions)
+        // 4 - Resting HR monthly trend (requires ≥ 4 resting sessions)
         if (insights.size < 4) {
             val monthAgo = now - 30 * oneDay
             val restingThisMonth = hrData
@@ -1492,13 +1492,13 @@ class DashboardFragment : Fragment() {
                 val recent = restingThisMonth.drop(half).map { it.bpm }.average()
                 val diff = Math.round(early - recent).toInt()
                 when {
-                    diff >= 3  -> insights.add("Your resting HR dropped $diff BPM this month — great progress! 📉")
-                    diff <= -3 -> insights.add("Your resting HR rose ${-diff} BPM this month — consider more rest")
+                    diff >= 3  -> insights.add("Your resting HR dropped $diff BPM this month - great progress! 📉")
+                    diff <= -3 -> insights.add("Your resting HR rose ${-diff} BPM this month - consider more rest")
                 }
             }
         }
 
-        // 5 — Calorie % change week-over-week (filler if < 4 insights so far)
+        // 5 - Calorie % change week-over-week (filler if < 4 insights so far)
         if (insights.size < 4) {
             val thisWeekCal = thisWeekPed.sumOf { it.caloriesBurned }
             val lastWeekCal = lastWeekPed.sumOf { it.caloriesBurned }

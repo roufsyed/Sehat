@@ -67,7 +67,7 @@ class FaqActivity : BaseActivity() {
 
         FaqItem.Entry(
             "How is my data stored?",
-            "All data — personal information, step counts, heart rate readings, and settings — is stored locally on your device using an on-device database. Nothing is sent to any server or third party."
+            "All data - personal information, step counts, heart rate readings, and settings - is stored locally on your device using an on-device database. Nothing is sent to any server or third party."
         ),
         FaqItem.Entry(
             "Is my data encrypted?",
@@ -108,7 +108,7 @@ class FaqActivity : BaseActivity() {
         ),
         FaqItem.Entry(
             "How do the meditation sounds work?",
-            "Choose a sound and set a duration — the app plays the sound in a loop for the specified time via a background service. You can add your own audio files using the Add Sound button. Custom sounds are picked from your device storage; only a reference (URI) is saved, not a copy of the file."
+            "Choose a sound and set a duration - the app plays the sound in a loop for the specified time via a background service. You can add your own audio files using the Add Sound button. Custom sounds are picked from your device storage; only a reference (URI) is saved, not a copy of the file."
         ),
         FaqItem.Entry(
             "What are the breathing exercises?",

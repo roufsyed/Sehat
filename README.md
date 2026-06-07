@@ -1,9 +1,9 @@
-# Sehat — Personal Health Tracker
+# Sehat - Personal Health Tracker
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-blue.svg)](PRIVACY.md)
 
-Sehat (سیہت, meaning *health* in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation — all without ever leaving your device.
+Sehat (سیہت, meaning *health* in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.
 
 ## Why it exists
 
@@ -47,10 +47,10 @@ Most health apps send your data to the cloud, sell it to advertisers, or require
 
 - All data is stored locally using an embedded on-device database ([PaperDB](https://github.com/pilgr/Paper))
 - No accounts. No login. No cloud sync.
-- Camera is used only to measure heart rate — no frames are recorded or stored
+- Camera is used only to measure heart rate - no frames are recorded or stored
 - Step and heart rate data is stored only in your device's internal storage
 - No ad SDKs, no analytics, no crash reporting
-- No `INTERNET` permission — the app is technically incapable of making network calls
+- No `INTERNET` permission - the app is technically incapable of making network calls
 
 The only time health data moves is when *you* explicitly export it via the in-app backup feature, which saves a JSON file to a location you choose on your own device.
 
@@ -68,7 +68,7 @@ Counts steps using the device's built-in step counter sensor. Runs as a foregrou
 - BMI display calculated from your personal information
 
 ### Heart Rate Monitor
-Measures heart rate using the camera. Place your finger over the lens — the app analyzes subtle changes in the red channel to detect your pulse.
+Measures heart rate using the camera. Place your finger over the lens - the app analyzes subtle changes in the red channel to detect your pulse.
 
 - Real-time BPM display with a live chart
 - Configurable measurement duration and sensitivity
@@ -87,7 +87,7 @@ Plays ambient nature sounds to help you focus or unwind.
 ### Data Backup
 Export all your health data to a JSON file and import it back at any time.
 
-- Uses Android's Storage Access Framework — no storage permissions required
+- Uses Android's Storage Access Framework - no storage permissions required
 - You choose where to save the file
 - All data (steps history, heart rate history, personal info, settings) is included
 
@@ -117,7 +117,7 @@ Export all your health data to a JSON file and import it back at any time.
 # Debug build
 ./gradlew assembleDebug
 
-# Release build (requires signing keys in local.properties — see local.properties.example)
+# Release build (requires signing keys in local.properties - see local.properties.example)
 ./gradlew assembleRelease
 ```
 
@@ -129,7 +129,7 @@ Requires Android Studio Hedgehog or later.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
 
 ## Privacy
 

@@ -76,7 +76,7 @@ class HeartRateFragment : Fragment() {
     private val noFingerHandler = Handler(Looper.getMainLooper())
     private val noFingerRunnable = Runnable {
         if (isTimerStarted) {
-            Log.d(TAG, "No finger detected for 5 seconds — ending measurement")
+            Log.d(TAG, "No finger detected for 5 seconds - ending measurement")
             stopHeartRateMonitoringTimer()
             stopHeartRateMonitoring()
             initViewInActiveState()
