@@ -1,0 +1,1 @@
+First release of Sehat on F-Droid. See the GitHub releases/history page for the full feature timeline.

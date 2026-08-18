@@ -1,0 +1,1 @@
+Sehat (صحت, meaning health in Urdu) is an Android app for tracking your daily fitness and wellness. It measures steps, heart rate, and supports meditation - all without ever leaving your device.

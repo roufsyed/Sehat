@@ -1,0 +1,64 @@
+* Sehat (صحت, meaning health in Urdu) is a privacy-focused personal health tracker for Android. Track your steps, heart rate, and meditation while keeping your data on your device.
+
+**Pedometer**
+
+* Count steps using your device's built-in step counter sensor
+* Track steps, distance, calories, and active duration
+* Set and track a daily step goal
+* Adjust sensor sensitivity: Low, Medium, High, or Very High
+* View individual session history and details
+* Calculate BMI using your personal information
+
+**Heart Rate Monitor**
+
+* Measure heart rate using your device's camera
+* Place your finger over the camera to measure your pulse
+* View real-time BPM with a live chart
+* Configure measurement duration and sensitivity
+* Record measurements with activity context:
+  * Walking
+  * Running
+  * Cycling
+  * Resting
+* View previous heart rate measurements
+
+**Meditation**
+
+* Relax with built-in ambient soundscapes
+* Six soundscapes included:
+  * Rain
+  * Water Waves
+  * Lightning
+  * Bird Chirping
+  * Wind Breeze
+  * Forest
+* Add your own sounds from device storage
+* Choose 5, 10, 15, 20 minutes, or a custom duration
+* Continue playback using a foreground service
+* Display rotating motivational quotes
+
+**Data Backup**
+
+* Export your health data as a JSON file
+* Import your data whenever needed
+* Choose the backup location using Android's Storage Access Framework
+* No storage permission required
+
+**Privacy**
+
+* All health data is stored locally on your device
+* No account or login required
+* No cloud sync or servers
+* No advertisements
+* No analytics or crash reporting
+* No `INTERNET` permission
+* Camera frames used for heart rate measurement are not recorded or stored
+* Health data leaves your device only when you explicitly export a backup
+
+**Permissions**
+
+* `ACTIVITY_RECOGNITION` — Count steps
+* `CAMERA` — Measure heart rate
+* `POST_NOTIFICATIONS` — Show foreground service notifications
+* `FOREGROUND_SERVICE` — Background step tracking and meditation playback
+* `READ_MEDIA_AUDIO` — Select custom meditation sounds on Android 13+
