@@ -254,6 +254,7 @@ class HeartRateFragment : Fragment() {
     }
 
     private fun startHeartRateMonitoring() {
+        addScreenOnFlag()
         lineChart = binding.lineChart
         subscription = CompositeDisposable()
         startPulseAnimation()
@@ -288,6 +289,20 @@ class HeartRateFragment : Fragment() {
         isTimerStarted = false
         noFingerHandler.removeCallbacks(noFingerRunnable)
         Log.d(TAG, "Timer stopped.")
+    }
+
+    private fun addScreenOnFlag(){
+        // keep screen on; no auto turn-off screen
+        activity?.window?.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+    }
+
+    private fun clearScreenOnFlag(){
+        // remove flag which was set during startHeartRateMonitoring()
+        activity?.window?.clearFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
     }
 
     private fun startHeartRateMonitoringTimer() {
@@ -339,6 +354,7 @@ class HeartRateFragment : Fragment() {
         subscription = null
         stopPulseAnimation()
         binding.btnMeasure.text = getString(R.string.start_monitoring)
+        clearScreenOnFlag()
     }
 
     private fun onBpm(bpm: Int) {
