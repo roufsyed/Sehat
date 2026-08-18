@@ -1,4 +1,4 @@
-<manifest package="net.kibotu.heartrateometer"
+<manifest
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- measuring heartbeat -->

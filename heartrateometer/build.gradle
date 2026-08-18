@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 android {
     namespace "net.kibotu.heartrateometer"
     compileSdkVersion 35
-    buildToolsVersion '27.0.2'
 
     defaultConfig {
 
@@ -13,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -43,8 +42,6 @@ dependencies {
 
     implementation "androidx.annotation:annotation:1.9.1"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51"
 
     compileOnly "com.squareup.retrofit2:retrofit:2.3.0"
