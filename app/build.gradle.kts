@@ -72,7 +72,7 @@ android {
         val variant = this
         outputs.all {
             val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output?.outputFileName = "Sehat_${variant.versionName}_${variant.buildType.name}.apk"
+            output?.outputFileName = "Sehat_${variant.versionName}_${variant.versionCode}_${variant.buildType.name}.apk"
         }
     }
 
