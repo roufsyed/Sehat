@@ -23,4 +23,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Sehat"
-include(":app")
+include(":app", ":heartrateometer")
