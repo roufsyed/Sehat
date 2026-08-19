@@ -1,64 +1,77 @@
-* Sehat (صحت, meaning health in Urdu) is a privacy-focused personal health tracker for Android. Track your steps, heart rate, and meditation while keeping your data on your device.
+<p><strong>Sehat</strong> (صحت, meaning health in Urdu) is a privacy-focused personal health tracker for Android. Track your steps, heart rate, and meditation while keeping your data on your device.</p>
 
-**Pedometer**
+<h2>Pedometer</h2>
+<ul>
+  <li>Count steps using your device's built-in step counter sensor</li>
+  <li>Track steps, distance, calories, and active duration</li>
+  <li>Set and track a daily step goal</li>
+  <li>Adjust sensor sensitivity: Low, Medium, High, or Very High</li>
+  <li>View individual session history and details</li>
+  <li>Calculate BMI using your personal information</li>
+</ul>
 
-* Count steps using your device's built-in step counter sensor
-* Track steps, distance, calories, and active duration
-* Set and track a daily step goal
-* Adjust sensor sensitivity: Low, Medium, High, or Very High
-* View individual session history and details
-* Calculate BMI using your personal information
+<h2>Heart Rate Monitor</h2>
+<ul>
+  <li>Measure heart rate using your device's camera</li>
+  <li>Place your finger over the camera to measure your pulse</li>
+  <li>View real-time BPM with a live chart</li>
+  <li>Configure measurement duration and sensitivity</li>
+  <li>Record measurements with activity context:
+    <ul>
+      <li>Walking</li>
+      <li>Running</li>
+      <li>Cycling</li>
+      <li>Resting</li>
+      <li>Custom</li>
+    </ul>
+  </li>
+  <li>View previous heart rate measurements</li>
+</ul>
 
-**Heart Rate Monitor**
+<h2>Meditation</h2>
+<ul>
+  <li>Relax with built-in ambient soundscapes</li>
+  <li>Six soundscapes included:
+    <ul>
+      <li>Rain</li>
+      <li>Water Waves</li>
+      <li>Lightning</li>
+      <li>Bird Chirping</li>
+      <li>Wind Breeze</li>
+      <li>Forest</li>
+    </ul>
+  </li>
+  <li>Add your own sounds from device storage</li>
+  <li>Choose 5, 10, 15, 20 minutes, or a custom duration</li>
+  <li>Continue playback using a foreground service</li>
+  <li>Display rotating motivational quotes</li>
+</ul>
 
-* Measure heart rate using your device's camera
-* Place your finger over the camera to measure your pulse
-* View real-time BPM with a live chart
-* Configure measurement duration and sensitivity
-* Record measurements with activity context:
-  * Walking
-  * Running
-  * Cycling
-  * Resting
-* View previous heart rate measurements
+<h2>Data Backup</h2>
+<ul>
+  <li>Export your health data as a JSON file</li>
+  <li>Import your data whenever needed</li>
+  <li>Choose the backup location using Android's Storage Access Framework</li>
+  <li>No storage permission required</li>
+</ul>
 
-**Meditation**
+<h2>Privacy</h2>
+<ul>
+  <li>All health data is stored locally on your device</li>
+  <li>No account or login required</li>
+  <li>No cloud sync or servers</li>
+  <li>No advertisements</li>
+  <li>No analytics or crash reporting</li>
+  <li>No <code>INTERNET</code> permission</li>
+  <li>Camera frames used for heart rate measurement are not recorded or stored</li>
+  <li>Health data leaves your device only when you explicitly export a backup</li>
+</ul>
 
-* Relax with built-in ambient soundscapes
-* Six soundscapes included:
-  * Rain
-  * Water Waves
-  * Lightning
-  * Bird Chirping
-  * Wind Breeze
-  * Forest
-* Add your own sounds from device storage
-* Choose 5, 10, 15, 20 minutes, or a custom duration
-* Continue playback using a foreground service
-* Display rotating motivational quotes
-
-**Data Backup**
-
-* Export your health data as a JSON file
-* Import your data whenever needed
-* Choose the backup location using Android's Storage Access Framework
-* No storage permission required
-
-**Privacy**
-
-* All health data is stored locally on your device
-* No account or login required
-* No cloud sync or servers
-* No advertisements
-* No analytics or crash reporting
-* No `INTERNET` permission
-* Camera frames used for heart rate measurement are not recorded or stored
-* Health data leaves your device only when you explicitly export a backup
-
-**Permissions**
-
-* `ACTIVITY_RECOGNITION` — Count steps
-* `CAMERA` — Measure heart rate
-* `POST_NOTIFICATIONS` — Show foreground service notifications
-* `FOREGROUND_SERVICE` — Background step tracking and meditation playback
-* `READ_MEDIA_AUDIO` — Select custom meditation sounds on Android 13+
+<h2>Permissions</h2>
+<ul>
+  <li><code>ACTIVITY_RECOGNITION</code> — Count steps</li>
+  <li><code>CAMERA</code> — Measure heart rate</li>
+  <li><code>POST_NOTIFICATIONS</code> — Show foreground service notifications</li>
+  <li><code>FOREGROUND_SERVICE</code> — Background step tracking and meditation playback</li>
+  <li><code>READ_MEDIA_AUDIO</code> — Select custom meditation sounds on Android 13+</li>
+</ul>
