@@ -4,6 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -40,6 +44,14 @@ class MainActivity : BaseActivity() {
             })
             finish()
             return
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.container) { view, windowInsets ->
+            val navBars = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.updatePadding(bottom = navBars.bottom)
+            WindowInsetsCompat.Builder(windowInsets)
+                .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                .build()
         }
 
         val navView: BottomNavigationView = binding.navView
